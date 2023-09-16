@@ -28,6 +28,22 @@ const users: User[] = [
     about: faker.lorem.paragraphs(),
     role: 'admin',
     isPublic: true
+  },
+  {
+    id: '8864c717-587d-472a-929a-8e5f298024da-1',
+    displayName: 'An Bui Gia',
+    email: 'buigiaanfb1@gmail.com',
+    password: 'demo1234',
+    photoURL: '/static/mock-images/avatars/avatar_default.jpg',
+    phoneNumber: '+84 948451791',
+    country: 'Vietnam',
+    address: '164 Phan Van Han',
+    state: 'Binh Thanh',
+    city: 'Ho Chi Minh',
+    zipCode: '72123',
+    about: faker.lorem.paragraphs(),
+    role: 'staff',
+    isPublic: true
   }
 ];
 
