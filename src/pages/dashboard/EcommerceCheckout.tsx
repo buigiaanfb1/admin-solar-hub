@@ -101,7 +101,7 @@ export default function EcommerceCheckout() {
   }, [dispatch, activeStep]);
 
   return (
-    <Page title="Ecommerce: Checkout | Minimal-UI">
+    <Page title="Ecommerce: Checkout | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Checkout"

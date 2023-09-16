@@ -77,7 +77,7 @@ export default function SnackbarComponent() {
   };
 
   return (
-    <RootStyle title="Components: Snackbar | Minimal-UI">
+    <RootStyle title="Components: Snackbar | Minh Phát">
       <Box
         sx={{
           pt: 6,

@@ -21,7 +21,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function DataGridComponent() {
   return (
-    <RootStyle title="Components: DataGrid | Minimal-UI">
+    <RootStyle title="Components: DataGrid | Minh Phát">
       <Box
         sx={{
           pt: 6,

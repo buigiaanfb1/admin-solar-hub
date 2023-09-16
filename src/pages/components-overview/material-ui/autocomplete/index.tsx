@@ -19,7 +19,7 @@ import ControllableStates from './ControllableStates';
 
 export default function AutocompleteComponent() {
   return (
-    <Page title="Components: Autocomplete | Minimal-UI">
+    <Page title="Components: Autocomplete | Minh Phát">
       <Container maxWidth="lg">
         <HeaderBreadcrumbs
           heading="Autocomplete"

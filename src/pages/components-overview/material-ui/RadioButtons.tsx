@@ -43,7 +43,7 @@ export default function RadioButtons() {
   };
 
   return (
-    <RootStyle title="Components: Radio Buttons | Minimal-UI">
+    <RootStyle title="Components: Radio Buttons | Minh Phát">
       <Box
         sx={{
           pt: 6,

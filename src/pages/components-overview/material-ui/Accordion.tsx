@@ -47,7 +47,7 @@ export default function AccordionComponent() {
     };
 
   return (
-    <RootStyle title="Components: Accordion | Minimal-UI">
+    <RootStyle title="Components: Accordion | Minh Phát">
       <Box
         sx={{
           pt: 6,

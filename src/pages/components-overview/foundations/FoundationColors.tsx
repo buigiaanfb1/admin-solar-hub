@@ -106,7 +106,7 @@ export default function FoundationColors() {
   };
 
   return (
-    <RootStyle title="Foundations: Color | Minimal-UI">
+    <RootStyle title="Foundations: Color | Minh Phát">
       <Box
         sx={{
           pt: 6,

@@ -26,7 +26,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function MegaMenu() {
   return (
-    <RootStyle title="Mega Menu | Minimal-UI">
+    <RootStyle title="Mega Menu | Minh Phát">
       <Box
         sx={{
           pt: 6,

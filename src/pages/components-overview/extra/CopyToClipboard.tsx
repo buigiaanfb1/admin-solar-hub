@@ -17,7 +17,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function CopyToClipboard() {
   return (
-    <RootStyle title="Components: Copy To Clipboard | Minimal-UI">
+    <RootStyle title="Components: Copy To Clipboard | Minh Phát">
       <Box
         sx={{
           pt: 6,

@@ -64,7 +64,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function Pricing() {
   return (
-    <RootStyle title="Pricing | Minimal-UI">
+    <RootStyle title="Pricing | Minh Phát">
       <Container maxWidth="lg">
         <Typography variant="h3" align="center" paragraph>
           Flexible plans for your

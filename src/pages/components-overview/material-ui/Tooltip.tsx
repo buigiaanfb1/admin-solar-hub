@@ -46,7 +46,7 @@ const style = {
 
 export default function TooltipsComponent() {
   return (
-    <RootStyle title="Components: Tooltip | Minimal-UI">
+    <RootStyle title="Components: Tooltip | Minh Phát">
       <Box
         sx={{
           pt: 6,

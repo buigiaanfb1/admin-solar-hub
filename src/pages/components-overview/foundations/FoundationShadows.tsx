@@ -59,7 +59,7 @@ export default function FoundationShadows() {
   const colorShadows = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const;
 
   return (
-    <RootStyle title="Foundations: Shadows | Minimal-UI">
+    <RootStyle title="Foundations: Shadows | Minh Phát">
       <Box
         sx={{
           pt: 6,

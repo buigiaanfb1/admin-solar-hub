@@ -24,7 +24,7 @@ export default function Editor() {
   const [text3, setText3] = useState<EditorState | undefined>(undefined);
 
   return (
-    <RootStyle title="Components: Editor | Minimal-UI">
+    <RootStyle title="Components: Editor | Minh Phát">
       <Box
         sx={{
           pt: 6,

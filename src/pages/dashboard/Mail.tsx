@@ -28,7 +28,7 @@ export default function Mail() {
   }, [dispatch]);
 
   return (
-    <Page title="Mail | Minimal-UI">
+    <Page title="Mail | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <HeaderBreadcrumbs
           heading="Mail"

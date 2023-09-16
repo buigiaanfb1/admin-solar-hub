@@ -38,7 +38,7 @@ export default function TextFieldComponent() {
   // ----------------------------------------------------------------------
 
   return (
-    <RootStyle title="Components: TextField | Minimal-UI">
+    <RootStyle title="Components: TextField | Minh Phát">
       <Box
         sx={{
           pt: 6,

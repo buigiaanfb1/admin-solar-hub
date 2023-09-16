@@ -159,7 +159,7 @@ export default function Calendar() {
   };
 
   return (
-    <Page title="Calendar | Minimal-UI">
+    <Page title="Calendar | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <HeaderBreadcrumbs
           heading="Calendar"

@@ -131,7 +131,7 @@ export default function EcommerceShop() {
   };
 
   return (
-    <Page title="Ecommerce: Shop | Minimal-UI">
+    <Page title="Ecommerce: Shop | Minh Phát">
       {values && (
         <Backdrop open={isSubmitting} sx={{ zIndex: 9999 }}>
           <CircularProgress />

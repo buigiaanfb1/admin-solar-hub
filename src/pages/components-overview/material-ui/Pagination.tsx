@@ -43,7 +43,7 @@ export default function PaginationComponent() {
   };
 
   return (
-    <RootStyle title="Components: Pagination | Minimal-UI">
+    <RootStyle title="Components: Pagination | Minh Phát">
       <Box
         sx={{
           pt: 6,

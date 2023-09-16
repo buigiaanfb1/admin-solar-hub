@@ -105,7 +105,7 @@ export default function TimelineComponent() {
   const reduceTimeLine = slice(TIMELINES, TIMELINES.length - 3);
 
   return (
-    <RootStyle title="Components: Timeline | Minimal-UI">
+    <RootStyle title="Components: Timeline | Minh Phát">
       <Box
         sx={{
           pt: 6,

@@ -60,7 +60,7 @@ export default function TabsComponent() {
   };
 
   return (
-    <RootStyle title="Components: Tabs | Minimal-UI">
+    <RootStyle title="Components: Tabs | Minh Phát">
       <Box
         sx={{
           pt: 6,

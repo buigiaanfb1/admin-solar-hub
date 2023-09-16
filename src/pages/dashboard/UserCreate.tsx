@@ -31,7 +31,7 @@ export default function UserCreate() {
   }, [dispatch]);
 
   return (
-    <Page title="User: Create a new user | Minimal-UI">
+    <Page title="User: Create a new user | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={!isEdit ? 'Create a new user' : 'Edit user'}

@@ -101,7 +101,7 @@ export default function ListsComponent() {
   };
 
   return (
-    <RootStyle title="Components: Lists | Minimal-UI">
+    <RootStyle title="Components: Lists | Minh Phát">
       <Box
         sx={{
           pt: 6,

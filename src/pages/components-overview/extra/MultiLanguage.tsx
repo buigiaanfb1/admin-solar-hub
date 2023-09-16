@@ -46,7 +46,7 @@ export default function MultiLanguage() {
   };
 
   return (
-    <RootStyle title="Components: Multi Language | Minimal-UI">
+    <RootStyle title="Components: Multi Language | Minh Phát">
       <Box
         sx={{
           pt: 6,

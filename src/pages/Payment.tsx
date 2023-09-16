@@ -109,7 +109,7 @@ export default function Payment() {
   });
 
   return (
-    <RootStyle title="Payment | Minimal-UI">
+    <RootStyle title="Payment | Minh Phát">
       <Container maxWidth="lg">
         <Box sx={{ mb: 5 }}>
           <Typography variant="h3" align="center" paragraph>

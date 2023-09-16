@@ -25,7 +25,7 @@ export default function GeneralAnalytics() {
   const { themeStretch } = useSettings();
 
   return (
-    <Page title="Dashboard: Analytics | Minimal-UI">
+    <Page title="Bảng điều khiển: Thống kê | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Typography variant="h4" sx={{ mb: 5 }}>
           Hi, Welcome back

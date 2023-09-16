@@ -38,7 +38,7 @@ export default function PickersComponent() {
   };
 
   return (
-    <RootStyle title="Components: Pickers | Minimal-UI">
+    <RootStyle title="Components: Pickers | Minh Phát">
       <Box
         sx={{
           pt: 6,

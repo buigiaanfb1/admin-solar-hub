@@ -119,7 +119,7 @@ export default function UserProfile() {
   ];
 
   return (
-    <Page title="User: Profile | Minimal-UI">
+    <Page title="User: Profile | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Profile"

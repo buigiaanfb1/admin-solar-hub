@@ -21,7 +21,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function BadgeComponent() {
   return (
-    <RootStyle title="Components: Badge | Minimal-UI">
+    <RootStyle title="Components: Badge | Minh Phát">
       <Box
         sx={{
           pt: 6,

@@ -36,7 +36,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function Switches() {
   return (
-    <RootStyle title="Components: Switches | Minimal-UI">
+    <RootStyle title="Components: Switches | Minh Phát">
       <Box
         sx={{
           pt: 6,

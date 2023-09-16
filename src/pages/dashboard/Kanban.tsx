@@ -96,7 +96,7 @@ export default function Kanban() {
   };
 
   return (
-    <Page title="Kanban | Minimal-UI" sx={{ height: '100%' }}>
+    <Page title="Kanban | Minh Phát" sx={{ height: '100%' }}>
       <Container maxWidth={false} sx={{ height: '100%' }}>
         <HeaderBreadcrumbs
           heading="Kanban"

@@ -20,7 +20,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function AlertsComponent() {
   return (
-    <RootStyle title="Components: Alert | Minimal-UI">
+    <RootStyle title="Components: Alert | Minh Phát">
       <Box
         sx={{
           pt: 6,
