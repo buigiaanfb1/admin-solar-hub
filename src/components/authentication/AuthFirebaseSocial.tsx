@@ -5,20 +5,21 @@ import facebookFill from '@iconify/icons-eva/facebook-fill';
 // material
 import { Grid, Button, Divider, Typography } from '@material-ui/core';
 // hooks
-// import useAuth from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
 export default function AuthWithSocial() {
   // const { loginWithGoogle, loginWithFaceBook, loginWithTwitter } = useAuth();
+  const { loginWithGoogle } = useAuth();
 
-  // const handleLoginGoogle = async () => {
-  //   try {
-  //     await loginWithGoogle?.();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const handleLoginGoogle = async () => {
+    try {
+      await loginWithGoogle?.();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // const handleLoginFaceBook = async () => {
   //   try {
@@ -45,7 +46,7 @@ export default function AuthWithSocial() {
             size="large"
             color="inherit"
             variant="outlined"
-            // onClick={handleLoginGoogle}
+            onClick={handleLoginGoogle}
           >
             <Icon icon={googleFill} color="#DF3E30" height={24} />
           </Button>

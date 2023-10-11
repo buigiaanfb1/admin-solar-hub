@@ -30,6 +30,11 @@ const sidebarConfig = [
     subheader: 'general',
     items: [
       {
+        title: 'Quản lý hợp đồng',
+        path: PATH_DASHBOARD.general.contractManagement,
+        icon: ICONS.dashboard
+      },
+      {
         title: 'app',
         path: PATH_DASHBOARD.general.app,
         icon: ICONS.dashboard

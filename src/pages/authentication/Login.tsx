@@ -3,6 +3,8 @@ import { Link as RouterLink } from 'react-router-dom';
 // material
 import { styled } from '@material-ui/core/styles';
 import { Box, Card, Stack, Link, Alert, Tooltip, Container, Typography } from '@material-ui/core';
+import AuthWithSocial from 'components/authentication/AuthFirebaseSocial';
+
 // routes
 import { PATH_AUTH } from '../../routes/paths';
 // hooks
@@ -82,6 +84,8 @@ export default function Login() {
               />
             </Tooltip>
           </Stack>
+
+          <AuthWithSocial />
 
           <Alert severity="info" sx={{ mb: 3 }}>
             Use email : <strong>demo@minimals.cc</strong> / password :
