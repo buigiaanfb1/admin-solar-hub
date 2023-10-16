@@ -3,9 +3,12 @@ import { createContext, ReactNode, useEffect, useReducer, useState } from 'react
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+// utils
+import axios from 'utils/axiosIntegrated';
+import { useSnackbar } from 'notistack5';
+
 // @types
 import { ActionMap, AuthState, AuthUser, FirebaseContextType } from '../@types/authentication';
-//
 import { firebaseConfig } from '../config';
 
 // ----------------------------------------------------------------------
@@ -54,28 +57,37 @@ const AuthContext = createContext<FirebaseContextType | null>(null);
 
 function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<firebase.firestore.DocumentData | undefined>();
+  const [password, setPassword] = useState<string | undefined>();
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(
     () =>
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          const docRef = firebase.firestore().collection('users').doc(user.uid);
-          docRef
-            .get()
-            .then((doc) => {
-              if (doc.exists) {
-                setProfile(doc.data());
-              }
-            })
-            .catch((error) => {
-              console.error(error);
+      firebase.auth().onAuthStateChanged(async (user) => {
+        if (user && user.email) {
+          try {
+            // Fake login when logging with Google Provider
+            const response = await axios.post('/api/Token/Login_username_password', {
+              username: user.email.split('@')[0],
+              password: password || user.uid
             });
 
-          dispatch({
-            type: Types.Initial,
-            payload: { isAuthenticated: true, user }
-          });
+            if (response.data.user.role.roleId === '4') {
+              throw new Error();
+            } else {
+              dispatch({
+                type: Types.Initial,
+                payload: { isAuthenticated: true, user: { ...user, userInfo: response.data.user } }
+              });
+            }
+          } catch (error: any) {
+            enqueueSnackbar('Có lỗi xảy ra, vui lòng thử lại!', { variant: 'error' });
+            logout(); // Force logout if error. Cuz onAuthStateChanged() will not trigger again if user login again with the same credential.
+            dispatch({
+              type: Types.Initial,
+              payload: { isAuthenticated: false, user: null }
+            });
+          }
         } else {
           dispatch({
             type: Types.Initial,
@@ -83,11 +95,14 @@ function AuthProvider({ children }: { children: ReactNode }) {
           });
         }
       }),
-    [dispatch]
+    [dispatch, password]
   );
 
-  const login = (email: string, password: string) =>
-    firebase.auth().signInWithEmailAndPassword(email, password);
+  const login = (email: string, password: string) => {
+    setPassword(password);
+    const realEmail = `${email}@gmail.com`;
+    return firebase.auth().signInWithEmailAndPassword(realEmail, password);
+  };
 
   const loginWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -122,6 +137,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     await firebase.auth().signOut();
+    setPassword(undefined);
   };
 
   const resetPassword = async (email: string) => {
@@ -137,10 +153,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
         method: 'firebase',
         user: {
           id: auth.uid,
-          email: auth.email,
+          email: auth.userInfo?.email,
           photoURL: auth.photoURL || profile?.photoURL,
-          displayName: auth.displayName || profile?.displayName,
-          role: ADMIN_EMAILS.includes(auth.email) ? 'admin' : 'user',
+          displayName:
+            auth.displayName ||
+            profile?.displayName ||
+            `${auth.userInfo?.firstname} ${auth.userInfo?.lastname}`,
+          role: auth.userInfo?.role.roleName || '',
           phoneNumber: auth.phoneNumber || profile?.phoneNumber || '',
           country: profile?.country || '',
           address: profile?.address || '',

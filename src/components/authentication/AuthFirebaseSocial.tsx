@@ -51,7 +51,7 @@ export default function AuthWithSocial() {
             <Icon icon={googleFill} color="#DF3E30" height={24} />
           </Button>
         </Grid>
-        <Grid item xs>
+        {/* <Grid item xs>
           <Button
             fullWidth
             size="large"
@@ -72,12 +72,12 @@ export default function AuthWithSocial() {
           >
             <Icon icon={twitterFill} color="#1C9CEA" height={24} />
           </Button>
-        </Grid>
+        </Grid> */}
       </Grid>
 
       <Divider sx={{ my: 3 }}>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          OR
+          HOẶC
         </Typography>
       </Divider>
     </>

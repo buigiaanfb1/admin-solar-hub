@@ -50,17 +50,10 @@ export default function Login() {
 
   return (
     <RootStyle title="Login | Minh Phát">
-      <AuthLayout>
-        Don’t have an account? &nbsp;
-        <Link underline="none" variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-          Get started
-        </Link>
-      </AuthLayout>
-
       <MHidden width="mdDown">
         <SectionStyle>
           <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-            Hi, Welcome Back
+            Chào mừng bạn quay lại
           </Typography>
           <img src="/static/illustrations/illustration_login.png" alt="login" />
         </SectionStyle>
@@ -71,9 +64,11 @@ export default function Login() {
           <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
             <Box sx={{ flexGrow: 1 }}>
               <Typography variant="h4" gutterBottom>
-                Sign in to Minimal
+                Đăng nhập
               </Typography>
-              <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+              <Typography sx={{ color: 'text.secondary' }}>
+                Điền thông tin của bạn vào bên dưới.
+              </Typography>
             </Box>
 
             <Tooltip title={capitalCase(method)}>
@@ -86,11 +81,6 @@ export default function Login() {
           </Stack>
 
           <AuthWithSocial />
-
-          <Alert severity="info" sx={{ mb: 3 }}>
-            Use email : <strong>demo@minimals.cc</strong> / password :
-            <strong>&nbsp;demo1234</strong>
-          </Alert>
 
           <LoginForm />
 

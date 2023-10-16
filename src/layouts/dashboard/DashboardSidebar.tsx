@@ -24,8 +24,9 @@ import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 //
-import sidebarConfig from './SidebarConfig';
 import { DocIcon } from '../../assets';
+
+import { adminSidebarConfig, sidebarConfig } from './SidebarConfig';
 
 // ----------------------------------------------------------------------
 
@@ -112,8 +113,23 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   const { pathname } = useLocation();
   const { user } = useAuth();
 
+  console.log(user);
+
   const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
+
+  const handleRenderSidebar = () => {
+    switch (user?.role) {
+      case 'Admin':
+        return <NavSection navConfig={adminSidebarConfig} isShow={!isCollapse} />;
+      case 'Owner':
+        return <NavSection navConfig={adminSidebarConfig} isShow={!isCollapse} />;
+      case 'Staff':
+        return <NavSection navConfig={adminSidebarConfig} isShow={!isCollapse} />;
+      default:
+        return null;
+    }
+  };
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -175,27 +191,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         )}
       </Stack>
 
-      <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
+      {user && handleRenderSidebar()}
 
       <Box sx={{ flexGrow: 1 }} />
-
-      {!isCollapse && (
-        <Box sx={{ px: 2.5, pb: 3, mt: 10, width: 1 }}>
-          <DocStyle>
-            <DocIcon sx={{ width: 36, height: 36, mb: 2 }} />
-            <Typography gutterBottom variant="subtitle1" sx={{ color: 'grey.800' }}>
-              Hi, {user?.displayName}
-            </Typography>
-            <Typography variant="body2" sx={{ mb: 2, color: 'grey.600' }}>
-              Need help?
-              <br /> Please check our docs
-            </Typography>
-            <Button fullWidth href={PATH_DOCS} target="_blank" variant="contained">
-              Documentation
-            </Button>
-          </DocStyle>
-        </Box>
-      )}
     </Scrollbar>
   );
 

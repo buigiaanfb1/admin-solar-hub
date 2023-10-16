@@ -28,7 +28,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function LandingPage() {
   return (
-    <RootStyle title="The starting point for your next project | Minh Phát" id="move_top">
+    <RootStyle title="The starting point for your ndext poject | Minh Phát" id="move_top">
       <LandingHero />
       <ContentStyle>
         <LandingMinimal />

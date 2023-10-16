@@ -116,4 +116,19 @@ const sidebarConfig = [
   }
 ];
 
-export default sidebarConfig;
+const adminSidebarConfig = [
+  // GENERAL
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'accountList',
+    items: [
+      {
+        title: 'Danh sách tài khoản',
+        path: PATH_DASHBOARD.user.list,
+        icon: ICONS.user
+      }
+    ]
+  }
+];
+
+export { sidebarConfig, adminSidebarConfig };

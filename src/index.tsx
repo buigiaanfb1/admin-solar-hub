@@ -45,6 +45,7 @@ import { SettingsProvider } from './contexts/SettingsContext';
 import { CollapseDrawerProvider } from './contexts/CollapseDrawerContext';
 // components
 import LoadingScreen from './components/LoadingScreen';
+import NotistackProvider from './components/NotistackProvider';
 
 // Check our docs
 // https://docs-minimals.vercel.app/authentication/ts-version
@@ -53,6 +54,7 @@ import LoadingScreen from './components/LoadingScreen';
 // import { AuthProvider } from './contexts/AwsCognitoContext';
 // import { AuthProvider } from './contexts/Auth0Context';
 import { AuthProvider } from './contexts/FirebaseContext';
+import ThemeConfig from './theme';
 
 //
 import App from './App';
@@ -68,9 +70,13 @@ ReactDOM.render(
           <SettingsProvider>
             <CollapseDrawerProvider>
               <BrowserRouter>
-                <AuthProvider>
-                  <App />
-                </AuthProvider>
+                <ThemeConfig>
+                  <NotistackProvider>
+                    <AuthProvider>
+                      <App />
+                    </AuthProvider>
+                  </NotistackProvider>
+                </ThemeConfig>
               </BrowserRouter>
             </CollapseDrawerProvider>
           </SettingsProvider>
