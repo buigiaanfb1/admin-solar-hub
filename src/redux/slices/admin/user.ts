@@ -2,8 +2,8 @@ import { filter } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '../../store';
 // utils
-import axios from '../../../utils/axios';
-import { UserManager } from '../../../@types/user';
+import axios from '../../../utils/axiosIntegrated';
+import { UserManager } from '../../../@types/admin-user';
 
 // ----------------------------------------------------------------------
 
@@ -34,12 +34,6 @@ const slice = createSlice({
       state.error = action.payload;
     },
 
-    // DELETE USERS
-    deleteUser(state, action) {
-      const deleteUser = filter(state.userList, (user) => user.id !== action.payload);
-      state.userList = deleteUser;
-    },
-
     // GET MANAGE USERS
     getUserListSuccess(state, action) {
       state.isLoading = false;
@@ -51,17 +45,63 @@ const slice = createSlice({
 // Reducer
 export default slice.reducer;
 
-// Actions
-export const { deleteUser } = slice.actions;
-
 // ----------------------------------------------------------------------
 
 export function getUserList() {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/api/Token/Login_username_password');
-      dispatch(slice.actions.getUserListSuccess(response.data.users));
+      const response = await axios.get('/api/Account/get-all');
+      dispatch(slice.actions.getUserListSuccess(response.data.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function deleteUserApi(userId: string) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await axios.delete('/api/Account/delete-Account', {
+        params: {
+          dto: userId
+        }
+      });
+      // TODO: need to refactor
+      dispatch(slice.actions.startLoading());
+      try {
+        const response = await axios.get('/api/Account/get-all');
+        dispatch(slice.actions.getUserListSuccess(response.data.data));
+      } catch (error) {
+        dispatch(slice.actions.hasError(error));
+      }
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+// ----------------------------------------------------------------------
+
+export function updateUser(data: Partial<UserManager> = {}, isUnbannedUser: boolean) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await axios.put('/api/Account/update-Account', {
+        data: {
+          ...data,
+          ...(isUnbannedUser && { status: true })
+        }
+      });
+      // TODO: need to refactor
+      dispatch(slice.actions.startLoading());
+      try {
+        const response = await axios.get('/api/Account/get-all');
+        dispatch(slice.actions.getUserListSuccess(response.data.data));
+      } catch (error) {
+        dispatch(slice.actions.hasError(error));
+      }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

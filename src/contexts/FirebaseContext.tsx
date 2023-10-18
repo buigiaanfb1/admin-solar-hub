@@ -1,5 +1,5 @@
 /* eslint-disable import/no-duplicates */
-import { createContext, ReactNode, useEffect, useReducer, useState } from 'react';
+import { createContext, ReactNode, useEffect, useReducer, useState, useRef } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -58,13 +58,14 @@ const AuthContext = createContext<FirebaseContextType | null>(null);
 function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<firebase.firestore.DocumentData | undefined>();
   const [password, setPassword] = useState<string | undefined>();
+  const count = useRef(0);
   const [state, dispatch] = useReducer(reducer, initialState);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(
     () =>
       firebase.auth().onAuthStateChanged(async (user) => {
-        if (user && user.email) {
+        if (user && user.email && count.current > 0) {
           try {
             // Fake login when logging with Google Provider
             const response = await axios.post('/api/Token/Login_username_password', {
@@ -79,6 +80,15 @@ function AuthProvider({ children }: { children: ReactNode }) {
                 type: Types.Initial,
                 payload: { isAuthenticated: true, user: { ...user, userInfo: response.data.user } }
               });
+
+              axios.interceptors.request.use(
+                (config) => {
+                  // Add the authorization token to the headers for all requests.
+                  config.headers.Authorization = `Bearer ${response.data.token}`;
+                  return config;
+                },
+                (error) => Promise.reject(error)
+              );
             }
           } catch (error: any) {
             enqueueSnackbar('Có lỗi xảy ra, vui lòng thử lại!', { variant: 'error' });
@@ -94,6 +104,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
             payload: { isAuthenticated: false, user: null }
           });
         }
+        count.current += 1;
       }),
     [dispatch, password]
   );
