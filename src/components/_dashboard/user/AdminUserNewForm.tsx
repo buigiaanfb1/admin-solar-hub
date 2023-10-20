@@ -22,6 +22,7 @@ import {
   InputAdornment,
   IconButton
 } from '@material-ui/core';
+import axios from 'utils/axiosIntegrated';
 
 import { AuthUser } from '../../../@types/authentication';
 // utils
@@ -46,11 +47,18 @@ type UserNewFormProps = {
   };
 };
 
-export default function UserNewForm({ isEdit, currentUser, currentAdmin }: UserNewFormProps) {
+export default function UserNewForm({
+  isEdit = false,
+  currentUser,
+  currentAdmin
+}: UserNewFormProps) {
   console.log(currentUser);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
+  const [isSetDefaultPassword, setIsSetDefaultPassword] = useState(false);
+  // manual
+  const [showPasswordField, setShowPasswordField] = useState(true);
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
@@ -93,18 +101,43 @@ export default function UserNewForm({ isEdit, currentUser, currentAdmin }: UserN
       lastname: currentUser?.lastname || '',
       address: currentUser?.address || '',
       roleId: currentUser?.roleId || '4',
-      gender: currentUser?.gender || '0',
-      isGoogleProvider: currentUser?.isGoogleProvider || 'manual'
+      gender: currentUser?.gender ? '0' : '1',
+      isGoogleProvider: currentUser?.isGoogleProvider ? 'google' : 'manual'
     },
     validationSchema: isEdit ? UpdateUserSchema : NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        console.log(values);
-        await fakeRequest(500);
-        resetForm();
-        setSubmitting(false);
-        enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
-        navigate(PATH_DASHBOARD.user.list);
+        if (isEdit) {
+          await axios.put('api/Account/update-Account', {
+            accountId: currentUser?.accountId,
+            status: currentUser?.status,
+            firstname: values.firstname,
+            lastname: values.lastname,
+            address: values.address,
+            gender: values.gender === '0' || false,
+            ...(isSetDefaultPassword && { password: 'default' }),
+            isGoogleProvider: values.isGoogleProvider === 'google' || false
+          });
+        } else {
+          await axios.post('api/Account/register', {
+            username: values.usernameOfUser,
+            email: values.email,
+            firstname: values.firstname,
+            lastname: values.lastname,
+            address: values.address,
+            phone: values.phone,
+            roleId: values.roleId,
+            gender: values.gender === '0' || false,
+            password: values.passwordOfUser,
+            isGoogleProvider: values.isGoogleProvider === 'google' || false
+          });
+        }
+        // resetForm();
+        // setSubmitting(false);
+        enqueueSnackbar(!isEdit ? 'Tạo tài khoản thành công' : 'Cập nhật thành công', {
+          variant: 'success'
+        });
+        // navigate(PATH_DASHBOARD.user.list);
       } catch (error: any) {
         console.error(error);
         setSubmitting(false);
@@ -115,21 +148,6 @@ export default function UserNewForm({ isEdit, currentUser, currentAdmin }: UserN
 
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
-
-  console.log(errors);
-
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
-      if (file) {
-        setFieldValue('avatarUrl', {
-          ...file,
-          preview: URL.createObjectURL(file)
-        });
-      }
-    },
-    [setFieldValue]
-  );
 
   return (
     <FormikProvider value={formik}>
@@ -153,6 +171,55 @@ export default function UserNewForm({ isEdit, currentUser, currentAdmin }: UserN
                     error={Boolean(touched.lastname && errors.lastname)}
                     helperText={touched.lastname && errors.lastname}
                   />
+                </Stack>
+
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
+                    select
+                    fullWidth
+                    label="Giới tính"
+                    placeholder="Vị trí"
+                    {...getFieldProps('gender')}
+                    SelectProps={{ native: true }}
+                    error={Boolean(touched.gender && errors.gender)}
+                    helperText={touched.gender && errors.gender}
+                  >
+                    {genders.map((option: any) => (
+                      <option
+                        key={option.code}
+                        value={option.code}
+                        defaultValue={values.gender === '0' ? '0' : '1'}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </TextField>
+                  <TextField
+                    select
+                    fullWidth
+                    label="Cách đăng nhập"
+                    placeholder="Thủ công, Google..."
+                    {...getFieldProps('isGoogleProvider')}
+                    onChange={(e) => {
+                      e.target.value === 'google'
+                        ? setShowPasswordField(false)
+                        : setShowPasswordField(true);
+                      setFieldValue('isGoogleProvider', e.target.value);
+                    }}
+                    SelectProps={{ native: true }}
+                    error={Boolean(touched.isGoogleProvider && errors.isGoogleProvider)}
+                    helperText={touched.isGoogleProvider && errors.isGoogleProvider}
+                  >
+                    {loginTypes.map((option: any) => (
+                      <option
+                        key={option.code}
+                        value={option.code}
+                        defaultValue={values.isGoogleProvider === 'manual' ? 'manual' : 'google'}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </TextField>
                 </Stack>
 
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
@@ -185,7 +252,7 @@ export default function UserNewForm({ isEdit, currentUser, currentAdmin }: UserN
                   />
                 </Stack>
 
-                {!isEdit && (
+                {!isEdit && showPasswordField && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <TextField
                       fullWidth
@@ -236,53 +303,16 @@ export default function UserNewForm({ isEdit, currentUser, currentAdmin }: UserN
                   )}
                 </Stack>
 
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    select
-                    fullWidth
-                    label="Giới tính"
-                    placeholder="Vị trí"
-                    {...getFieldProps('gender')}
-                    SelectProps={{ native: true }}
-                    error={Boolean(touched.gender && errors.gender)}
-                    helperText={touched.gender && errors.gender}
-                  >
-                    {genders.map((option: any) => (
-                      <option
-                        key={option.code}
-                        value={option.code}
-                        defaultValue={values.gender === '0' ? '0' : '1'}
-                      >
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
-                  <TextField
-                    select
-                    fullWidth
-                    label="Cách đăng nhập"
-                    placeholder="Thủ công, Google..."
-                    {...getFieldProps('isGoogleProvider')}
-                    SelectProps={{ native: true }}
-                    error={Boolean(touched.isGoogleProvider && errors.isGoogleProvider)}
-                    helperText={touched.isGoogleProvider && errors.isGoogleProvider}
-                  >
-                    {loginTypes.map((option: any) => (
-                      <option
-                        key={option.code}
-                        value={option.code}
-                        defaultValue={values.isGoogleProvider === 'manual' ? 'manual' : 'google'}
-                      >
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
-                </Stack>
                 {isEdit && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <FormControlLabel
                       label="Chuyển về mật khẩu mặc định"
-                      control={<Checkbox checked={false} onChange={() => {}} />}
+                      control={
+                        <Checkbox
+                          checked={isSetDefaultPassword}
+                          onChange={() => setIsSetDefaultPassword(!isSetDefaultPassword)}
+                        />
+                      }
                     />
                   </Stack>
                 )}

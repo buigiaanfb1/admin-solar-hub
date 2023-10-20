@@ -98,7 +98,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
               payload: { isAuthenticated: false, user: null }
             });
           }
-        } else {
+        } else if (!state.user) {
           dispatch({
             type: Types.Initial,
             payload: { isAuthenticated: false, user: null }
