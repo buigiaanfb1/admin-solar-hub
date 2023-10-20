@@ -89,10 +89,8 @@ export function updateUser(data: Partial<UserManager> = {}, isUnbannedUser: bool
     dispatch(slice.actions.startLoading());
     try {
       await axios.put('/api/Account/update-Account', {
-        data: {
-          ...data,
-          ...(isUnbannedUser && { status: true })
-        }
+        ...data,
+        ...(isUnbannedUser && { status: true })
       });
       // TODO: need to refactor
       dispatch(slice.actions.startLoading());

@@ -70,7 +70,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
             // Fake login when logging with Google Provider
             const response = await axios.post('/api/Token/Login_username_password', {
               username: user.email.split('@')[0],
-              password: password || user.uid
+              password: password || 'default'
             });
 
             if (response.data.user.role.roleId === '4') {

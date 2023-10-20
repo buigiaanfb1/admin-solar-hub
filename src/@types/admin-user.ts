@@ -7,6 +7,7 @@ export type UserManager = {
   username: string;
   email: string;
   firstname: string;
+  password: string;
   lastname: string;
   phone: string;
   status: boolean;

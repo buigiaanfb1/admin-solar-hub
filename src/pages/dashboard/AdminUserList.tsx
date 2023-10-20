@@ -21,9 +21,9 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
+import { getUserList, deleteUserApi, updateUser } from '../../redux/slices/admin/user';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getUserList, deleteUserApi, updateUser } from '../../redux/slices/admin/user';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -157,7 +157,7 @@ export default function UserList() {
   };
 
   const handleUnBlockUser = (userId: string) => {
-    dispatch(updateUser({}, true));
+    dispatch(updateUser({ accountId: userId }, true));
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
@@ -167,7 +167,7 @@ export default function UserList() {
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="User: List | Minh Phát">
+    <Page title="Danh sách tài khoản | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Danh sách tài khoản"
@@ -261,7 +261,7 @@ export default function UserList() {
                               onBlock={() => handleBlockUser(accountId)}
                               onUnblock={() => handleUnBlockUser(accountId)}
                               status={status}
-                              userName={username}
+                              accountId={accountId}
                             />
                           </TableCell>
                         </TableRow>

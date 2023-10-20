@@ -17,10 +17,10 @@ type UserMoreMenuProps = {
   onBlock?: VoidFunction;
   onUnblock?: VoidFunction;
   status: boolean;
-  userName: string;
+  accountId: string;
 };
 
-export default function UserMoreMenu({ onBlock, onUnblock, status, userName }: UserMoreMenuProps) {
+export default function UserMoreMenu({ onBlock, onUnblock, status, accountId }: UserMoreMenuProps) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -61,7 +61,7 @@ export default function UserMoreMenu({ onBlock, onUnblock, status, userName }: U
 
         <MenuItem
           component={RouterLink}
-          to={`${PATH_DASHBOARD.user.root}/${paramCase(userName)}/edit`}
+          to={`${PATH_DASHBOARD.user.root}/${accountId}/edit`}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>
