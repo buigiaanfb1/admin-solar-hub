@@ -55,19 +55,10 @@ export default function LoginForm() {
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
         await login(values.email, values.password);
-        enqueueSnackbar('Login success', {
-          variant: 'success',
-          action: (key) => (
-            <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-              <Icon icon={closeFill} />
-            </MIconButton>
-          )
-        });
         if (isMountedRef.current) {
           setSubmitting(false);
         }
-      } catch (error) {
-        console.error(error);
+      } catch (error: any) {
         resetForm();
         if (isMountedRef.current) {
           setSubmitting(false);

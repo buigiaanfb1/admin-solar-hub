@@ -128,12 +128,11 @@ export default function UserNewForm({
             isGoogleProvider: values.isGoogleProvider === 'google' || false
           });
         }
-        // resetForm();
-        // setSubmitting(false);
+        resetForm();
+        setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Tạo tài khoản thành công' : 'Cập nhật thành công', {
           variant: 'success'
         });
-        // navigate(PATH_DASHBOARD.user.list);
       } catch (error: any) {
         console.error(error);
         setSubmitting(false);
