@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -14,29 +14,16 @@ import {
   Checkbox,
   Grid,
   Stack,
-  Switch,
   TextField,
-  Typography,
-  FormHelperText,
   FormControlLabel,
   InputAdornment,
   IconButton
 } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import axios from 'utils/axiosIntegrated';
-
 import { AuthUser } from '../../../@types/authentication';
-// utils
-import { fData } from '../../../utils/formatNumber';
-import fakeRequest from '../../../utils/fakeRequest';
-// routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
-// @types
 import { UserManager } from '../../../@types/admin-user';
-//
-import Label from '../../Label';
-import { UploadAvatar } from '../../upload';
-import { roleMapping, roles, genders, loginTypes } from './roles';
+import { roles, genders, loginTypes } from './roles';
 
 // ----------------------------------------------------------------------
 
@@ -59,6 +46,7 @@ export default function UserNewForm({
   const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const [isSetDefaultPassword, setIsSetDefaultPassword] = useState(false);
+  const [isGoogleProvider, setIsGoogleProvider] = useState(currentUser?.isGoogleProvider);
   // manual
   const [showPasswordField, setShowPasswordField] = useState(true);
 
@@ -123,13 +111,6 @@ export default function UserNewForm({
         } else {
           if (values.isGoogleProvider === 'google') {
             await register(values.email, 'default', values.firstname, values.lastname);
-          } else {
-            await register(
-              `${values.usernameOfUser}@gmail.com`,
-              values.passwordOfUser,
-              values.firstname,
-              values.lastname
-            );
           }
           await axios.post('api/Account/register', {
             username:
@@ -166,10 +147,12 @@ export default function UserNewForm({
 
   console.log(errors);
 
-  if (values.isGoogleProvider === 'google') {
-    setFieldValue('usernameOfUser', values.email);
-    setFieldValue('passwordOfUser', 'default');
-  }
+  useEffect(() => {
+    if (values.isGoogleProvider === 'google') {
+      setFieldValue('usernameOfUser', values.email);
+      setFieldValue('passwordOfUser', 'default');
+    }
+  }, [values]);
 
   return (
     <FormikProvider value={formik}>
@@ -221,6 +204,7 @@ export default function UserNewForm({
                     fullWidth
                     label="Cách đăng nhập"
                     placeholder="Thủ công, Google..."
+                    disabled={isEdit && isGoogleProvider}
                     {...getFieldProps('isGoogleProvider')}
                     onChange={(e) => {
                       e.target.value === 'google'
@@ -249,6 +233,7 @@ export default function UserNewForm({
                     fullWidth
                     label="Email"
                     {...getFieldProps('email')}
+                    disabled={isEdit && isGoogleProvider}
                     error={Boolean(touched.email && errors.email)}
                     helperText={touched.email && errors.email}
                   />
@@ -261,7 +246,7 @@ export default function UserNewForm({
                   />
                 </Stack>
 
-                {showPasswordField && (
+                {showPasswordField && !isGoogleProvider && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <TextField
                       InputProps={{
@@ -327,7 +312,7 @@ export default function UserNewForm({
                   )}
                 </Stack>
 
-                {isEdit && (
+                {isEdit && !isGoogleProvider && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                     <FormControlLabel
                       label="Chuyển về mật khẩu mặc định"
