@@ -36,7 +36,7 @@ export type FirebaseContextType = {
   isInitialized: boolean;
   user: AuthUser;
   method: 'firebase';
-  login: (email: string, password: string) => Promise<firebase.auth.UserCredential>;
+  login: (username: string, password: string) => Promise<void>;
   register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
   loginWithGoogle: () => Promise<firebase.auth.UserCredential>;
   loginWithFaceBook: () => Promise<firebase.auth.UserCredential>;

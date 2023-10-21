@@ -10,6 +10,7 @@ import { useSnackbar } from 'notistack5';
 // @types
 import { ActionMap, AuthState, AuthUser, FirebaseContextType } from '../@types/authentication';
 import { firebaseConfig } from '../config';
+import { defaultState } from './defaultState';
 
 // ----------------------------------------------------------------------
 
@@ -57,7 +58,6 @@ const AuthContext = createContext<FirebaseContextType | null>(null);
 
 function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<firebase.firestore.DocumentData | undefined>();
-  const [password, setPassword] = useState<string | undefined>();
   const count = useRef(0);
   const [state, dispatch] = useReducer(reducer, initialState);
   const { enqueueSnackbar } = useSnackbar();
@@ -70,7 +70,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
             // Fake login when logging with Google Provider
             const response = await axios.post('/api/Token/Login_username_password', {
               username: user.email.split('@')[0],
-              password: password || 'default'
+              password: 'default'
             });
 
             if (response.data.user.role.roleId === '4') {
@@ -106,13 +106,45 @@ function AuthProvider({ children }: { children: ReactNode }) {
         }
         count.current += 1;
       }),
-    [dispatch, password]
+    [dispatch]
   );
 
-  const login = (email: string, password: string) => {
-    setPassword(password);
-    const realEmail = `${email}@gmail.com`;
-    return firebase.auth().signInWithEmailAndPassword(realEmail, password);
+  const login = async (username: string, password: string) => {
+    try {
+      // Fake login when logging with Google Provider
+      const response = await axios.post('/api/Token/Login_username_password', {
+        username,
+        password
+      });
+
+      if (response.data.user.role.roleId === '4') {
+        throw new Error();
+      } else {
+        dispatch({
+          type: Types.Initial,
+          payload: {
+            isAuthenticated: true,
+            user: { ...defaultState, userInfo: response.data.user }
+          }
+        });
+
+        axios.interceptors.request.use(
+          (config) => {
+            // Add the authorization token to the headers for all requests.
+            config.headers.Authorization = `Bearer ${response.data.token}`;
+            return config;
+          },
+          (error) => Promise.reject(error)
+        );
+      }
+    } catch (error: any) {
+      enqueueSnackbar('Có lỗi xảy ra, vui lòng thử lại!', { variant: 'error' });
+      logout(); // Force logout if error. Cuz onAuthStateChanged() will not trigger again if user login again with the same credential.
+      dispatch({
+        type: Types.Initial,
+        payload: { isAuthenticated: false, user: null }
+      });
+    }
   };
 
   const loginWithGoogle = () => {
@@ -148,7 +180,10 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     await firebase.auth().signOut();
-    setPassword(undefined);
+    dispatch({
+      type: Types.Initial,
+      payload: { isAuthenticated: false, user: null }
+    });
   };
 
   const resetPassword = async (email: string) => {

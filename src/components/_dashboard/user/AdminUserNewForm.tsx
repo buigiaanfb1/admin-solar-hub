@@ -22,6 +22,7 @@ import {
   InputAdornment,
   IconButton
 } from '@material-ui/core';
+import useAuth from 'hooks/useAuth';
 import axios from 'utils/axiosIntegrated';
 
 import { AuthUser } from '../../../@types/authentication';
@@ -53,6 +54,7 @@ export default function UserNewForm({
   currentAdmin
 }: UserNewFormProps) {
   console.log(currentUser);
+  const { register } = useAuth();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
@@ -119,8 +121,21 @@ export default function UserNewForm({
             isGoogleProvider: values.isGoogleProvider === 'google' || false
           });
         } else {
+          if (values.isGoogleProvider === 'google') {
+            await register(values.email, 'default', values.firstname, values.lastname);
+          } else {
+            await register(
+              `${values.usernameOfUser}@gmail.com`,
+              values.passwordOfUser,
+              values.firstname,
+              values.lastname
+            );
+          }
           await axios.post('api/Account/register', {
-            username: values.usernameOfUser,
+            username:
+              values.isGoogleProvider === 'google'
+                ? values.usernameOfUser.split('@')[0]
+                : values.usernameOfUser,
             email: values.email,
             firstname: values.firstname,
             lastname: values.lastname,
@@ -148,6 +163,13 @@ export default function UserNewForm({
 
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
+
+  console.log(errors);
+
+  if (values.isGoogleProvider === 'google') {
+    setFieldValue('usernameOfUser', values.email);
+    setFieldValue('passwordOfUser', 'default');
+  }
 
   return (
     <FormikProvider value={formik}>
@@ -239,18 +261,20 @@ export default function UserNewForm({
                   />
                 </Stack>
 
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    InputProps={{
-                      autoComplete: 'new-username'
-                    }}
-                    fullWidth
-                    label="Tên tài khoản"
-                    {...getFieldProps('usernameOfUser')}
-                    error={Boolean(touched.usernameOfUser && errors.usernameOfUser)}
-                    helperText={touched.usernameOfUser && errors.usernameOfUser}
-                  />
-                </Stack>
+                {showPasswordField && (
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                    <TextField
+                      InputProps={{
+                        autoComplete: 'new-username'
+                      }}
+                      fullWidth
+                      label="Tên tài khoản"
+                      {...getFieldProps('usernameOfUser')}
+                      error={Boolean(touched.usernameOfUser && errors.usernameOfUser)}
+                      helperText={touched.usernameOfUser && errors.usernameOfUser}
+                    />
+                  </Stack>
+                )}
 
                 {!isEdit && showPasswordField && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
