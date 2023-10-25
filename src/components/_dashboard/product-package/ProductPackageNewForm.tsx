@@ -23,7 +23,7 @@ import useAuth from 'hooks/useAuth';
 import axios from 'utils/axiosIntegrated';
 import { AuthUser } from '../../../@types/authentication';
 import { UserManager } from '../../../@types/admin-user';
-import { roles, genders, loginTypes } from './roles';
+// import { roles, genders, loginTypes } from './roles';
 
 // ----------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ type UserNewFormProps = {
   };
 };
 
-export default function UserNewForm({
+export default function ProductPackageNewForm({
   isEdit = false,
   currentUser,
   currentAdmin
@@ -176,13 +176,13 @@ export default function UserNewForm({
                     helperText={touched.lastname && errors.lastname}
                   />
                 </Stack>
-
+                {/* 
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     select
                     fullWidth
                     label="Giới tính"
-                    placeholder="Role"
+                    placeholder="Vị trí"
                     {...getFieldProps('gender')}
                     SelectProps={{ native: true }}
                     error={Boolean(touched.gender && errors.gender)}
@@ -225,7 +225,7 @@ export default function UserNewForm({
                       </option>
                     ))}
                   </TextField>
-                </Stack>
+                </Stack> */}
 
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
@@ -283,7 +283,7 @@ export default function UserNewForm({
                   </Stack>
                 )}
 
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     label="Số điện thoại"
@@ -295,8 +295,8 @@ export default function UserNewForm({
                     <TextField
                       select
                       fullWidth
-                      label="Role"
-                      placeholder="Role"
+                      label="Vị trí"
+                      placeholder="Vị trí"
                       {...getFieldProps('roleId')}
                       SelectProps={{ native: true }}
                       error={Boolean(touched.roleId && errors.roleId)}
@@ -309,7 +309,7 @@ export default function UserNewForm({
                       ))}
                     </TextField>
                   )}
-                </Stack>
+                </Stack> */}
 
                 {isEdit && !isGoogleProvider && (
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>

@@ -21,15 +21,20 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-import { getUserList, deleteUserApi, updateUser } from '../../redux/slices/admin/user';
+import { fDateTime } from 'utils/formatTime';
+
+import { PromotionManager } from '../../@types/promotion';
+import {
+  getPromotionList,
+  deletePromotionApi,
+  updatePromotion
+} from '../../redux/slices/admin/promotion';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
-// @types
-import { UserManager } from '../../@types/admin-user';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -45,10 +50,12 @@ import {
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'username', label: 'Tên tài khoản', alignRight: false },
-  { id: 'fullName', label: 'Họ và tên', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'phone', label: 'Số điện thoại', alignRight: false },
+  { id: 'title', label: 'Tên khuyến mãi', alignRight: false },
+  { id: 'description', label: 'Mô tả', alignRight: false },
+  { id: 'amount', label: 'Discount', alignRight: false },
+  { id: 'startDate', label: 'Bắt đầu', alignRight: false },
+  { id: 'endDate', label: 'Kết thúc', alignRight: false },
+  { id: 'package', label: 'Sản phẩm', alignRight: false },
   { id: 'status', label: 'Trạng thái', alignRight: false },
   { id: '' }
 ];
@@ -74,7 +81,7 @@ function getComparator(order: string, orderBy: string) {
 }
 
 function applySortFilter(
-  array: UserManager[],
+  array: PromotionManager[],
   comparator: (a: any, b: any) => number,
   query: string
 ) {
@@ -85,20 +92,17 @@ function applySortFilter(
     return a[1] - b[1];
   });
   if (query) {
-    return filter(
-      array,
-      (_user) => _user.username.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    );
+    return filter(array, (_user) => _user.title.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserList() {
+export default function PromotionManagement() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const { userList } = useSelector((state: RootState) => state.userList);
+  const { promotionList } = useSelector((state: RootState) => state.promotionList);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -107,7 +111,7 @@ export default function UserList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    dispatch(getUserList());
+    dispatch(getPromotionList());
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -118,7 +122,7 @@ export default function UserList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = userList.map((n) => n.username);
+      const newSelecteds = promotionList.map((n) => n.title);
       setSelected(newSelecteds);
       return;
     }
@@ -152,37 +156,37 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleBlockUser = (userId: string) => {
-    dispatch(deleteUserApi(userId));
+  const handleBlockPromotion = (promotionId: string) => {
+    dispatch(deletePromotionApi(promotionId));
   };
 
-  const handleUnBlockUser = (userId: string) => {
-    dispatch(updateUser({ accountId: userId }, true));
+  const handleUnBlockPromotion = (promotionId: string) => {
+    dispatch(updatePromotion({ promotionId }));
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - promotionList.length) : 0;
 
-  const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(promotionList, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="Danh sách tài khoản | Minh Phát">
+    <Page title="Danh sách mã khuyến mãi | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Danh sách tài khoản"
+          heading="Danh sách mã khuyến mãi"
           links={[
             { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
-            { name: 'Danh sách tài khoản' }
+            { name: 'Danh sách mã khuyến mãi' }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.user.newUser}
+              to={PATH_DASHBOARD.promotion.newPromotion}
               startIcon={<Icon icon={plusFill} />}
             >
-              Tạo tài khoản
+              Tạo mã khuyến mãi
             </Button>
           }
         />
@@ -191,6 +195,7 @@ export default function UserList() {
           <UserListToolbar
             numSelected={selected.length}
             filterName={filterName}
+            placeholder="Tìm khuyến mãi..."
             onFilterName={handleFilterByName}
           />
 
@@ -201,7 +206,7 @@ export default function UserList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={userList.length}
+                  rowCount={promotionList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -211,58 +216,59 @@ export default function UserList() {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const {
-                        accountId,
-                        username,
-                        status,
-                        address,
-                        firstname,
-                        lastname,
-                        phone,
-                        role: { roleName }
+                        promotionId,
+                        title,
+                        description,
+                        amount,
+                        startDate,
+                        endDate,
+                        package: packageProduct,
+                        status
                       } = row;
-                      const isItemSelected = selected.indexOf(username) !== -1;
+                      const isItemSelected = selected.indexOf(title) !== -1;
 
                       return (
                         <TableRow
                           hover
-                          key={accountId}
+                          key={promotionId}
                           tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onClick={() => handleClick(username)}
-                            />
+                            <Checkbox checked={isItemSelected} onClick={() => handleClick(title)} />
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Typography variant="subtitle2" noWrap>
-                                {username}
+                                {title}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{`${firstname} ${lastname}`}</TableCell>
-                          <TableCell align="left">{roleName}</TableCell>
-                          <TableCell align="left">{phone}</TableCell>
+                          <TableCell align="left">{description}</TableCell>
+                          <TableCell align="left">{amount}%</TableCell>
+                          <TableCell align="left">{fDateTime(startDate)}</TableCell>
+                          <TableCell align="left">{fDateTime(endDate)}</TableCell>
+                          <TableCell align="left">.</TableCell>
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                               color={(status === false && 'error') || 'success'}
                             >
-                              {sentenceCase(status ? 'Active' : 'Banned')}
+                              {sentenceCase(status ? 'Available' : 'Unavailable')}
                             </Label>
                           </TableCell>
 
                           <TableCell align="right">
                             <AdminUserMoreMenu
-                              onBlock={() => handleBlockUser(accountId)}
-                              onUnblock={() => handleUnBlockUser(accountId)}
+                              onBlock={() => handleBlockPromotion(promotionId)}
+                              onUnblock={() => handleUnBlockPromotion(promotionId)}
+                              textFirstItem="Xoá khuyến mãi"
+                              textFirstItemAfter="Kích hoạt"
                               status={status}
-                              id={accountId}
-                              path={PATH_DASHBOARD.user.root}
+                              id={promotionId}
+                              path={PATH_DASHBOARD.promotion.root}
                             />
                           </TableCell>
                         </TableRow>
@@ -277,7 +283,7 @@ export default function UserList() {
                 {isUserNotFound && (
                   <TableBody>
                     <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={12} sx={{ py: 3 }}>
                         <SearchNotFound searchQuery={filterName} />
                       </TableCell>
                     </TableRow>
@@ -290,7 +296,7 @@ export default function UserList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={userList.length}
+            count={promotionList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}

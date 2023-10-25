@@ -36,9 +36,30 @@ export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   general: {
     contractManagement: path(ROOTS_DASHBOARD, '/contract-management'),
+    promotionManagement: path(ROOTS_DASHBOARD, '/promotion'),
+    packageManagement: path(ROOTS_DASHBOARD, '/package'),
+    productManagement: path(ROOTS_DASHBOARD, '/product'),
     app: path(ROOTS_DASHBOARD, '/app'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics')
+  },
+  promotion: {
+    root: path(ROOTS_DASHBOARD, '/promotion'),
+    list: path(ROOTS_DASHBOARD, '/promotion/list'),
+    newPromotion: path(ROOTS_DASHBOARD, '/promotion/new'),
+    editById: path(ROOTS_DASHBOARD, '/promotion/ada-lindgren/edit')
+  },
+  product: {
+    root: path(ROOTS_DASHBOARD, '/product'),
+    list: path(ROOTS_DASHBOARD, '/product/list'),
+    newProduct: path(ROOTS_DASHBOARD, '/product/new'),
+    editById: path(ROOTS_DASHBOARD, '/product/ada-lindgren/edit')
+  },
+  package: {
+    root: path(ROOTS_DASHBOARD, '/package'),
+    list: path(ROOTS_DASHBOARD, '/package/list'),
+    newPackage: path(ROOTS_DASHBOARD, '/package/new'),
+    editById: path(ROOTS_DASHBOARD, '/package/ada-lindgren/edit')
   },
   mail: {
     root: path(ROOTS_DASHBOARD, '/mail'),

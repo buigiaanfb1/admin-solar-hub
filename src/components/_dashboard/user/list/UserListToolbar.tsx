@@ -41,12 +41,14 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 type UserListToolbarProps = {
   numSelected: number;
   filterName: string;
+  placeholder?: string;
   onFilterName: (value: string) => void;
 };
 
 export default function UserListToolbar({
   numSelected,
   filterName,
+  placeholder = 'Tìm tài khoản...',
   onFilterName
 }: UserListToolbarProps) {
   const theme = useTheme();
@@ -69,7 +71,7 @@ export default function UserListToolbar({
         <SearchStyle
           value={filterName}
           onChange={(e) => onFilterName(e.target.value)}
-          placeholder="Tìm tài khoản..."
+          placeholder={placeholder}
           startAdornment={
             <InputAdornment position="start">
               <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />

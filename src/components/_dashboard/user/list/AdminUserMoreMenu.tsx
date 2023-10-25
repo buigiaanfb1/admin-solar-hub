@@ -17,10 +17,23 @@ type UserMoreMenuProps = {
   onBlock?: VoidFunction;
   onUnblock?: VoidFunction;
   status: boolean;
-  accountId: string;
+  id: string;
+  textFirstItem?: string;
+  textFirstItemAfter?: string;
+  textSecondItem?: string;
+  path?: string;
 };
 
-export default function UserMoreMenu({ onBlock, onUnblock, status, accountId }: UserMoreMenuProps) {
+export default function UserMoreMenu({
+  onBlock,
+  onUnblock,
+  status,
+  id,
+  textFirstItem = 'Khoá tài khoản',
+  textSecondItem = 'Chỉnh sửa thông tin',
+  textFirstItemAfter = 'Mở khoá tài khoản',
+  path = 'dashboard/user'
+}: UserMoreMenuProps) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -45,7 +58,7 @@ export default function UserMoreMenu({ onBlock, onUnblock, status, accountId }: 
             <ListItemIcon>
               <Icon icon={lockFill} width={24} height={24} />
             </ListItemIcon>
-            <ListItemText primary="Khoá tài khoản" primaryTypographyProps={{ variant: 'body2' }} />
+            <ListItemText primary={textFirstItem} primaryTypographyProps={{ variant: 'body2' }} />
           </MenuItem>
         ) : (
           <MenuItem onClick={onUnblock} sx={{ color: 'text.secondary' }}>
@@ -53,24 +66,17 @@ export default function UserMoreMenu({ onBlock, onUnblock, status, accountId }: 
               <Icon icon={unlockFill} width={24} height={24} />
             </ListItemIcon>
             <ListItemText
-              primary="Mở khoá tài khoản"
+              primary={textFirstItemAfter}
               primaryTypographyProps={{ variant: 'body2' }}
             />
           </MenuItem>
         )}
 
-        <MenuItem
-          component={RouterLink}
-          to={`${PATH_DASHBOARD.user.root}/${accountId}/edit`}
-          sx={{ color: 'text.secondary' }}
-        >
+        <MenuItem component={RouterLink} to={`${path}/${id}/edit`} sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
             <Icon icon={editFill} width={24} height={24} />
           </ListItemIcon>
-          <ListItemText
-            primary="Chỉnh sửa thông tin"
-            primaryTypographyProps={{ variant: 'body2' }}
-          />
+          <ListItemText primary={textSecondItem} primaryTypographyProps={{ variant: 'body2' }} />
         </MenuItem>
       </Menu>
     </>

@@ -45,9 +45,9 @@ import {
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'username', label: 'Tên tài khoản', alignRight: false },
+  { id: 'name', label: 'Tên tài khoản', alignRight: false },
   { id: 'fullName', label: 'Họ và tên', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
+  { id: 'role', label: 'Chức vụ', alignRight: false },
   { id: 'phone', label: 'Số điện thoại', alignRight: false },
   { id: 'status', label: 'Trạng thái', alignRight: false },
   { id: '' }
@@ -93,7 +93,7 @@ function applySortFilter(
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserList() {
+export default function ProductPackageManagement() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -167,13 +167,13 @@ export default function UserList() {
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="Danh sách tài khoản | Minh Phát">
+    <Page title="Danh sách sản phẩm | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Danh sách tài khoản"
+          heading="Danh sách sản phẩm"
           links={[
             { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
-            { name: 'Danh sách tài khoản' }
+            { name: 'Danh sách sản phẩm' }
           ]}
           action={
             <Button
@@ -182,7 +182,7 @@ export default function UserList() {
               to={PATH_DASHBOARD.user.newUser}
               startIcon={<Icon icon={plusFill} />}
             >
-              Tạo tài khoản
+              Tạo sản phẩm
             </Button>
           }
         />
@@ -192,6 +192,7 @@ export default function UserList() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            placeholder="Tìm sản phẩm..."
           />
 
           <Scrollbar>
@@ -262,7 +263,7 @@ export default function UserList() {
                               onUnblock={() => handleUnBlockUser(accountId)}
                               status={status}
                               id={accountId}
-                              path={PATH_DASHBOARD.user.root}
+                              path={PATH_DASHBOARD.package.root}
                             />
                           </TableCell>
                         </TableRow>

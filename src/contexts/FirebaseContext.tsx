@@ -65,7 +65,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(
     () =>
       firebase.auth().onAuthStateChanged(async (user) => {
-        if (user && user.email && count.current > 0) {
+        if (user && user.email) {
           try {
             // Fake login when logging with Google Provider
             const response = await axios.post('/api/Token/Login_username_password', {
@@ -73,7 +73,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
               password: 'default'
             });
 
-            if (response.data.user.role.roleId === '4') {
+            if (response.data.user.roleId === '4' || !response.data.user.status) {
               throw new Error();
             } else {
               dispatch({
@@ -117,7 +117,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         password
       });
 
-      if (response.data.user.role.roleId === '4') {
+      if (response.data.user.role.roleId === '4' || !response.data.user.status) {
         throw new Error();
       } else {
         dispatch({

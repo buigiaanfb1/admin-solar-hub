@@ -85,6 +85,42 @@ export default function Router() {
           element: <GeneralAnalytics />
         },
         {
+          path: 'package',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/package/list" replace />
+            },
+            { path: 'list', element: <PackageManagement /> },
+            { path: '/:name/edit', element: <PackageManagementCreate /> },
+            { path: 'new', element: <PackageManagementCreate /> }
+          ]
+        },
+        {
+          path: 'promotion',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/promotion/list" replace />
+            },
+            { path: 'list', element: <PromotionManagementList /> },
+            { path: '/:name/edit', element: <PromotionManagementCreate /> },
+            { path: 'new', element: <PromotionManagementCreate /> }
+          ]
+        },
+        {
+          path: 'product',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/product/list" replace />
+            },
+            { path: 'list', element: <ProductManagement /> },
+            { path: '/:name/edit', element: <ProductManagementCreate /> },
+            { path: 'new', element: <PromotionManagementCreate /> }
+          ]
+        },
+        {
           path: 'e-commerce',
           children: [
             { path: '/', element: <Navigate to="/dashboard/e-commerce/shop" replace /> },
@@ -252,11 +288,23 @@ const BlogPost = Loadable(lazy(() => import('../pages/dashboard/BlogPost')));
 const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
-const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
 const AdminUserList = Loadable(lazy(() => import('../pages/dashboard/AdminUserList')));
+const PromotionManagementList = Loadable(
+  lazy(() => import('../pages/dashboard/PromotionManagement'))
+);
+const PackageManagement = Loadable(lazy(() => import('../pages/dashboard/PackageManagement')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
-const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
 const AdminUserCreate = Loadable(lazy(() => import('../pages/dashboard/AdminUserCreate')));
+const PromotionManagementCreate = Loadable(
+  lazy(() => import('../pages/dashboard/PromotionManagementCreate'))
+);
+const PackageManagementCreate = Loadable(
+  lazy(() => import('../pages/dashboard/PackageManagementCreate'))
+);
+const ProductManagement = Loadable(lazy(() => import('../pages/dashboard/ProductManagement')));
+const ProductManagementCreate = Loadable(
+  lazy(() => import('../pages/dashboard/ProductManagementCreate'))
+);
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
 const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
 const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));

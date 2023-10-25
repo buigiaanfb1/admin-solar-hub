@@ -10,11 +10,11 @@ export default function SearchNotFound({ searchQuery = '', ...other }: SearchNot
   return (
     <Paper {...other}>
       <Typography gutterBottom align="center" variant="subtitle1">
-        Not found
+        Không tìm thấy
       </Typography>
       <Typography variant="body2" align="center">
-        No results found for &nbsp;
-        <strong>&quot;{searchQuery}&quot;</strong>. Try checking for typos or using complete words.
+        Không tìm thấy kết quả cho tìm kiếm &nbsp;
+        <strong>&quot;{searchQuery}&quot;</strong>. Kiếm tra chính tả và thử lại.
       </Typography>
     </Paper>
   );

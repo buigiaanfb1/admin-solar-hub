@@ -120,15 +120,66 @@ const adminSidebarConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
   {
-    subheader: 'accountList',
+    subheader: 'Quản lí',
     items: [
+      // MANAGEMENT : USER
       {
-        title: 'Danh sách tài khoản',
-        path: PATH_DASHBOARD.user.list,
-        icon: ICONS.user
+        title: 'Tài khoản',
+        path: PATH_DASHBOARD.user.root,
+        icon: ICONS.user,
+        children: [
+          { title: 'list', path: PATH_DASHBOARD.user.list },
+          { title: 'create', path: PATH_DASHBOARD.user.newUser }
+        ]
       }
     ]
   }
 ];
 
-export { sidebarConfig, adminSidebarConfig };
+const ownerSidebarConfig = [
+  // GENERAL
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'Quản lí',
+    items: [
+      {
+        title: 'Tài khoản',
+        path: PATH_DASHBOARD.user.root,
+        icon: ICONS.user,
+        children: [
+          { title: 'Danh sách tài khoản', path: PATH_DASHBOARD.user.list },
+          { title: 'create', path: PATH_DASHBOARD.user.newUser }
+        ]
+      },
+      {
+        title: 'Mã khuyến mãi',
+        path: PATH_DASHBOARD.promotion.root,
+        icon: ICONS.mail,
+        children: [
+          { title: 'Danh sách mã khuyến mãi', path: PATH_DASHBOARD.promotion.list },
+          { title: 'Tạo khuyến mãi', path: PATH_DASHBOARD.promotion.newPromotion }
+        ]
+      },
+      {
+        title: 'Gói',
+        path: PATH_DASHBOARD.package.root,
+        icon: ICONS.dashboard,
+        children: [
+          { title: 'Danh sách gói', path: PATH_DASHBOARD.package.list },
+          { title: 'Tạo gói', path: PATH_DASHBOARD.package.newPackage }
+        ]
+      },
+      {
+        title: 'Sản phẩm',
+        path: PATH_DASHBOARD.product.root,
+        icon: ICONS.dashboard,
+        children: [
+          { title: 'Danh sách sản phẩm', path: PATH_DASHBOARD.product.list },
+          { title: 'Tạo sản phẩm', path: PATH_DASHBOARD.product.newProduct }
+        ]
+      }
+    ]
+  }
+];
+
+export { sidebarConfig, adminSidebarConfig, ownerSidebarConfig };
