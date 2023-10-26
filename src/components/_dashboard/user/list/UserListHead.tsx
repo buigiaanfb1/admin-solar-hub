@@ -6,6 +6,7 @@ import { Box, Checkbox, TableRow, TableCell, TableHead, TableSortLabel } from '@
 
 type UserListHeadProps = {
   order: 'asc' | 'desc';
+  isShowCheckbox?: boolean;
   orderBy: string;
   rowCount: number;
   headLabel: any[];
@@ -16,6 +17,7 @@ type UserListHeadProps = {
 
 export default function UserListHead({
   order,
+  isShowCheckbox = true,
   orderBy,
   rowCount,
   headLabel,
@@ -26,15 +28,17 @@ export default function UserListHead({
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              onSelectAllClick(event.target.checked)
-            }
-          />
-        </TableCell>
+        {isShowCheckbox && (
+          <TableCell padding="checkbox">
+            <Checkbox
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={rowCount > 0 && numSelected === rowCount}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                onSelectAllClick(event.target.checked)
+              }
+            />
+          </TableCell>
+        )}
         {headLabel.map((headCell) => (
           <TableCell
             key={headCell.id}

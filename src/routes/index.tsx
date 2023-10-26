@@ -66,7 +66,6 @@ export default function Router() {
         { path: 'verify', element: <VerifyCode /> }
       ]
     },
-
     // Dashboard Routes
     {
       path: 'dashboard',
@@ -117,7 +116,7 @@ export default function Router() {
             },
             { path: 'list', element: <ProductManagement /> },
             { path: '/:name/edit', element: <ProductManagementCreate /> },
-            { path: 'new', element: <PromotionManagementCreate /> }
+            { path: 'new', element: <ProductManagementCreate /> }
           ]
         },
         {
@@ -143,6 +142,13 @@ export default function Router() {
             { path: 'new', element: <AdminUserCreate /> },
             { path: '/:name/edit', element: <AdminUserCreate /> },
             { path: 'account', element: <UserAccount /> }
+          ]
+        },
+        {
+          path: 'staff',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/staff/list" replace /> },
+            { path: 'list', element: <OwnerStaffList /> }
           ]
         },
         {
@@ -176,7 +182,6 @@ export default function Router() {
         { path: 'kanban', element: <Kanban /> }
       ]
     },
-
     // Main Routes
     {
       path: '*',
@@ -289,6 +294,7 @@ const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const AdminUserList = Loadable(lazy(() => import('../pages/dashboard/AdminUserList')));
+const OwnerStaffList = Loadable(lazy(() => import('../pages/dashboard/OwnerStaffList')));
 const PromotionManagementList = Loadable(
   lazy(() => import('../pages/dashboard/PromotionManagement'))
 );

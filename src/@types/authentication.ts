@@ -43,6 +43,7 @@ export type FirebaseContextType = {
   loginWithTwitter: () => Promise<firebase.auth.UserCredential>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
+  uploadImages: (file: File[]) => Promise<string[]>;
   updateProfile: VoidFunction;
 };
 

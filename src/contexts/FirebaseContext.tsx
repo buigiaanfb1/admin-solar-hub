@@ -3,6 +3,7 @@ import { createContext, ReactNode, useEffect, useReducer, useState, useRef } fro
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 // utils
 import axios from 'utils/axiosIntegrated';
 import { useSnackbar } from 'notistack5';
@@ -190,6 +191,31 @@ function AuthProvider({ children }: { children: ReactNode }) {
     await firebase.auth().sendPasswordResetEmail(email);
   };
 
+  const uploadImages = async (files: File[]): Promise<string[]> => {
+    if (!state.user) {
+      throw new Error('User not authenticated');
+    }
+
+    // Create a reference to the Firebase storage bucket
+    const storageRef = firebase.storage().ref();
+
+    // Initialize an array to store the download URLs
+    const downloadURLs: string[] = [];
+
+    // Function to upload a single file
+    const uploadFile = async (file: File) => {
+      const fileName = `products/${state.user?.accountId || 'common'}/${Date.now()}_${file.name}`;
+      const uploadTask = storageRef.child(fileName).put(file);
+      await uploadTask;
+      const downloadURL = await storageRef.child(fileName).getDownloadURL();
+      downloadURLs.push(downloadURL);
+    };
+
+    // Upload all files in parallel
+    await Promise.all(files.map((file) => uploadFile(file)));
+
+    return downloadURLs;
+  };
   const auth = { ...state.user };
 
   return (
@@ -222,6 +248,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         loginWithTwitter,
         logout,
         resetPassword,
+        uploadImages,
         updateProfile: () => {}
       }}
     >

@@ -55,7 +55,7 @@ const TABLE_HEAD = [
   { id: 'amount', label: 'Discount', alignRight: false },
   { id: 'startDate', label: 'Bắt đầu', alignRight: false },
   { id: 'endDate', label: 'Kết thúc', alignRight: false },
-  { id: 'package', label: 'Sản phẩm', alignRight: false },
+  // { id: 'package', label: 'Sản phẩm', alignRight: false },
   { id: 'status', label: 'Trạng thái', alignRight: false },
   { id: '' }
 ];
@@ -250,7 +250,7 @@ export default function PromotionManagement() {
                           <TableCell align="left">{amount}%</TableCell>
                           <TableCell align="left">{fDateTime(startDate)}</TableCell>
                           <TableCell align="left">{fDateTime(endDate)}</TableCell>
-                          <TableCell align="left">.</TableCell>
+                          {/* <TableCell align="left">.</TableCell> */}
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}

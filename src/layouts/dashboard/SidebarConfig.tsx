@@ -143,6 +143,48 @@ const ownerSidebarConfig = [
     subheader: 'Quản lí',
     items: [
       {
+        title: 'Nhân viên',
+        path: PATH_DASHBOARD.staff.root,
+        icon: ICONS.user
+      },
+      {
+        title: 'Mã khuyến mãi',
+        path: PATH_DASHBOARD.promotion.root,
+        icon: ICONS.mail,
+        children: [
+          { title: 'Danh sách khuyến mãi', path: PATH_DASHBOARD.promotion.list },
+          { title: 'Tạo khuyến mãi', path: PATH_DASHBOARD.promotion.newPromotion }
+        ]
+      },
+      {
+        title: 'Gói',
+        path: PATH_DASHBOARD.package.root,
+        icon: ICONS.ecommerce,
+        children: [
+          { title: 'Danh sách gói', path: PATH_DASHBOARD.package.list },
+          { title: 'Tạo gói', path: PATH_DASHBOARD.package.newPackage }
+        ]
+      },
+      {
+        title: 'Sản phẩm',
+        path: PATH_DASHBOARD.product.root,
+        icon: ICONS.cart,
+        children: [
+          { title: 'Danh sách sản phẩm', path: PATH_DASHBOARD.product.list },
+          { title: 'Tạo sản phẩm', path: PATH_DASHBOARD.product.newProduct }
+        ]
+      }
+    ]
+  }
+];
+
+const staffSidebarConfig = [
+  // GENERAL
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'Quản lí',
+    items: [
+      {
         title: 'Tài khoản',
         path: PATH_DASHBOARD.user.root,
         icon: ICONS.user,

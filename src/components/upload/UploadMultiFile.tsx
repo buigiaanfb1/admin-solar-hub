@@ -136,19 +136,19 @@ export default function UploadMultiFile({
 
         <Box sx={{ p: 3, ml: { md: 2 } }}>
           <Typography gutterBottom variant="h5">
-            Drop or Select file
+            Thả hoặc chọn nhiều hình ảnh về sản phẩm
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Drop files here or click&nbsp;
+            Thả ảnh tại đây hoặc ấn&nbsp;
             <Typography
               variant="body2"
               component="span"
               sx={{ color: 'primary.main', textDecoration: 'underline' }}
             >
-              browse
+              tìm
             </Typography>
-            &nbsp;thorough your machine
+            &nbsp;thông qua thư mục máy tính của bạn
           </Typography>
         </Box>
       </DropZoneStyle>
@@ -238,11 +238,10 @@ export default function UploadMultiFile({
       </List>
 
       {hasFile && (
-        <Stack direction="row" justifyContent="flex-end">
+        <Stack direction="row" justifyContent="flex-start">
           <Button onClick={onRemoveAll} sx={{ mr: 1.5 }}>
-            Remove all
+            Xoá tất cả
           </Button>
-          <Button variant="contained">Upload files</Button>
         </Stack>
       )}
     </Box>

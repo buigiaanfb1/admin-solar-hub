@@ -5,7 +5,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 // redux
-import { getPromotionList } from 'redux/slices/admin/promotion';
+import { getProductList } from 'redux/slices/admin/product';
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -14,36 +14,36 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import AdminPromotionNewForm from '../../components/_dashboard/promotion/AdminPromotionNewForm';
+import AdminProductNewForm from '../../components/_dashboard/product/AdminProductNewForm';
 
 // ----------------------------------------------------------------------
 
-export default function PromotionManagementCreate() {
+export default function ProductManagementCreate() {
   const { user } = useAuth();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   // TODO: research why it is name not accountId?
   const { name } = useParams();
-  const { promotionList } = useSelector((state: RootState) => state.promotionList);
+  const { productList } = useSelector((state: RootState) => state.productList);
   const isEdit = pathname.includes('edit');
-  const currentPromotion = promotionList.find((promote) => promote.promotionId === name);
+  const currentProduct = productList.find((promote) => promote.productId === name);
   useEffect(() => {
-    dispatch(getPromotionList());
+    dispatch(getProductList());
   }, [dispatch]);
 
   return (
-    <Page title="Tạo khuyến mãi | Minh Phát">
+    <Page title="Thêm sản phẩm | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Tạo khuyến mãi' : 'Chỉnh sửa thông tin khuyến mãi'}
+          heading={!isEdit ? 'Thêm sản phẩm' : 'Chỉnh sửa thông tin sản phẩm'}
           links={[
             { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
-            { name: !isEdit ? 'Tạo khuyến mãi' : currentPromotion?.title || 'Chỉnh sửa' }
+            { name: !isEdit ? 'Thêm sản phẩm' : currentProduct?.name || 'Chỉnh sửa' }
           ]}
         />
 
-        <AdminPromotionNewForm isEdit={isEdit} currentPromotion={currentPromotion} />
+        <AdminProductNewForm isEdit={isEdit} currentProduct={currentProduct} />
       </Container>
     </Page>
   );

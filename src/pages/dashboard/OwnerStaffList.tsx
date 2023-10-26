@@ -21,16 +21,15 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-import { fDateTime } from 'utils/formatTime';
-
-import { ProductManager } from '../../@types/product';
-import { getProductList, deleteProductApi, updateProduct } from '../../redux/slices/admin/product';
+import { getUserList, deleteUserApi, updateUser } from '../../redux/slices/admin/user';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+// @types
+import { UserManager } from '../../@types/admin-user';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -42,18 +41,15 @@ import {
   UserListToolbar,
   AdminUserMoreMenu
 } from '../../components/_dashboard/user/list';
-import DialogProductManagement from './DialogProductManagement';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Tên sản phẩm', alignRight: false },
-  // { id: 'feature', label: 'Mô tả', alignRight: false },
-  { id: 'price', label: 'Giá', alignRight: false },
-  { id: 'manufacturer', label: 'Nhà sản xuất', alignRight: false },
-  { id: 'warrantyDate', label: 'Bảo hành', alignRight: false },
-  { id: 'status', label: 'Trạng thái', alignRight: false },
-  { id: '' }
+  { id: 'username', label: 'Tên tài khoản', alignRight: false },
+  { id: 'fullName', label: 'Họ và tên', alignRight: false },
+  { id: 'phone', label: 'Số điện thoại', alignRight: false },
+  { id: 'survey', label: 'Khảo sát', alignRight: false },
+  { id: 'status', label: 'Trạng thái', alignRight: false }
 ];
 
 // ----------------------------------------------------------------------
@@ -77,7 +73,7 @@ function getComparator(order: string, orderBy: string) {
 }
 
 function applySortFilter(
-  array: ProductManager[],
+  array: UserManager[],
   comparator: (a: any, b: any) => number,
   query: string
 ) {
@@ -88,47 +84,63 @@ function applySortFilter(
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(
+      array,
+      (_user) => _user.username.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function ProductManagement() {
+export default function UserList() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const { productList } = useSelector((state: RootState) => state.productList);
+  const { userList } = useSelector((state: RootState) => state.userList);
+  const staffList = userList.filter((user) => user.roleId === '3');
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-  const [selected, setSelected] = useState<ProductManager | null>(null);
+  const [selected, setSelected] = useState<string[]>([]);
   const [orderBy, setOrderBy] = useState('username');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [open, setOpen] = useState(false);
-
   useEffect(() => {
-    dispatch(getProductList());
+    dispatch(getUserList());
   }, [dispatch]);
 
-  const handleClickOpen = (e: any, product: ProductManager) => {
-    const arrayOfTag = [
-      '<g fill="currentColor"><circle cx="12" cy="15" r="1"></circle><path d="M17 8h-1V6.11a4 4 0 1 0-8 0V8H7a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-7-1.89A2.06 2.06 0 0 1 12 4a2.06 2.06 0 0 1 2 2.11V8h-4zM12 18a3 3 0 1 1 3-3a3 3 0 0 1-3 3z"></path></g>',
-      '<g fill="currentColor"><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="19" r="2"></circle></g>',
-      'Chỉnh sửa thông tin',
-      'Tạm ngưng',
-      'Kích hoạt',
-      'svg',
-      ''
-    ];
-    if (arrayOfTag.includes(e.target.innerHTML)) return;
-    setSelected(product);
-    setOpen(true);
+  const handleRequestSort = (property: string) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleSelectAllClick = (checked: boolean) => {
+    if (checked) {
+      const newSelecteds = staffList.map((n) => n.username);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleClick = (name: string) => {
+    const selectedIndex = selected.indexOf(name);
+    let newSelected: string[] = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,46 +152,45 @@ export default function ProductManagement() {
     setFilterName(filterName);
   };
 
-  const handleBlockProduct = (productId: string) => {
-    dispatch(updateProduct({ productId }, false));
+  const handleBlockUser = (userId: string) => {
+    dispatch(deleteUserApi(userId));
   };
 
-  const handleUnBlockProduct = (productId: string) => {
-    dispatch(updateProduct({ productId }, true));
+  const handleUnBlockUser = (userId: string) => {
+    dispatch(updateUser({ accountId: userId }, true));
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - productList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - staffList.length) : 0;
 
-  const filteredUsers = applySortFilter(productList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(staffList, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="Danh sách sản phẩm | Minh Phát">
+    <Page title="Danh sách nhân viên | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Danh sách sản phẩm"
+          heading="Danh sách nhân viên"
           links={[
             { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
-            { name: 'Danh sách sản phẩm' }
+            { name: 'Danh sách nhân viên' }
           ]}
-          action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.product.newProduct}
-              startIcon={<Icon icon={plusFill} />}
-            >
-              Tạo sản phẩm
-            </Button>
-          }
+          // action={
+          //   <Button
+          //     variant="contained"
+          //     component={RouterLink}
+          //     to={PATH_DASHBOARD.user.newUser}
+          //     startIcon={<Icon icon={plusFill} />}
+          //   >
+          //     Xem khảo sát
+          //   </Button>
+          // }
         />
 
         <Card>
           <UserListToolbar
-            numSelected={0}
+            numSelected={selected.length}
             filterName={filterName}
-            placeholder="Tìm sản phẩm..."
             onFilterName={handleFilterByName}
           />
 
@@ -187,81 +198,64 @@ export default function ProductManagement() {
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <UserListHead
-                  isShowCheckbox={false}
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={productList.length}
-                  numSelected={0}
-                  onRequestSort={() => {}}
-                  onSelectAllClick={() => {}}
+                  rowCount={staffList.length}
+                  numSelected={selected.length}
+                  onRequestSort={handleRequestSort}
+                  onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const {
-                        productId,
-                        name,
-                        price,
-                        manufacturer,
-                        feature,
-                        warrantyDate,
-                        image,
-                        status
+                        accountId,
+                        username,
+                        status,
+                        survey,
+                        firstname,
+                        lastname,
+                        phone,
+                        role: { roleName }
                       } = row;
+                      const isItemSelected = selected.indexOf(username) !== -1;
 
                       return (
                         <TableRow
-                          style={{ cursor: 'pointer' }}
-                          key={productId}
                           hover
+                          key={accountId}
                           tabIndex={-1}
                           role="checkbox"
-                          onClick={(e: any) => handleClickOpen(e, row)}
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
                         >
-                          <TableCell component="th" scope="row" padding="none" width="100">
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              onClick={() => handleClick(username)}
+                            />
+                          </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Typography variant="subtitle2" noWrap>
-                                {name}
+                                {username}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          {/* <TableCell align="left">{feature}</TableCell> */}
+                          <TableCell align="left">{`${firstname} ${lastname}`}</TableCell>
+                          <TableCell align="left">{phone}</TableCell>
                           <TableCell align="left">
-                            {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
-                          </TableCell>
-                          <TableCell align="left">{manufacturer}</TableCell>
-                          <TableCell align="left">
-                            <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={
-                                (fDateTime(warrantyDate) < fDateTime(new Date()) && 'error') ||
-                                'success'
-                              }
-                            >
-                              {sentenceCase(fDateTime(warrantyDate))}
-                            </Label>
+                            {survey.length > 0 ? 'Có khảo sát' : 'Chưa có khảo sát'}
                           </TableCell>
                           <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                               color={(status === false && 'error') || 'success'}
                             >
-                              {sentenceCase(status ? 'Available' : 'Unavailable')}
+                              {sentenceCase(status ? 'Active' : 'Banned')}
                             </Label>
-                          </TableCell>
-
-                          <TableCell align="right">
-                            <AdminUserMoreMenu
-                              onBlock={() => handleBlockProduct(productId)}
-                              onUnblock={() => handleUnBlockProduct(productId)}
-                              textFirstItem="Tạm ngưng"
-                              textFirstItemAfter="Kích hoạt"
-                              status={status}
-                              id={productId}
-                              path={PATH_DASHBOARD.product.root}
-                            />
                           </TableCell>
                         </TableRow>
                       );
@@ -275,7 +269,7 @@ export default function ProductManagement() {
                 {isUserNotFound && (
                   <TableBody>
                     <TableRow>
-                      <TableCell align="center" colSpan={12} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
                         <SearchNotFound searchQuery={filterName} />
                       </TableCell>
                     </TableRow>
@@ -288,16 +282,13 @@ export default function ProductManagement() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={productList.length}
+            count={staffList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
             onRowsPerPageChange={(e) => handleChangeRowsPerPage}
           />
         </Card>
-        {selected && (
-          <DialogProductManagement open={open} onClose={handleClose} product={selected} />
-        )}
       </Container>
     </Page>
   );
