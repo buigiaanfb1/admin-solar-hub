@@ -234,7 +234,7 @@ export default function ProductManagement() {
                           <TableCell align="left">{manufacturer}</TableCell>
                           <TableCell align="left">
                             <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                              variant="ghost"
                               color={
                                 (fDateTime(warrantyDate) < fDateTime(new Date()) && 'error') ||
                                 'success'
@@ -245,7 +245,7 @@ export default function ProductManagement() {
                           </TableCell>
                           <TableCell align="left">
                             <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                              variant="ghost"
                               color={(status === false && 'error') || 'success'}
                             >
                               {sentenceCase(status ? 'Available' : 'Unavailable')}

@@ -251,7 +251,7 @@ export default function UserList() {
                           </TableCell>
                           <TableCell align="left">
                             <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                              variant="ghost"
                               color={(status === false && 'error') || 'success'}
                             >
                               {sentenceCase(status ? 'Active' : 'Banned')}

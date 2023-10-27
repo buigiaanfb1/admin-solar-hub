@@ -82,6 +82,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
                 payload: { isAuthenticated: true, user: { ...user, userInfo: response.data.user } }
               });
 
+              console.log(response.data.token);
+
               axios.interceptors.request.use(
                 (config) => {
                   // Add the authorization token to the headers for all requests.

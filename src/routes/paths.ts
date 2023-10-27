@@ -35,13 +35,22 @@ export const PATH_PAGE = {
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   general: {
-    contractManagement: path(ROOTS_DASHBOARD, '/contract-management'),
     promotionManagement: path(ROOTS_DASHBOARD, '/promotion'),
     packageManagement: path(ROOTS_DASHBOARD, '/package'),
     productManagement: path(ROOTS_DASHBOARD, '/product'),
     app: path(ROOTS_DASHBOARD, '/app'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics')
+  },
+  contract: {
+    root: path(ROOTS_DASHBOARD, '/contract'),
+    list: path(ROOTS_DASHBOARD, '/contract/list')
+  },
+  bracket: {
+    root: path(ROOTS_DASHBOARD, '/bracket'),
+    list: path(ROOTS_DASHBOARD, '/bracket/list'),
+    newBracket: path(ROOTS_DASHBOARD, '/bracket/new'),
+    editById: path(ROOTS_DASHBOARD, '/bracket/ada-lindgren/edit')
   },
   staff: {
     root: path(ROOTS_DASHBOARD, '/staff'),

@@ -26,7 +26,7 @@ import { MHidden } from '../../components/@material-extend';
 //
 import { DocIcon } from '../../assets';
 
-import { adminSidebarConfig, sidebarConfig, ownerSidebarConfig } from './SidebarConfig';
+import { adminSidebarConfig, ownerSidebarConfig } from './SidebarConfig';
 
 // ----------------------------------------------------------------------
 

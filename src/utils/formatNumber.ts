@@ -7,6 +7,10 @@ export function fCurrency(number: string | number) {
   return numeral(number).format(Number.isInteger(number) ? '$0,0' : '$0,0.00');
 }
 
+export function vCurrency(number: string | number) {
+  return numeral(number).format(Number.isInteger(number) ? '0,0' : '0,0.00');
+}
+
 export function fPercent(number: number) {
   return numeral(number / 100).format('0.0%');
 }

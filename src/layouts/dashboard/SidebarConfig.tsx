@@ -23,98 +23,98 @@ const ICONS = {
   kanban: getIcon('ic_kanban')
 };
 
-const sidebarConfig = [
-  // GENERAL
-  // ----------------------------------------------------------------------
-  {
-    subheader: 'general',
-    items: [
-      {
-        title: 'Quản lý hợp đồng',
-        path: PATH_DASHBOARD.general.contractManagement,
-        icon: ICONS.dashboard
-      },
-      {
-        title: 'app',
-        path: PATH_DASHBOARD.general.app,
-        icon: ICONS.dashboard
-      },
-      { title: 'e-commerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
-      { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics }
-    ]
-  },
+// const sidebarConfig = [
+//   // GENERAL
+//   // ----------------------------------------------------------------------
+//   {
+//     subheader: 'general',
+//     items: [
+//       {
+//         title: 'Quản lý hợp đồng',
+//         path: PATH_DASHBOARD.general.contractManagement,
+//         icon: ICONS.dashboard
+//       },
+//       {
+//         title: 'app',
+//         path: PATH_DASHBOARD.general.app,
+//         icon: ICONS.dashboard
+//       },
+//       { title: 'e-commerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
+//       { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics }
+//     ]
+//   },
 
-  // MANAGEMENT
-  // ----------------------------------------------------------------------
-  {
-    subheader: 'management',
-    items: [
-      // MANAGEMENT : USER
-      {
-        title: 'user',
-        path: PATH_DASHBOARD.user.root,
-        icon: ICONS.user,
-        children: [
-          { title: 'profile', path: PATH_DASHBOARD.user.profile },
-          { title: 'cards', path: PATH_DASHBOARD.user.cards },
-          { title: 'list', path: PATH_DASHBOARD.user.list },
-          { title: 'create', path: PATH_DASHBOARD.user.newUser },
-          { title: 'edit', path: PATH_DASHBOARD.user.editById },
-          { title: 'account', path: PATH_DASHBOARD.user.account }
-        ]
-      },
+//   // MANAGEMENT
+//   // ----------------------------------------------------------------------
+//   {
+//     subheader: 'management',
+//     items: [
+//       // MANAGEMENT : USER
+//       {
+//         title: 'user',
+//         path: PATH_DASHBOARD.user.root,
+//         icon: ICONS.user,
+//         children: [
+//           { title: 'profile', path: PATH_DASHBOARD.user.profile },
+//           { title: 'cards', path: PATH_DASHBOARD.user.cards },
+//           { title: 'list', path: PATH_DASHBOARD.user.list },
+//           { title: 'create', path: PATH_DASHBOARD.user.newUser },
+//           { title: 'edit', path: PATH_DASHBOARD.user.editById },
+//           { title: 'account', path: PATH_DASHBOARD.user.account }
+//         ]
+//       },
 
-      // MANAGEMENT : E-COMMERCE
-      {
-        title: 'e-commerce',
-        path: PATH_DASHBOARD.eCommerce.root,
-        icon: ICONS.cart,
-        children: [
-          { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
-          { title: 'product', path: PATH_DASHBOARD.eCommerce.productById },
-          { title: 'list', path: PATH_DASHBOARD.eCommerce.list },
-          { title: 'create', path: PATH_DASHBOARD.eCommerce.newProduct },
-          { title: 'edit', path: PATH_DASHBOARD.eCommerce.editById },
-          { title: 'checkout', path: PATH_DASHBOARD.eCommerce.checkout },
-          { title: 'invoice', path: PATH_DASHBOARD.eCommerce.invoice }
-        ]
-      },
+//       // MANAGEMENT : E-COMMERCE
+//       {
+//         title: 'e-commerce',
+//         path: PATH_DASHBOARD.eCommerce.root,
+//         icon: ICONS.cart,
+//         children: [
+//           { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
+//           { title: 'product', path: PATH_DASHBOARD.eCommerce.productById },
+//           { title: 'list', path: PATH_DASHBOARD.eCommerce.list },
+//           { title: 'create', path: PATH_DASHBOARD.eCommerce.newProduct },
+//           { title: 'edit', path: PATH_DASHBOARD.eCommerce.editById },
+//           { title: 'checkout', path: PATH_DASHBOARD.eCommerce.checkout },
+//           { title: 'invoice', path: PATH_DASHBOARD.eCommerce.invoice }
+//         ]
+//       },
 
-      // MANAGEMENT : BLOG
-      {
-        title: 'blog',
-        path: PATH_DASHBOARD.blog.root,
-        icon: ICONS.blog,
-        children: [
-          { title: 'posts', path: PATH_DASHBOARD.blog.posts },
-          { title: 'post', path: PATH_DASHBOARD.blog.postById },
-          { title: 'new post', path: PATH_DASHBOARD.blog.newPost }
-        ]
-      }
-    ]
-  },
+//       // MANAGEMENT : BLOG
+//       {
+//         title: 'blog',
+//         path: PATH_DASHBOARD.blog.root,
+//         icon: ICONS.blog,
+//         children: [
+//           { title: 'posts', path: PATH_DASHBOARD.blog.posts },
+//           { title: 'post', path: PATH_DASHBOARD.blog.postById },
+//           { title: 'new post', path: PATH_DASHBOARD.blog.newPost }
+//         ]
+//       }
+//     ]
+//   },
 
-  // APP
-  // ----------------------------------------------------------------------
-  {
-    subheader: 'app',
-    items: [
-      {
-        title: 'mail',
-        path: PATH_DASHBOARD.mail.root,
-        icon: ICONS.mail,
-        info: <Label color="error">2</Label>
-      },
-      { title: 'chat', path: PATH_DASHBOARD.chat.root, icon: ICONS.chat },
-      { title: 'calendar', path: PATH_DASHBOARD.calendar, icon: ICONS.calendar },
-      {
-        title: 'kanban',
-        path: PATH_DASHBOARD.kanban,
-        icon: ICONS.kanban
-      }
-    ]
-  }
-];
+//   // APP
+//   // ----------------------------------------------------------------------
+//   {
+//     subheader: 'app',
+//     items: [
+//       {
+//         title: 'mail',
+//         path: PATH_DASHBOARD.mail.root,
+//         icon: ICONS.mail,
+//         info: <Label color="error">2</Label>
+//       },
+//       { title: 'chat', path: PATH_DASHBOARD.chat.root, icon: ICONS.chat },
+//       { title: 'calendar', path: PATH_DASHBOARD.calendar, icon: ICONS.calendar },
+//       {
+//         title: 'kanban',
+//         path: PATH_DASHBOARD.kanban,
+//         icon: ICONS.kanban
+//       }
+//     ]
+//   }
+// ];
 
 const adminSidebarConfig = [
   // GENERAL
@@ -137,16 +137,24 @@ const adminSidebarConfig = [
 ];
 
 const ownerSidebarConfig = [
-  // GENERAL
-  // ----------------------------------------------------------------------
+  {
+    subheader: 'Phê duyệt',
+    items: [
+      {
+        title: 'Hợp đồng',
+        path: PATH_DASHBOARD.contract.list,
+        icon: ICONS.dashboard
+      },
+      {
+        title: 'Nhân viên',
+        path: PATH_DASHBOARD.staff.list,
+        icon: ICONS.user
+      }
+    ]
+  },
   {
     subheader: 'Quản lí',
     items: [
-      {
-        title: 'Nhân viên',
-        path: PATH_DASHBOARD.staff.root,
-        icon: ICONS.user
-      },
       {
         title: 'Mã khuyến mãi',
         path: PATH_DASHBOARD.promotion.root,
@@ -157,12 +165,12 @@ const ownerSidebarConfig = [
         ]
       },
       {
-        title: 'Gói',
+        title: 'Gói sản phẩm',
         path: PATH_DASHBOARD.package.root,
         icon: ICONS.ecommerce,
         children: [
           { title: 'Danh sách gói', path: PATH_DASHBOARD.package.list },
-          { title: 'Tạo gói', path: PATH_DASHBOARD.package.newPackage }
+          { title: 'Tạo gói sản phẩm', path: PATH_DASHBOARD.package.newPackage }
         ]
       },
       {
@@ -172,6 +180,20 @@ const ownerSidebarConfig = [
         children: [
           { title: 'Danh sách sản phẩm', path: PATH_DASHBOARD.product.list },
           { title: 'Tạo sản phẩm', path: PATH_DASHBOARD.product.newProduct }
+        ]
+      }
+    ]
+  },
+  {
+    subheader: 'Phụ kiện',
+    items: [
+      {
+        title: 'Khung đỡ',
+        path: PATH_DASHBOARD.bracket.root,
+        icon: ICONS.ecommerce,
+        children: [
+          { title: 'Danh sách khung đỡ', path: PATH_DASHBOARD.bracket.list },
+          { title: 'Thêm khung đỡ', path: PATH_DASHBOARD.bracket.newBracket }
         ]
       }
     ]
@@ -224,4 +246,4 @@ const staffSidebarConfig = [
   }
 ];
 
-export { sidebarConfig, adminSidebarConfig, ownerSidebarConfig };
+export { adminSidebarConfig, ownerSidebarConfig };

@@ -52,10 +52,9 @@ import {
 const TABLE_HEAD = [
   { id: 'title', label: 'Tên khuyến mãi', alignRight: false },
   { id: 'description', label: 'Mô tả', alignRight: false },
-  { id: 'amount', label: 'Discount', alignRight: false },
+  { id: 'amount', label: 'Giảm %', alignRight: false },
   { id: 'startDate', label: 'Bắt đầu', alignRight: false },
   { id: 'endDate', label: 'Kết thúc', alignRight: false },
-  // { id: 'package', label: 'Sản phẩm', alignRight: false },
   { id: 'status', label: 'Trạng thái', alignRight: false },
   { id: '' }
 ];
@@ -253,7 +252,7 @@ export default function PromotionManagement() {
                           {/* <TableCell align="left">.</TableCell> */}
                           <TableCell align="left">
                             <Label
-                              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                              variant="ghost"
                               color={(status === false && 'error') || 'success'}
                             >
                               {sentenceCase(status ? 'Available' : 'Unavailable')}

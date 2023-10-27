@@ -47,19 +47,6 @@ const ThumbImgStyle = styled('img')(({ theme }) => ({
   }
 }));
 
-const ThumbImgExternalStyle = styled('img')(({ theme }) => ({
-  opacity: 0.8,
-  width: THUMB_SIZE,
-  cursor: 'pointer',
-  height: THUMB_SIZE,
-  margin: theme.spacing(0, 0.5),
-  borderRadius: theme.shape.borderRadiusSm,
-  '&:hover': {
-    opacity: 1,
-    transition: theme.transitions.create('opacity')
-  }
-}));
-
 // ----------------------------------------------------------------------
 
 type CarouselItemProps = {
@@ -86,32 +73,10 @@ function LargeItem({ item }: { item: CarouselItemProps }) {
   );
 }
 
-export function thumbnailItemsExternal(images: any) {
-  const CAROUSELS = images.map((image: any) => ({
-    title: faker.name.title(),
-    description: faker.lorem.paragraphs(),
-    image: image.imageData
-  }));
-
-  return (
-    <div style={{ display: 'flex' }}>
-      {CAROUSELS.map((item: any) => (
-        <ThumbnailItemExternal key={item.title} item={item} />
-      ))}
-    </div>
-  );
-}
-
 function ThumbnailItem({ item }: { item: CarouselItemProps }) {
   const { image, title } = item;
 
   return <ThumbImgStyle alt={title} src={image} />;
-}
-
-function ThumbnailItemExternal({ item }: { item: CarouselItemProps }) {
-  const { image, title } = item;
-
-  return <ThumbImgExternalStyle alt={title} src={image} />;
 }
 
 interface CarouselProductProps {

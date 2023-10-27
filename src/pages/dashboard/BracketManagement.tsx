@@ -21,19 +21,22 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-import { getUserList, deleteUserApi, updateUser } from '../../redux/slices/admin/user';
+import { fDateTime } from 'utils/formatTime';
+import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
+
+import { BracketManager } from '../../@types/bracket';
+import { getBracketList, deleteBracketApi, updateBracket } from '../../redux/slices/admin/bracket';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
-// @types
-import { UserManager } from '../../@types/admin-user';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
+
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import {
@@ -41,14 +44,15 @@ import {
   UserListToolbar,
   AdminUserMoreMenu
 } from '../../components/_dashboard/user/list';
+import DialogBracketManagement from './DialogBracketManagement';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'username', label: 'Tên tài khoản', alignRight: false },
-  { id: 'fullName', label: 'Họ và tên', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'phone', label: 'Số điện thoại', alignRight: false },
+  { id: 'name', label: 'Tên khung đỡ', alignRight: false },
+  { id: 'price', label: 'Giá', alignRight: false },
+  { id: 'manufacturer', label: 'Nhà sản xuất', alignRight: false },
+  { id: 'image', label: 'Hỉnh ảnh', alignRight: false },
   { id: 'status', label: 'Trạng thái', alignRight: false },
   { id: '' }
 ];
@@ -74,7 +78,7 @@ function getComparator(order: string, orderBy: string) {
 }
 
 function applySortFilter(
-  array: UserManager[],
+  array: BracketManager[],
   comparator: (a: any, b: any) => number,
   query: string
 ) {
@@ -87,60 +91,48 @@ function applySortFilter(
   if (query) {
     return filter(
       array,
-      (_user) => _user.username.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_bracket) => _bracket.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserList() {
+export default function ProductManagement() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const { userList } = useSelector((state: RootState) => state.userList);
+  const { bracketList } = useSelector((state: RootState) => state.bracketList);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<BracketManager | null>(null);
   const [orderBy, setOrderBy] = useState('username');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
-    dispatch(getUserList());
+    dispatch(getBracketList());
   }, [dispatch]);
 
-  const handleRequestSort = (property: string) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+  const handleClickOpen = (e: any, product: BracketManager) => {
+    const arrayOfTag = [
+      '<g fill="currentColor"><circle cx="12" cy="15" r="1"></circle><path d="M17 8h-1V6.11a4 4 0 1 0-8 0V8H7a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-7-1.89A2.06 2.06 0 0 1 12 4a2.06 2.06 0 0 1 2 2.11V8h-4zM12 18a3 3 0 1 1 3-3a3 3 0 0 1-3 3z"></path></g>',
+      '<g fill="currentColor"><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="19" r="2"></circle></g>',
+      'Chỉnh sửa thông tin',
+      'Tạm ngưng',
+      'Kích hoạt',
+      'svg',
+      ''
+    ];
+    if (arrayOfTag.includes(e.target.innerHTML)) return;
+    setSelected(product);
+    setOpen(true);
   };
 
-  const handleSelectAllClick = (checked: boolean) => {
-    if (checked) {
-      const newSelecteds = userList.map((n) => n.username);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: string[] = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -152,45 +144,46 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleBlockUser = (userId: string) => {
-    dispatch(deleteUserApi(userId));
+  const handleBlockProduct = (bracketId: string) => {
+    dispatch(updateBracket({ bracketId }, false));
   };
 
-  const handleUnBlockUser = (userId: string) => {
-    dispatch(updateUser({ accountId: userId }, true));
+  const handleUnBlockProduct = (bracketId: string) => {
+    dispatch(updateBracket({ bracketId }, true));
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - bracketList.length) : 0;
 
-  const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(bracketList, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="Danh sách tài khoản | Minh Phát">
+    <Page title="Danh sách khung đỡ | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Danh sách tài khoản"
+          heading="Danh sách khung đỡ"
           links={[
             { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
-            { name: 'Danh sách tài khoản' }
+            { name: 'Danh sách khung đỡ' }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.user.newUser}
+              to={PATH_DASHBOARD.bracket.newBracket}
               startIcon={<Icon icon={plusFill} />}
             >
-              Tạo tài khoản
+              Tạo khung đỡ
             </Button>
           }
         />
 
         <Card>
           <UserListToolbar
-            numSelected={selected.length}
+            numSelected={0}
             filterName={filterName}
+            placeholder="Tìm khung đỡ..."
             onFilterName={handleFilterByName}
           />
 
@@ -198,71 +191,70 @@ export default function UserList() {
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <UserListHead
+                  isShowCheckbox={false}
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={userList.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
+                  rowCount={bracketList.length}
+                  numSelected={0}
+                  onRequestSort={() => {}}
+                  onSelectAllClick={() => {}}
                 />
                 <TableBody>
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const {
-                        accountId,
-                        username,
-                        status,
-                        address,
-                        firstname,
-                        lastname,
-                        phone,
-                        role: { roleName }
-                      } = row;
-                      const isItemSelected = selected.indexOf(username) !== -1;
+                      const { bracketId, name, price, manufacturer, image, status } = row;
 
                       return (
                         <TableRow
+                          style={{ cursor: 'pointer' }}
+                          key={bracketId}
                           hover
-                          key={accountId}
                           tabIndex={-1}
                           role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
+                          onClick={(e: any) => handleClickOpen(e, row)}
                         >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onClick={() => handleClick(username)}
-                            />
-                          </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            padding="none"
+                            style={{ maxWidth: '200px' }}
+                          >
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Typography variant="subtitle2" noWrap>
-                                {username}
-                              </Typography>
+                              <Typography variant="subtitle2">{name}</Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{`${firstname} ${lastname}`}</TableCell>
-                          <TableCell align="left">{roleName}</TableCell>
-                          <TableCell align="left">{phone}</TableCell>
+                          <TableCell align="left" style={{ maxWidth: '150px' }}>
+                            {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
+                          </TableCell>
+                          <TableCell align="left" style={{ maxWidth: '150px' }}>
+                            {manufacturer}
+                          </TableCell>
                           <TableCell align="left">
+                            {image &&
+                              thumbnailItemsExternal(
+                                image.slice(0, image.length > 3 ? 3 : image.length)
+                              )}
+                          </TableCell>
+                          <TableCell align="left" style={{ maxWidth: '100px' }}>
                             <Label
                               variant="ghost"
                               color={(status === false && 'error') || 'success'}
                             >
-                              {sentenceCase(status ? 'Active' : 'Banned')}
+                              {sentenceCase(status ? 'Available' : 'Unavailable')}
                             </Label>
                           </TableCell>
 
                           <TableCell align="right">
                             <AdminUserMoreMenu
-                              onBlock={() => handleBlockUser(accountId)}
-                              onUnblock={() => handleUnBlockUser(accountId)}
+                              onBlock={() => handleBlockProduct(bracketId)}
+                              onUnblock={() => handleUnBlockProduct(bracketId)}
+                              textFirstItem="Tạm ngưng"
+                              textFirstItemAfter="Kích hoạt"
                               status={status}
-                              id={accountId}
-                              path={PATH_DASHBOARD.user.root}
+                              id={bracketId}
+                              path={PATH_DASHBOARD.bracket.root}
                             />
                           </TableCell>
                         </TableRow>
@@ -277,7 +269,7 @@ export default function UserList() {
                 {isUserNotFound && (
                   <TableBody>
                     <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={12} sx={{ py: 3 }}>
                         <SearchNotFound searchQuery={filterName} />
                       </TableCell>
                     </TableRow>
@@ -290,13 +282,16 @@ export default function UserList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={userList.length}
+            count={bracketList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
             onRowsPerPageChange={(e) => handleChangeRowsPerPage}
           />
         </Card>
+        {selected && (
+          <DialogBracketManagement open={open} onClose={handleClose} bracket={selected} />
+        )}
       </Container>
     </Page>
   );

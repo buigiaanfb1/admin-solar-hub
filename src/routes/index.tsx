@@ -75,8 +75,19 @@ export default function Router() {
         </AuthGuard>
       ),
       children: [
-        { path: '/', element: <Navigate to="/dashboard/contract-management" replace /> },
-        { path: 'contract-management', element: <ContractManagement /> },
+        { path: '/', element: <Navigate to="/dashboard/contract" replace /> },
+        {
+          path: 'contract',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/contract/list" replace />
+            },
+            { path: 'list', element: <ContractManagement /> }
+            // { path: '/:name/edit', element: <PackageManagementCreate /> },
+            // { path: 'new', element: <PackageManagementCreate /> }
+          ]
+        },
         { path: 'app', element: <GeneralApp /> },
         { path: 'ecommerce', element: <GeneralEcommerce /> },
         {
@@ -93,6 +104,18 @@ export default function Router() {
             { path: 'list', element: <PackageManagement /> },
             { path: '/:name/edit', element: <PackageManagementCreate /> },
             { path: 'new', element: <PackageManagementCreate /> }
+          ]
+        },
+        {
+          path: 'bracket',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/bracket/list" replace />
+            },
+            { path: 'list', element: <BracketManagement /> },
+            { path: '/:name/edit', element: <BracketManagementCreate /> },
+            { path: 'new', element: <BracketManagementCreate /> }
           ]
         },
         {
@@ -308,8 +331,12 @@ const PackageManagementCreate = Loadable(
   lazy(() => import('../pages/dashboard/PackageManagementCreate'))
 );
 const ProductManagement = Loadable(lazy(() => import('../pages/dashboard/ProductManagement')));
+const BracketManagement = Loadable(lazy(() => import('../pages/dashboard/BracketManagement')));
 const ProductManagementCreate = Loadable(
   lazy(() => import('../pages/dashboard/ProductManagementCreate'))
+);
+const BracketManagementCreate = Loadable(
+  lazy(() => import('../pages/dashboard/BracketManagementCreate'))
 );
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
 const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));

@@ -19,12 +19,8 @@ export default function ContractManagement() {
     <Page title="Bảng điều khiển: Hệ thống | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Account"
-          links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.root },
-            { name: 'Account Settings' }
-          ]}
+          heading="Hợp đồng"
+          links={[{ name: 'Bảng điều khiển', href: PATH_DASHBOARD.root }, { name: 'Hợp đồng' }]}
         />
         <Grid container spacing={3}>
           <Grid item xs={12} md={12}>

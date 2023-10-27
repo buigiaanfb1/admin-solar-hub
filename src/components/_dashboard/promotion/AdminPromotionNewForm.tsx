@@ -138,7 +138,10 @@ export default function UserNewForm({ isEdit = false, currentPromotion }: Promot
                     fullWidth
                     label="Phần trăm"
                     {...getFieldProps('amount')}
-                    InputProps={{ inputProps: { min: 1, max: 10 } }}
+                    InputProps={{
+                      inputProps: { min: 1, max: 10 },
+                      endAdornment: <InputAdornment position="start">%</InputAdornment>
+                    }}
                     onChange={(e) => {
                       if (e.target.value === '') setFieldValue('amount', e.target.value);
 

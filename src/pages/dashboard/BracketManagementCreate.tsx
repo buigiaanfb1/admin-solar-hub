@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
-import { batch } from 'react-redux';
 // material
 import { Container } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 // redux
-import { getPackageList } from 'redux/slices/admin/package';
-import { getPromotionList } from 'redux/slices/admin/promotion';
+import { getBracketList } from 'redux/slices/admin/bracket';
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -16,45 +14,36 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import PackageNewForm from '../../components/_dashboard/product-package/PackageNewForm';
+import AdminBracketNewForm from '../../components/_dashboard/bracket/AdminBracketNewForm';
 
 // ----------------------------------------------------------------------
 
-export default function PackageManagementCreate() {
+export default function BracketManagementCreate() {
   const { user } = useAuth();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   // TODO: research why it is name not accountId?
   const { name } = useParams();
-  const { packageList } = useSelector((state: RootState) => state.packageList);
-  const { promotionList } = useSelector((state: RootState) => state.promotionList);
-
+  const { bracketList } = useSelector((state: RootState) => state.bracketList);
   const isEdit = pathname.includes('edit');
-  const currentPackage = packageList.find((pacKage) => pacKage.packageId === name);
+  const currentBracket = bracketList.find((bracket) => bracket.bracketId === name);
   useEffect(() => {
-    batch(() => {
-      dispatch(getPackageList());
-      dispatch(getPromotionList());
-    });
+    dispatch(getBracketList());
   }, [dispatch]);
 
   return (
-    <Page title="Tạo gói sản phẩm | Minh Phát">
+    <Page title="Thêm khung đỡ | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Tạo gói sản phẩm' : 'Chỉnh sửa thông tin gói sản phẩm'}
+          heading={!isEdit ? 'Thêm khung đỡ' : 'Chỉnh sửa thông tin khung đỡ'}
           links={[
             { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
-            { name: !isEdit ? 'Tạo gói sản phẩm' : currentPackage?.name || 'Chỉnh sửa' }
+            { name: !isEdit ? 'Thêm khung đỡ' : currentBracket?.name || 'Chỉnh sửa' }
           ]}
         />
 
-        <PackageNewForm
-          isEdit={isEdit}
-          currentPackage={currentPackage}
-          promotionList={promotionList}
-        />
+        <AdminBracketNewForm isEdit={isEdit} currentBracket={currentBracket} />
       </Container>
     </Page>
   );
