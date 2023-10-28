@@ -31,26 +31,22 @@ const RowStyle = styled('div')(({ theme }) => ({
 type CheckoutSummaryProps = {
   total: number;
   discount?: number;
+  promotionId?: string | null;
   subtotal: number;
   shipping?: number;
   onEdit?: VoidFunction;
   enableEdit?: boolean;
-  onApplyDiscount?: (discount: number) => void;
-  enableDiscount?: boolean;
 };
 
 export default function CheckoutSummary({
   total,
   onEdit,
   discount,
+  promotionId,
   subtotal,
   shipping,
-  onApplyDiscount,
-  enableEdit = false,
-  enableDiscount = false
+  enableEdit = false
 }: CheckoutSummaryProps) {
-  const displayShipping = shipping !== null ? 'Free' : '-';
-
   return (
     <Card sx={{ mb: 3 }}>
       <CardHeader
@@ -89,7 +85,25 @@ export default function CheckoutSummary({
         </RowStyle>
 
         <Divider sx={{ mb: 2 }} />
-
+        {promotionId && promotionId !== 'NOPROMOTION' && (
+          <Box sx={{ mt: 3, mb: 3 }}>
+            <TextField
+              fullWidth
+              disabled
+              placeholder="Discount codes / Gifts"
+              value={promotionId !== 'NOPROMOTION' && promotionId}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Button type="button" onClick={() => {}}>
+                      Applied
+                    </Button>
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Box>
+        )}
         <RowStyle>
           <Typography variant="subtitle1">Tổng</Typography>
           <Box sx={{ textAlign: 'right' }}>

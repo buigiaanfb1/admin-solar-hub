@@ -42,6 +42,10 @@ export const PATH_DASHBOARD = {
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics')
   },
+  feedback: {
+    root: path(ROOTS_DASHBOARD, '/feedback'),
+    list: path(ROOTS_DASHBOARD, '/feedback/list')
+  },
   contract: {
     root: path(ROOTS_DASHBOARD, '/contract'),
     list: path(ROOTS_DASHBOARD, '/contract/list')

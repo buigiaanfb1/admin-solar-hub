@@ -8,6 +8,7 @@ import useAuth from 'hooks/useAuth';
 // redux
 import { getPackageList } from 'redux/slices/admin/package';
 import { getPromotionList } from 'redux/slices/admin/promotion';
+import { getProductList } from 'redux/slices/admin/product';
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -35,6 +36,7 @@ export default function PackageManagementCreate() {
   useEffect(() => {
     batch(() => {
       dispatch(getPackageList());
+      dispatch(getProductList());
       dispatch(getPromotionList());
     });
   }, [dispatch]);

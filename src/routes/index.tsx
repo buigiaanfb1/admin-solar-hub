@@ -131,6 +131,16 @@ export default function Router() {
           ]
         },
         {
+          path: 'feedback',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/feedback/list" replace />
+            },
+            { path: 'list', element: <FeedbackManagementList /> }
+          ]
+        },
+        {
           path: 'product',
           children: [
             {
@@ -320,6 +330,9 @@ const AdminUserList = Loadable(lazy(() => import('../pages/dashboard/AdminUserLi
 const OwnerStaffList = Loadable(lazy(() => import('../pages/dashboard/OwnerStaffList')));
 const PromotionManagementList = Loadable(
   lazy(() => import('../pages/dashboard/PromotionManagement'))
+);
+const FeedbackManagementList = Loadable(
+  lazy(() => import('../pages/dashboard/FeedbackManagement'))
 );
 const PackageManagement = Loadable(lazy(() => import('../pages/dashboard/PackageManagement')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));

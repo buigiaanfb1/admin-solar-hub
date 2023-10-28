@@ -1,5 +1,6 @@
-import { sum } from 'lodash';
+import { sum, map } from 'lodash';
 import { Icon } from '@iconify/react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
@@ -8,7 +9,7 @@ import { Grid, Card, Button, CardHeader, Typography } from '@material-ui/core';
 // @types
 import { ProductState } from '../../../../@types/products';
 // redux
-import { useDispatch, useSelector } from '../../../../redux/store';
+import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import {
   deleteCart,
   onNextStep,
@@ -23,64 +24,117 @@ import Scrollbar from '../../../Scrollbar';
 import EmptyContent from '../../../EmptyContent';
 import CheckoutSummary from './CheckoutSummary';
 import CheckoutProductList from './CheckoutProductList';
+import { ProductManager, Image } from '../../../../@types/product';
+import { PackageManager } from '../../../../@types/package';
 
 // ----------------------------------------------------------------------
 
-export default function ProductPackage() {
-  const dispatch = useDispatch();
-  const { checkout } = useSelector((state: { product: ProductState }) => state.product);
-  const { cart, total, discount, subtotal } = checkout;
-  const isEmptyCart = cart.length === 0;
+export type AvailableProductsProps = {
+  productId: string;
+  available: number;
+  quantity: number;
+  manufacturer: string;
+  name: string;
+  price: number;
+  image: Image[] | undefined;
+};
 
-  const handleDeleteCart = (productId: string) => {
-    dispatch(deleteCart(productId));
-  };
+export default function ProductPackage({
+  promotion,
+  onSetProductList,
+  currentPackage
+}: {
+  promotion: { promotionId: string | null; amount: number };
+  onSetProductList: (productList: AvailableProductsProps[]) => void;
+  currentPackage: PackageManager;
+}) {
+  const { productList } = useSelector((state: RootState) => state.productList);
+  const [products, setProducts] = useState<AvailableProductsProps[]>([]);
+  const subtotal = sum(
+    products.map((productItem: AvailableProductsProps) => productItem.price * productItem.quantity)
+  );
 
-  const handleNextStep = () => {
-    dispatch(onNextStep());
-  };
+  useEffect(() => {
+    if (productList && productList.length > 0) {
+      const filterDisabledProducts = productList.filter((product) => product.status);
+      const activeProducts = filterDisabledProducts.map((product) => ({
+        productId: product.productId,
+        name: product.name,
+        manufacturer: product.manufacturer,
+        price: product.price,
+        quantity: 0,
+        available: 100,
+        image: product.image
+      }));
+
+      // Merge products from the API into the existing products array
+      const mergedProducts = activeProducts.map((activeProduct) => {
+        const apiProduct = currentPackage.packageProduct.find(
+          (apiProduct) => apiProduct.productId === activeProduct.productId
+        );
+
+        if (apiProduct) {
+          // If there's a matching product in the API, merge it with the existing product
+          return { ...activeProduct, ...apiProduct };
+        }
+        return activeProduct;
+      });
+      setProducts(mergedProducts);
+    }
+  }, [productList]);
+  // const { cart, total, discount, subtotal } = checkout;
+  const isEmptyCart = products.length === 0;
 
   const handleIncreaseQuantity = (productId: string) => {
-    dispatch(increaseQuantity(productId));
+    const updateProducts = map(products, (product) => {
+      if (product.productId === productId) {
+        return {
+          ...product,
+          quantity: product.quantity + 1
+        };
+      }
+      return product;
+    });
+    setProducts(updateProducts);
+
+    onSetProductList(updateProducts.filter((product) => product.quantity > 0));
   };
 
   const handleDecreaseQuantity = (productId: string) => {
-    dispatch(decreaseQuantity(productId));
-  };
+    const updateProducts = map(products, (product) => {
+      if (product.productId === productId) {
+        return {
+          ...product,
+          quantity: product.quantity - 1
+        };
+      }
+      return product;
+    });
+    setProducts(updateProducts);
 
-  const handleApplyDiscount = (value: number) => {
-    dispatch(applyDiscount(value));
+    onSetProductList(updateProducts.filter((product) => product.quantity > 0));
   };
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: { products: cart },
-    onSubmit: async (values, { setErrors, setSubmitting }) => {
-      try {
-        setSubmitting(true);
-        handleNextStep();
-      } catch (error: any) {
-        console.error(error);
-        setErrors(error.message);
-      }
-    }
+    initialValues: { products },
+    onSubmit: async (values, { setErrors, setSubmitting }) => {}
   });
 
-  const { values, handleSubmit } = formik;
-  const totalItems = sum(values.products.map((item) => item.quantity));
+  const { values } = formik;
 
   return (
     <FormikProvider value={formik}>
-      <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+      <Form autoComplete="off" noValidate>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={9}>
+          <Grid item xs={12} md={8}>
             <Card sx={{ mb: 3 }}>
               <CardHeader
                 title={
                   <Typography variant="h6">
                     Sản phẩm
                     <Typography component="span" sx={{ color: 'text.secondary' }}>
-                      &nbsp;({totalItems} item)
+                      &nbsp;({products.length})
                     </Typography>
                   </Typography>
                 }
@@ -91,28 +145,25 @@ export default function ProductPackage() {
                 <Scrollbar>
                   <CheckoutProductList
                     products={values.products}
-                    onDelete={handleDeleteCart}
                     onIncreaseQuantity={handleIncreaseQuantity}
                     onDecreaseQuantity={handleDecreaseQuantity}
                   />
                 </Scrollbar>
               ) : (
                 <EmptyContent
-                  title="Cart is empty"
-                  description="Look like you have no items in your shopping cart."
+                  title="Kho sản phẩm rỗng"
+                  description="Vui lòng thêm sản phẩm trước khi thêm vào gói sản phẩm."
                   img="/static/illustrations/illustration_empty_cart.svg"
                 />
               )}
             </Card>
           </Grid>
-
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={4}>
             <CheckoutSummary
-              total={total}
-              enableDiscount
-              discount={discount}
+              promotionId={promotion.promotionId}
+              total={subtotal - (subtotal / 100) * promotion.amount}
+              discount={(subtotal / 100) * promotion.amount}
               subtotal={subtotal}
-              onApplyDiscount={handleApplyDiscount}
             />
           </Grid>
         </Grid>

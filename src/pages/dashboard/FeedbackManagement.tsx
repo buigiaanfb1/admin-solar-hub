@@ -91,7 +91,7 @@ function applySortFilter(
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function PackageManagement() {
+export default function FeedbackManagement() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -153,13 +153,13 @@ export default function PackageManagement() {
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="Danh sách gói sản phẩm | Minh Phát">
+    <Page title="Feedbacks từ khách hàng | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Danh sách gói sản phẩm"
+          heading="Feedbacks từ khách hàng"
           links={[
             { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
-            { name: 'Danh sách gói sản phẩm' }
+            { name: 'Feedbacks từ khách hàng' }
           ]}
           action={
             <Button

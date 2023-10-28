@@ -17,11 +17,13 @@ import {
 } from '@material-ui/core';
 // utils
 import getColorName from '../../../../utils/getColorName';
-import { fCurrency } from '../../../../utils/formatNumber';
+import { vCurrency } from '../../../../utils/formatNumber';
 // @types
 import { CartItem } from '../../../../@types/products';
 //
 import { MIconButton } from '../../../@material-extend';
+import { ProductManager } from '../../../../@types/product';
+import { AvailableProductsProps } from './ProductPackage';
 
 // ----------------------------------------------------------------------
 
@@ -56,7 +58,7 @@ function Incrementer({ available, quantity, onIncrease, onDecrease }: Incremente
   return (
     <Box sx={{ width: 96, textAlign: 'right' }}>
       <IncrementerStyle>
-        <MIconButton size="small" color="inherit" onClick={onDecrease} disabled={quantity <= 1}>
+        <MIconButton size="small" color="inherit" onClick={onDecrease} disabled={quantity <= 0}>
           <Icon icon={minusFill} width={16} height={16} />
         </MIconButton>
         {quantity}
@@ -70,22 +72,20 @@ function Incrementer({ available, quantity, onIncrease, onDecrease }: Incremente
         </MIconButton>
       </IncrementerStyle>
       <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-        available: {available}
+        còn hàng: {available}
       </Typography>
     </Box>
   );
 }
 
 type CheckoutProductListProps = {
-  products: CartItem[];
-  onDelete: (id: string) => void;
+  products: AvailableProductsProps[];
   onDecreaseQuantity: (id: string) => void;
   onIncreaseQuantity: (id: string) => void;
 };
 
 export default function CheckoutProductList({
   products,
-  onDelete,
   onIncreaseQuantity,
   onDecreaseQuantity
 }: CheckoutProductListProps) {
@@ -98,20 +98,26 @@ export default function CheckoutProductList({
             <TableCell align="left">Giá</TableCell>
             <TableCell align="left">Số lượng</TableCell>
             <TableCell align="right">Tổng</TableCell>
-            <TableCell align="right" />
           </TableRow>
         </TableHead>
 
         <TableBody>
           {products.map((product) => {
-            const { id, name, size, price, color, cover, quantity, available } = product;
+            const { productId, name, price, image, quantity, available } = product;
             return (
-              <TableRow key={id}>
+              <TableRow key={productId}>
                 <TableCell>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <ThumbImgStyle alt="product image" src={cover} />
+                    <ThumbImgStyle
+                      alt="product image"
+                      src={
+                        image && image.length > 0
+                          ? image[0].imageData
+                          : 'https://climate.onep.go.th/wp-content/uploads/2020/01/default-image.jpg'
+                      }
+                    />
                     <Box>
-                      <Typography noWrap variant="subtitle2" sx={{ maxWidth: 240 }}>
+                      <Typography noWrap variant="subtitle2" sx={{ maxWidth: 200 }}>
                         {name}
                       </Typography>
 
@@ -127,44 +133,27 @@ export default function CheckoutProductList({
                             variant="body2"
                             sx={{ color: 'text.secondary' }}
                           >
-                            size:&nbsp;
+                            Nhà sản xuất:&nbsp;
                           </Typography>
-                          {size}
-                        </Typography>
-                        <Divider orientation="vertical" sx={{ mx: 1, height: 16 }} />
-                        <Typography variant="body2">
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            sx={{ color: 'text.secondary' }}
-                          >
-                            color:&nbsp;
-                          </Typography>
-                          {getColorName(color)}
+                          {product.manufacturer}
                         </Typography>
                       </Box>
                     </Box>
                   </Box>
                 </TableCell>
 
-                <TableCell align="left">{fCurrency(price)}</TableCell>
+                <TableCell align="left">{vCurrency(price)} VNĐ</TableCell>
 
                 <TableCell align="left">
                   <Incrementer
                     quantity={quantity}
                     available={available}
-                    onDecrease={() => onDecreaseQuantity(id)}
-                    onIncrease={() => onIncreaseQuantity(id)}
+                    onDecrease={() => onDecreaseQuantity(productId)}
+                    onIncrease={() => onIncreaseQuantity(productId)}
                   />
                 </TableCell>
 
-                <TableCell align="right">{fCurrency(price * quantity)}</TableCell>
-
-                <TableCell align="right">
-                  <MIconButton onClick={() => onDelete(id)}>
-                    <Icon icon={trash2Fill} width={20} height={20} />
-                  </MIconButton>
-                </TableCell>
+                <TableCell align="right">{vCurrency(price * quantity)} VNĐ</TableCell>
               </TableRow>
             );
           })}

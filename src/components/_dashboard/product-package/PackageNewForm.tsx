@@ -29,17 +29,22 @@ import { PATH_DASHBOARD } from 'routes/paths';
 import { AuthUser } from '../../../@types/authentication';
 import { PackageManager } from '../../../@types/package';
 import { PromotionManager } from '../../../@types/promotion';
-import ProductPackage from './components/ProductPackage';
+import ProductPackage, { AvailableProductsProps } from './components/ProductPackage';
 // import { roles, genders, loginTypes } from './roles';
 
 // ----------------------------------------------------------------------
 
 type PackageNewFormProps = {
   isEdit: boolean;
-  currentPackage?: Partial<PackageManager>;
+  currentPackage?: PackageManager;
   promotionList?: Partial<PromotionManager[]>;
   isDisabled?: boolean;
 };
+
+interface ProductList {
+  productId: string;
+  quantity: number;
+}
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -54,7 +59,6 @@ export default function PackageNewForm({
 }: PackageNewFormProps) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-
   const NewPackageSchema = Yup.object().shape({
     packageId: Yup.string(),
     name: Yup.string().required('Tên gói sản phẩm là bắt buộc'),
@@ -67,7 +71,9 @@ export default function PackageNewForm({
       packageId: currentPackage?.packageId || 'default',
       name: currentPackage?.name || '',
       description: currentPackage?.description || '',
-      promotionId: currentPackage?.promotionId || null
+      amount: currentPackage?.promotion?.amount || 0,
+      promotionId: currentPackage?.promotionId || null,
+      listProduct: currentPackage?.packageProduct || []
     },
     validationSchema: NewPackageSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -80,6 +86,14 @@ export default function PackageNewForm({
             ...(values?.promotionId &&
               values?.promotionId !== 'NOPROMOTION' && { promotionId: values?.promotionId }),
             isDisablePromotion: values?.promotionId === 'NOPROMOTION'
+          });
+
+          await axios.post('api/Package/Insert-product-package', {
+            packageId: values?.packageId,
+            listProduct: values.listProduct.map((product: any) => ({
+              productId: product.productId,
+              quantity: product.quantity
+            }))
           });
         } else {
           await axios.post('api/Package/Insert-Package', {
@@ -118,6 +132,9 @@ export default function PackageNewForm({
     setFieldTouched
   } = formik;
 
+  const handleSetProductList = (productList: AvailableProductsProps[]) => {
+    setFieldValue('listProduct', productList);
+  };
   console.log(errors);
   console.log(values);
 
@@ -159,22 +176,37 @@ export default function PackageNewForm({
                     error={Boolean(touched.description && errors.description)}
                     helperText={touched.description && errors.description}
                   >
-                    <MenuItem key="NOPROMOTION" value="NOPROMOTION">
+                    <MenuItem
+                      key="NOPROMOTION"
+                      value="NOPROMOTION"
+                      onClick={() => setFieldValue('amount', 0)}
+                    >
                       Không
                     </MenuItem>
                     {promotionList &&
                       promotionList.length > 0 &&
                       promotionList.map((promotion) => (
-                        <MenuItem key={promotion?.promotionId} value={promotion?.promotionId}>
-                          {promotion?.promotionId} | {promotion?.title}
+                        <MenuItem
+                          key={promotion?.promotionId}
+                          value={promotion?.promotionId}
+                          onClick={() => setFieldValue('amount', promotion?.amount)}
+                        >
+                          {promotion?.promotionId} | {promotion?.title} | Giảm {promotion?.amount}%
                         </MenuItem>
                       ))}
                   </TextField>
                 </Stack>
 
-                {isEdit && (
+                {isEdit && currentPackage && (
                   <Stack>
-                    <ProductPackage />
+                    <ProductPackage
+                      currentPackage={currentPackage}
+                      promotion={{
+                        promotionId: values.promotionId,
+                        amount: Number(values?.amount) || 0
+                      }}
+                      onSetProductList={handleSetProductList}
+                    />
                   </Stack>
                 )}
 

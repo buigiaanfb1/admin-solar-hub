@@ -141,14 +141,19 @@ const ownerSidebarConfig = [
     subheader: 'Phê duyệt',
     items: [
       {
-        title: 'Hợp đồng',
+        title: 'Nhân viên',
+        path: PATH_DASHBOARD.staff.list,
+        icon: ICONS.user
+      },
+      {
+        title: 'Thống kê Hợp đồng',
         path: PATH_DASHBOARD.contract.list,
         icon: ICONS.dashboard
       },
       {
-        title: 'Nhân viên',
-        path: PATH_DASHBOARD.staff.list,
-        icon: ICONS.user
+        title: 'Feebacks',
+        path: PATH_DASHBOARD.feedback.list,
+        icon: ICONS.kanban
       }
     ]
   },
