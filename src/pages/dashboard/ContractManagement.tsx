@@ -19,13 +19,17 @@ export default function ContractManagement() {
     <Page title="Bảng điều khiển: Hệ thống | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Hợp đồng"
-          links={[{ name: 'Bảng điều khiển', href: PATH_DASHBOARD.root }, { name: 'Hợp đồng' }]}
+          mb={0}
+          heading="Danh sách hợp đồng"
+          links={[
+            { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
+            { name: 'Danh sách hợp đồng' }
+          ]}
         />
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={12}>
+        <Grid container spacing={0}>
+          {/* <Grid item xs={12} md={12}>
             <AccountBillingAddressBook />
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} md={12}>
             <ContractManagementTabs />
           </Grid>

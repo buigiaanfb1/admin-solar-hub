@@ -44,7 +44,7 @@ interface CustomProps {
   name: string;
 }
 
-const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
+export const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
   function NumericFormatCustom(props, ref) {
     const { onChange, ...other } = props;
 

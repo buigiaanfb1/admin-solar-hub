@@ -3,6 +3,7 @@ import { capitalCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import bellFill from '@iconify/icons-eva/bell-fill';
 import shareFill from '@iconify/icons-eva/share-fill';
+import archiveFill from '@iconify/icons-eva/archive-fill';
 import roundVpnKey from '@iconify/icons-ic/round-vpn-key';
 import roundReceipt from '@iconify/icons-ic/round-receipt';
 import roundAccountBox from '@iconify/icons-ic/round-account-box';
@@ -38,7 +39,7 @@ export default function ContractManagementTabs() {
     (state: RootState) => state.user
   );
 
-  const [currentTab, setCurrentTab] = useState('general');
+  const [currentTab, setCurrentTab] = useState('pending');
 
   useEffect(() => {
     dispatch(getCards());
@@ -62,28 +63,22 @@ export default function ContractManagementTabs() {
 
   const ACCOUNT_TABS = [
     {
-      value: 'contract',
-      label: 'Hợp đồng',
-      icon: <Icon icon={roundAccountBox} width={20} height={20} />,
+      value: 'pending',
+      label: 'Chờ duyệt',
+      icon: <Icon icon={bellFill} width={20} height={20} />,
       component: <AccountGeneral />
     },
     {
-      value: 'billing',
-      label: 'Thanh toán',
+      value: 'approved',
+      label: 'Đã duyệt',
       icon: <Icon icon={roundReceipt} width={20} height={20} />,
       component: <AccountBilling cards={cards} addressBook={addressBook} invoices={invoices} />
     },
     {
-      value: 'processing',
-      label: 'Nhiệm vụ xử lí',
-      icon: <Icon icon={bellFill} width={20} height={20} />,
-      component: <AccountNotifications notifications={notifications} />
-    },
-    {
       value: 'history',
-      label: 'Lịch sự truy cập',
-      icon: <Icon icon={shareFill} width={20} height={20} />,
-      component: <AccountSocialLinks myProfile={myProfile} />
+      label: 'Lịch sử',
+      icon: <Icon icon={archiveFill} width={20} height={20} />,
+      component: <AccountNotifications notifications={notifications} />
     }
   ];
 

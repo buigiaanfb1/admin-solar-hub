@@ -254,7 +254,7 @@ export default function UserList() {
                               variant="ghost"
                               color={(status === false && 'error') || 'success'}
                             >
-                              {sentenceCase(status ? 'Active' : 'Banned')}
+                              {sentenceCase(status ? 'Available' : 'Unavailable')}
                             </Label>
                           </TableCell>
                         </TableRow>

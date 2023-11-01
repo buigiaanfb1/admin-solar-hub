@@ -120,7 +120,7 @@ const adminSidebarConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
   {
-    subheader: 'Quản lí',
+    subheader: 'Quản lý',
     items: [
       // MANAGEMENT : USER
       {
@@ -128,8 +128,8 @@ const adminSidebarConfig = [
         path: PATH_DASHBOARD.user.root,
         icon: ICONS.user,
         children: [
-          { title: 'list', path: PATH_DASHBOARD.user.list },
-          { title: 'create', path: PATH_DASHBOARD.user.newUser }
+          { title: 'Quản lý', path: PATH_DASHBOARD.user.list },
+          { title: 'Tạo tài khoản', path: PATH_DASHBOARD.user.newUser }
         ]
       }
     ]
@@ -138,53 +138,39 @@ const adminSidebarConfig = [
 
 const ownerSidebarConfig = [
   {
-    subheader: 'Phê duyệt',
+    subheader: 'Quản lý',
     items: [
       {
-        title: 'Nhân viên',
+        title: 'Quản lý Nhân viên',
         path: PATH_DASHBOARD.staff.list,
         icon: ICONS.user
       },
       {
-        title: 'Thống kê Hợp đồng',
+        title: 'Quản lý Hợp đồng',
         path: PATH_DASHBOARD.contract.list,
         icon: ICONS.dashboard
       },
       {
-        title: 'Feebacks',
-        path: PATH_DASHBOARD.feedback.list,
-        icon: ICONS.kanban
-      }
-    ]
-  },
-  {
-    subheader: 'Quản lí',
-    items: [
-      {
-        title: 'Mã khuyến mãi',
+        title: 'Quản lý khuyến mãi',
         path: PATH_DASHBOARD.promotion.root,
-        icon: ICONS.mail,
-        children: [
-          { title: 'Danh sách khuyến mãi', path: PATH_DASHBOARD.promotion.list },
-          { title: 'Tạo khuyến mãi', path: PATH_DASHBOARD.promotion.newPromotion }
-        ]
+        icon: ICONS.mail
       },
       {
-        title: 'Gói sản phẩm',
-        path: PATH_DASHBOARD.package.root,
-        icon: ICONS.ecommerce,
-        children: [
-          { title: 'Danh sách gói', path: PATH_DASHBOARD.package.list },
-          { title: 'Tạo gói sản phẩm', path: PATH_DASHBOARD.package.newPackage }
-        ]
-      },
-      {
-        title: 'Sản phẩm',
+        title: 'Quản lý sản phẩm',
         path: PATH_DASHBOARD.product.root,
         icon: ICONS.cart,
         children: [
-          { title: 'Danh sách sản phẩm', path: PATH_DASHBOARD.product.list },
+          { title: 'Quản lý sản phẩm', path: PATH_DASHBOARD.product.list },
           { title: 'Tạo sản phẩm', path: PATH_DASHBOARD.product.newProduct }
+        ]
+      },
+      {
+        title: 'Quản lý combo',
+        path: PATH_DASHBOARD.package.root,
+        icon: ICONS.ecommerce,
+        children: [
+          { title: 'Quản lý combo', path: PATH_DASHBOARD.package.list },
+          { title: 'Tạo combo', path: PATH_DASHBOARD.package.newPackage }
         ]
       }
     ]
@@ -197,9 +183,19 @@ const ownerSidebarConfig = [
         path: PATH_DASHBOARD.bracket.root,
         icon: ICONS.ecommerce,
         children: [
-          { title: 'Danh sách khung đỡ', path: PATH_DASHBOARD.bracket.list },
+          { title: 'Quản lý khung đỡ', path: PATH_DASHBOARD.bracket.list },
           { title: 'Thêm khung đỡ', path: PATH_DASHBOARD.bracket.newBracket }
         ]
+      }
+    ]
+  },
+  {
+    subheader: 'Đánh giá',
+    items: [
+      {
+        title: 'Feedbacks',
+        path: PATH_DASHBOARD.feedback.list,
+        icon: ICONS.kanban
       }
     ]
   }
@@ -209,14 +205,14 @@ const staffSidebarConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
   {
-    subheader: 'Quản lí',
+    subheader: 'Quản lý',
     items: [
       {
         title: 'Tài khoản',
         path: PATH_DASHBOARD.user.root,
         icon: ICONS.user,
         children: [
-          { title: 'Danh sách tài khoản', path: PATH_DASHBOARD.user.list },
+          { title: 'Quản lý tài khoản', path: PATH_DASHBOARD.user.list },
           { title: 'create', path: PATH_DASHBOARD.user.newUser }
         ]
       },
@@ -225,7 +221,7 @@ const staffSidebarConfig = [
         path: PATH_DASHBOARD.promotion.root,
         icon: ICONS.mail,
         children: [
-          { title: 'Danh sách mã khuyến mãi', path: PATH_DASHBOARD.promotion.list },
+          { title: 'Quản lý mã khuyến mãi', path: PATH_DASHBOARD.promotion.list },
           { title: 'Tạo khuyến mãi', path: PATH_DASHBOARD.promotion.newPromotion }
         ]
       },
@@ -234,7 +230,7 @@ const staffSidebarConfig = [
         path: PATH_DASHBOARD.package.root,
         icon: ICONS.dashboard,
         children: [
-          { title: 'Danh sách gói', path: PATH_DASHBOARD.package.list },
+          { title: 'Quản lý gói', path: PATH_DASHBOARD.package.list },
           { title: 'Tạo gói', path: PATH_DASHBOARD.package.newPackage }
         ]
       },
@@ -243,7 +239,7 @@ const staffSidebarConfig = [
         path: PATH_DASHBOARD.product.root,
         icon: ICONS.dashboard,
         children: [
-          { title: 'Danh sách sản phẩm', path: PATH_DASHBOARD.product.list },
+          { title: 'Quản lý sản phẩm', path: PATH_DASHBOARD.product.list },
           { title: 'Tạo sản phẩm', path: PATH_DASHBOARD.product.newProduct }
         ]
       }

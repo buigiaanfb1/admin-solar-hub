@@ -194,7 +194,7 @@ export default function PromotionManagement() {
           <UserListToolbar
             numSelected={selected.length}
             filterName={filterName}
-            placeholder="Tìm khuyến mãi..."
+            placeholder="Tìm tên khuyến mãi..."
             onFilterName={handleFilterByName}
           />
 

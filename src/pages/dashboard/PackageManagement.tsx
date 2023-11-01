@@ -198,7 +198,7 @@ export default function PackageManagement() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { packageId, name, price, description, status } = row;
+                      const { packageId, name, price, description, status, promotionPrice } = row;
 
                       return (
                         <TableRow
@@ -236,7 +236,26 @@ export default function PackageManagement() {
                             </div>
                           </TableCell>
                           <TableCell align="left">
-                            {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
+                            {promotionPrice !== null ? (
+                              <>
+                                <span style={{ textDecoration: 'line-through', color: 'red' }}>
+                                  {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
+                                </span>
+                                <Typography>
+                                  <span>
+                                    {'    '}
+                                    {promotionPrice
+                                      ?.toString()
+                                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                                    VNĐ
+                                  </span>
+                                </Typography>
+                              </>
+                            ) : (
+                              <Typography>
+                                {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
+                              </Typography>
+                            )}
                           </TableCell>
                           <TableCell align="left">
                             <Label

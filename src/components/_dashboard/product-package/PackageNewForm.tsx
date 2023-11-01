@@ -30,6 +30,7 @@ import { AuthUser } from '../../../@types/authentication';
 import { PackageManager } from '../../../@types/package';
 import { PromotionManager } from '../../../@types/promotion';
 import ProductPackage, { AvailableProductsProps } from './components/ProductPackage';
+import { NumericFormatCustom } from '../product/AdminProductNewForm';
 // import { roles, genders, loginTypes } from './roles';
 
 // ----------------------------------------------------------------------
@@ -72,6 +73,8 @@ export default function PackageNewForm({
       name: currentPackage?.name || '',
       description: currentPackage?.description || '',
       amount: currentPackage?.promotion?.amount || 0,
+      roofArea: currentPackage?.roofArea || null,
+      electricBill: currentPackage?.electricBill || null,
       promotionId: currentPackage?.promotionId || null,
       listProduct: currentPackage?.packageProduct || []
     },
@@ -83,6 +86,8 @@ export default function PackageNewForm({
             packageId: values?.packageId,
             name: values?.name,
             description: values?.description,
+            roofArea: values?.roofArea,
+            electricBill: values?.electricBill,
             ...(values?.promotionId &&
               values?.promotionId !== 'NOPROMOTION' && { promotionId: values?.promotionId }),
             isDisablePromotion: values?.promotionId === 'NOPROMOTION'
@@ -99,6 +104,8 @@ export default function PackageNewForm({
           await axios.post('api/Package/Insert-Package', {
             name: values?.name,
             description: values?.description,
+            roofArea: values?.roofArea,
+            electricBill: values?.electricBill,
             ...(values?.promotionId &&
               values?.promotionId !== 'NOPROMOTION' && { promotionId: values?.promotionId }),
             isDisablePromotion: values?.promotionId === 'NOPROMOTION'
@@ -169,6 +176,34 @@ export default function PackageNewForm({
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
+                    fullWidth
+                    label="Diện tích mái"
+                    disabled={isDisabled}
+                    {...getFieldProps('roofArea')}
+                    InputProps={{
+                      inputProps: { min: 1 },
+                      endAdornment: <InputAdornment position="start">Mét vuông</InputAdornment>,
+                      inputComponent: NumericFormatCustom as any
+                    }}
+                    error={Boolean(touched.roofArea && errors.roofArea)}
+                    helperText={touched.roofArea && errors.roofArea}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Hoá đơn điện"
+                    disabled={isDisabled}
+                    {...getFieldProps('electricBill')}
+                    InputProps={{
+                      inputProps: { min: 1 },
+                      endAdornment: <InputAdornment position="start">VNĐ</InputAdornment>,
+                      inputComponent: NumericFormatCustom as any
+                    }}
+                    error={Boolean(touched.electricBill && errors.electricBill)}
+                    helperText={touched.electricBill && errors.electricBill}
+                  />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
                     select
                     fullWidth
                     label="Select"
@@ -196,7 +231,6 @@ export default function PackageNewForm({
                       ))}
                   </TextField>
                 </Stack>
-
                 {isEdit && currentPackage && (
                   <Stack>
                     <ProductPackage
@@ -209,7 +243,6 @@ export default function PackageNewForm({
                     />
                   </Stack>
                 )}
-
                 {!isDisabled && (
                   <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                     <LoadingButton type="submit" variant="contained" loading={isSubmitting}>

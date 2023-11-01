@@ -12,18 +12,20 @@ interface HeaderBreadcrumbsProps extends MBreadcrumbsProps {
   action?: ReactNode;
   heading: string;
   moreLink?: string | string[];
+  mb?: number;
 }
 
 export default function HeaderBreadcrumbs({
   links,
   action,
   heading,
+  mb = 5,
   moreLink = '' || [],
   sx,
   ...other
 }: HeaderBreadcrumbsProps) {
   return (
-    <Box sx={{ mb: 5, ...sx }}>
+    <Box sx={{ mb, ...sx }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Box sx={{ flexGrow: 1 }}>
           <Typography variant="h4" gutterBottom>
