@@ -42,13 +42,29 @@ export const PATH_DASHBOARD = {
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics')
   },
+  request: {
+    root: path(ROOTS_DASHBOARD, '/request'),
+    list: path(ROOTS_DASHBOARD, '/request/list')
+  },
+  survey: {
+    root: path(ROOTS_DASHBOARD, '/survey'),
+    list: path(ROOTS_DASHBOARD, '/survey/list'),
+    newSurvey: path(ROOTS_DASHBOARD, '/survey/new'),
+    editById: path(ROOTS_DASHBOARD, '/survey/ada-lindgren/edit')
+  },
   feedback: {
     root: path(ROOTS_DASHBOARD, '/feedback'),
     list: path(ROOTS_DASHBOARD, '/feedback/list')
   },
   contract: {
     root: path(ROOTS_DASHBOARD, '/contract'),
-    list: path(ROOTS_DASHBOARD, '/contract/list')
+    list: path(ROOTS_DASHBOARD, '/contract/list'),
+    newContract: path(ROOTS_DASHBOARD, '/contract/new'),
+    editById: path(ROOTS_DASHBOARD, '/contract/ada-lindgren/edit'),
+    rootStaff: path(ROOTS_DASHBOARD, '/staff/contract'),
+    listStaff: path(ROOTS_DASHBOARD, '/staff/contract/list'),
+    newContractStaff: path(ROOTS_DASHBOARD, '/staff/contract/new'),
+    editByIdStaff: path(ROOTS_DASHBOARD, '/staff/contract/ada-lindgren/edit')
   },
   bracket: {
     root: path(ROOTS_DASHBOARD, '/bracket'),

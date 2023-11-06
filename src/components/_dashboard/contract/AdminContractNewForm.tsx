@@ -29,13 +29,16 @@ import { AuthUser } from '../../../@types/authentication';
 import { ProductManager } from '../../../@types/product';
 import Upload from './Upload';
 import CarouselProduct from './CarouselProduct';
+import { ConstructionContractManager } from '../../../@types/contract';
+import { Image } from '../../../@types/product';
+
 // import { roles, genders, loginTypes } from './roles';
 
 // ----------------------------------------------------------------------
 
 type ProductNewFormProps = {
   isEdit: boolean;
-  currentProduct?: ProductManager;
+  currentContructionContract?: ConstructionContractManager;
   isDisabled?: boolean;
 };
 
@@ -67,9 +70,9 @@ export const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
   }
 );
 
-export default function AdminProductNewForm({
+export default function AdminContractNewForm({
   isEdit = false,
-  currentProduct,
+  currentContructionContract,
   isDisabled = false
 }: ProductNewFormProps) {
   const navigate = useNavigate();
@@ -78,10 +81,10 @@ export default function AdminProductNewForm({
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (currentProduct?.image && currentProduct?.image.length > 0) {
-      setFiles(currentProduct?.image.map((image) => image.imageData));
+    if (currentContructionContract?.imageFile) {
+      setFiles([currentContructionContract.imageFile]);
     }
-  }, [currentProduct]);
+  }, [currentContructionContract]);
 
   const NewProductSchema = Yup.object().shape({
     productId: Yup.string(),
@@ -99,12 +102,12 @@ export default function AdminProductNewForm({
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      productId: currentProduct?.productId || 'default',
-      name: currentProduct?.name || '',
-      price: currentProduct?.price || '',
-      manufacturer: currentProduct?.manufacturer || '',
-      feature: currentProduct?.feature || '',
-      warrantyDate: currentProduct?.warrantyDate || null
+      // productId: currentProduct?.productId || 'default',
+      // name: currentProduct?.name || '',
+      // price: currentProduct?.price || '',
+      // manufacturer: currentProduct?.manufacturer || '',
+      // feature: currentProduct?.feature || '',
+      // warrantyDate: currentProduct?.warrantyDate || null
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -113,29 +116,29 @@ export default function AdminProductNewForm({
         if (files.length > 0) {
           imageUrls = await (await uploadImages(files)).map((url) => ({ image: url }));
         }
-        if (isEdit) {
-          await axios.put('api/Product/update-Product', {
-            productId: values?.productId,
-            name: values?.name,
-            price: values?.price,
-            manufacturer: values?.manufacturer,
-            feature: values?.feature,
-            warrantyDate: values?.warrantyDate,
-            status: currentProduct?.status,
-            image: imageUrls
-          });
-        } else {
-          await axios.post('api/Product/Insert-Product', {
-            productId: values?.productId,
-            name: values?.name,
-            price: values?.price,
-            manufacturer: values?.manufacturer,
-            feature: values?.feature,
-            warrantyDate: values?.warrantyDate,
-            status: true,
-            image: imageUrls
-          });
-        }
+        // if (isEdit) {
+        //   await axios.put('api/Product/update-Product', {
+        //     productId: values?.productId,
+        //     name: values?.name,
+        //     price: values?.price,
+        //     manufacturer: values?.manufacturer,
+        //     feature: values?.feature,
+        //     warrantyDate: values?.warrantyDate,
+        //     status: currentProduct?.status,
+        //     image: imageUrls
+        //   });
+        // } else {
+        //   await axios.post('api/Product/Insert-Product', {
+        //     productId: values?.productId,
+        //     name: values?.name,
+        //     price: values?.price,
+        //     manufacturer: values?.manufacturer,
+        //     feature: values?.feature,
+        //     warrantyDate: values?.warrantyDate,
+        //     status: true,
+        //     image: imageUrls
+        //   });
+        // }
         resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Tạo sản phẩm thành công' : 'Cập nhật sản phẩm thành công', {
@@ -170,47 +173,20 @@ export default function AdminProductNewForm({
         <Grid container spacing={3}>
           <Grid item xs={12} md={12}>
             <Card sx={{ p: 3 }}>
-              {isEdit && currentProduct?.image && currentProduct?.image.length > 0 && (
+              {isEdit && currentContructionContract?.imageFile && (
                 <Stack spacing={3} sx={{ marginBottom: '1.5em' }}>
-                  <CarouselProduct images={currentProduct.image} />
+                  <CarouselProduct
+                    images={[{ imageData: currentContructionContract?.imageFile } as Image]}
+                  />
                 </Stack>
               )}
               <Stack spacing={3}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    disabled={isDisabled}
-                    label="Tên sản phẩm"
-                    {...getFieldProps('name')}
-                    error={Boolean(touched.name && errors.name)}
-                    helperText={touched.name && errors.name}
-                  />
-                  <TextField
-                    fullWidth
-                    disabled={isDisabled}
-                    label="Nhà sản xuất"
-                    {...getFieldProps('manufacturer')}
-                    error={Boolean(touched.manufacturer && errors.manufacturer)}
-                    helperText={touched.manufacturer && errors.manufacturer}
-                  />
+                <Stack>
+                  <Upload onGetFile={handleGetFile} defaultFiles={files} />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="Giá tiền"
-                    disabled={isDisabled}
-                    {...getFieldProps('price')}
-                    InputProps={{
-                      inputProps: { min: 1 },
-                      endAdornment: <InputAdornment position="start">VNĐ</InputAdornment>,
-                      inputComponent: NumericFormatCustom as any
-                    }}
-                    error={Boolean(touched.price && errors.price)}
-                    helperText={touched.price && errors.price}
-                  />
-
                   <DesktopDatePicker
-                    label="Ngày hết hạn bảo hành"
+                    label="Ngày bắt đầu"
                     {...getFieldProps('warrantyDate')}
                     disabled={isDisabled}
                     onChange={(newValue) => {
@@ -220,34 +196,33 @@ export default function AdminProductNewForm({
                       <TextField
                         fullWidth
                         {...params}
-                        error={Boolean(touched.warrantyDate && errors.warrantyDate)}
-                        helperText={touched.warrantyDate && errors.warrantyDate}
+                        // error={Boolean(touched.warrantyDate && errors.warrantyDate)}
+                        // helperText={touched.warrantyDate && errors.warrantyDate}
+                      />
+                    )}
+                  />
+                  <DesktopDatePicker
+                    label="Ngày hoàn thành"
+                    {...getFieldProps('warrantyDate')}
+                    disabled={isDisabled}
+                    onChange={(newValue) => {
+                      setFieldValue('warrantyDate', newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        fullWidth
+                        {...params}
+                        // error={Boolean(touched.warrantyDate && errors.warrantyDate)}
+                        // helperText={touched.warrantyDate && errors.warrantyDate}
                       />
                     )}
                   />
                 </Stack>
 
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    multiline
-                    maxRows={4}
-                    fullWidth
-                    disabled={isDisabled}
-                    label="Mô tả"
-                    {...getFieldProps('feature')}
-                    error={Boolean(touched.feature && errors.feature)}
-                    helperText={touched.feature && errors.feature}
-                  />
-                </Stack>
-
-                <Stack>
-                  <Upload onGetFile={handleGetFile} defaultFiles={files} />
-                </Stack>
-
                 {!isDisabled && (
                   <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                     <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                      {!isEdit ? 'Thêm sản phẩm' : 'Cập nhật'}
+                      {!isEdit ? 'Tạo họp đồng' : 'Cập nhật'}
                     </LoadingButton>
                   </Box>
                 )}

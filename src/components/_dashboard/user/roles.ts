@@ -48,6 +48,17 @@ const loginTypes = [
   }
 ];
 
+const staffTypes = [
+  {
+    code: 'leader',
+    label: 'Trưởng phòng'
+  },
+  {
+    code: 'staff',
+    label: 'Nhân viên'
+  }
+];
+
 const roleMapping: any = {
   '1': 'Admin',
   '2': 'Owner',
@@ -55,4 +66,4 @@ const roleMapping: any = {
   '4': 'Customer'
 };
 
-export { roles, roleMapping, genders, loginTypes };
+export { roles, roleMapping, genders, loginTypes, staffTypes };

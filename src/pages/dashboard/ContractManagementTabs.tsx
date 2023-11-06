@@ -29,6 +29,7 @@ import {
   AccountNotifications,
   AccountChangePassword
 } from '../../components/_dashboard/user/account';
+import AdminPendingContractManagement from './AdminPendingContractManagement';
 
 // ----------------------------------------------------------------------
 
@@ -41,25 +42,7 @@ export default function ContractManagementTabs() {
 
   const [currentTab, setCurrentTab] = useState('pending');
 
-  useEffect(() => {
-    dispatch(getCards());
-    dispatch(getAddressBook());
-    dispatch(getInvoices());
-    dispatch(getNotifications());
-    dispatch(getProfile());
-  }, [dispatch]);
-
-  if (!myProfile) {
-    return null;
-  }
-
-  if (!cards) {
-    return null;
-  }
-
-  if (!notifications) {
-    return null;
-  }
+  useEffect(() => {}, [dispatch]);
 
   const ACCOUNT_TABS = [
     {
@@ -72,27 +55,35 @@ export default function ContractManagementTabs() {
       value: 'approved',
       label: 'Đã duyệt',
       icon: <Icon icon={roundReceipt} width={20} height={20} />,
-      component: <AccountBilling cards={cards} addressBook={addressBook} invoices={invoices} />
+      component: <AccountGeneral />
     },
     {
       value: 'history',
       label: 'Lịch sử',
       icon: <Icon icon={archiveFill} width={20} height={20} />,
-      component: <AccountNotifications notifications={notifications} />
+      component: <AccountGeneral />
     }
   ];
 
   return (
-    <Tabs
-      value={currentTab}
-      scrollButtons="auto"
-      variant="scrollable"
-      allowScrollButtonsMobile
-      onChange={(e, value) => setCurrentTab(value)}
-    >
-      {ACCOUNT_TABS.map((tab) => (
-        <Tab disableRipple key={tab.value} label={tab.label} icon={tab.icon} value={tab.value} />
-      ))}
-    </Tabs>
+    <>
+      <Tabs
+        value={currentTab}
+        scrollButtons="auto"
+        variant="scrollable"
+        allowScrollButtonsMobile
+        onChange={(e, value) => setCurrentTab(value)}
+      >
+        {ACCOUNT_TABS.map((tab) => (
+          <Tab disableRipple key={tab.value} label={tab.label} icon={tab.icon} value={tab.value} />
+        ))}
+      </Tabs>
+      <Box sx={{ mb: 5 }} />
+      {currentTab === 'pending' && (
+        <div>
+          <AdminPendingContractManagement />
+        </div>
+      )}
+    </>
   );
 }

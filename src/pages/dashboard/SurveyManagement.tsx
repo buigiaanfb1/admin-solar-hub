@@ -22,9 +22,10 @@ import {
   TablePagination
 } from '@material-ui/core';
 import { fDateTime } from 'utils/formatTime';
-
-import { PackageManager } from '../../@types/package';
-import { getPackageList, deletePackageApi, updatePackage } from '../../redux/slices/admin/package';
+import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
+import useAuth from 'hooks/useAuth';
+import { BracketManager } from '../../@types/bracket';
+import { getSurveyList, updateSurvey, deleteSurveyApi } from '../../redux/slices/staff/survey';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 // routes
@@ -35,6 +36,7 @@ import useSettings from '../../hooks/useSettings';
 import Page from '../../components/Page';
 import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
+
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import {
@@ -42,14 +44,15 @@ import {
   UserListToolbar,
   AdminUserMoreMenu
 } from '../../components/_dashboard/user/list';
-import DialogPackageManagement from './DialogPackageManagement';
+import DialogBracketManagement from './DialogBracketManagement';
+import { SurveyManager } from '../../@types/survey';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Gói sản phẩm', alignRight: false },
+  { id: 'surveyId', label: 'Mã khào sát', alignRight: false },
   { id: 'description', label: 'Mô tả', alignRight: false },
-  { id: 'price', label: 'Giá', alignRight: false },
+  { id: 'note', label: 'Ghi chú', alignRight: false },
   { id: 'status', label: 'Trạng thái', alignRight: false },
   { id: '' }
 ];
@@ -75,7 +78,7 @@ function getComparator(order: string, orderBy: string) {
 }
 
 function applySortFilter(
-  array: PackageManager[],
+  array: SurveyManager[],
   comparator: (a: any, b: any) => number,
   query: string
 ) {
@@ -86,20 +89,24 @@ function applySortFilter(
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(
+      array,
+      (_survey) => _survey.note.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function PackageManagement() {
+export default function SurveyManagement() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
+  const { user } = useAuth();
   const dispatch = useDispatch();
 
-  const { packageList } = useSelector((state: RootState) => state.packageList);
+  const { surveyList } = useSelector((state: RootState) => state.staffSurveyList);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-  const [selected, setSelected] = useState<PackageManager | null>(null);
+  const [selected, setSelected] = useState<SurveyManager | null>(null);
   const [orderBy, setOrderBy] = useState('username');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -107,10 +114,10 @@ export default function PackageManagement() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(getPackageList());
+    dispatch(getSurveyList(user?.userInfo.accountId));
   }, [dispatch]);
 
-  const handleClickOpen = (e: any, pacKage: PackageManager) => {
+  const handleClickOpen = (e: any, survey: SurveyManager) => {
     const arrayOfTag = [
       '<g fill="currentColor"><circle cx="12" cy="15" r="1"></circle><path d="M17 8h-1V6.11a4 4 0 1 0-8 0V8H7a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-7-1.89A2.06 2.06 0 0 1 12 4a2.06 2.06 0 0 1 2 2.11V8h-4zM12 18a3 3 0 1 1 3-3a3 3 0 0 1-3 3z"></path></g>',
       '<g fill="currentColor"><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="19" r="2"></circle></g>',
@@ -121,7 +128,7 @@ export default function PackageManagement() {
       ''
     ];
     if (arrayOfTag.includes(e.target.innerHTML)) return;
-    setSelected(pacKage);
+    setSelected(survey);
     setOpen(true);
   };
 
@@ -138,37 +145,37 @@ export default function PackageManagement() {
     setFilterName(filterName);
   };
 
-  const handleBlockPackage = (packageId: string) => {
-    dispatch(updatePackage({ packageId }, false));
+  const handleBlockSurvey = (surveyId: string) => {
+    dispatch(deleteSurveyApi(surveyId, user?.userInfo.accountId));
   };
 
-  const handleUnBlockPackage = (packageId: string) => {
-    dispatch(updatePackage({ packageId }, true));
+  const handleUnBlocSurvey = (surveyId: string) => {
+    dispatch(updateSurvey({ surveyId, status: true }, user?.userInfo.accountId));
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - packageList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - surveyList.length) : 0;
 
-  const filteredUsers = applySortFilter(packageList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(surveyList, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="Danh sách gói sản phẩm | Minh Phát">
+    <Page title="Danh sách các khảo sát | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Danh sách gói sản phẩm"
+          heading="Danh sách các khảo sát"
           links={[
             { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
-            { name: 'Danh sách gói sản phẩm' }
+            { name: 'Danh sách các khảo sát' }
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.package.newPackage}
+              to={PATH_DASHBOARD.survey.newSurvey}
               startIcon={<Icon icon={plusFill} />}
             >
-              Tạo gói sản phẩm
+              Tạo khảo sát
             </Button>
           }
         />
@@ -177,7 +184,7 @@ export default function PackageManagement() {
           <UserListToolbar
             numSelected={0}
             filterName={filterName}
-            placeholder="Tìm gói sản phẩm..."
+            placeholder="Tìm khảo sát theo ghi chú..."
             onFilterName={handleFilterByName}
           />
 
@@ -189,7 +196,7 @@ export default function PackageManagement() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={packageList.length}
+                  rowCount={surveyList.length}
                   numSelected={0}
                   onRequestSort={() => {}}
                   onSelectAllClick={() => {}}
@@ -198,12 +205,12 @@ export default function PackageManagement() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { packageId, name, price, description, status, promotionPrice } = row;
+                      const { surveyId, note, description, status } = row;
 
                       return (
                         <TableRow
                           style={{ cursor: 'pointer' }}
-                          key={packageId}
+                          key={surveyId}
                           hover
                           tabIndex={-1}
                           role="checkbox"
@@ -213,67 +220,36 @@ export default function PackageManagement() {
                             component="th"
                             scope="row"
                             padding="none"
-                            style={{ maxWidth: 200 }}
+                            style={{ maxWidth: '200px' }}
                           >
-                            <div style={{ overflowWrap: 'break-word' }}>
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </div>
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              <Typography variant="subtitle2">{surveyId}</Typography>
+                            </Stack>
                           </TableCell>
-                          <TableCell align="left">
-                            <div
-                              style={{
-                                width: 200,
-                                overflowWrap: 'break-word',
-                                WebkitLineClamp: 3,
-                                WebkitBoxOrient: 'vertical',
-                                overflow: 'hidden',
-                                display: '-webkit-box'
-                              }}
-                            >
-                              <Typography variant="subtitle2">{description}</Typography>
-                            </div>
+                          <TableCell align="left" style={{ maxWidth: '150px' }}>
+                            {description}
                           </TableCell>
-                          <TableCell align="left">
-                            {promotionPrice !== null ? (
-                              <>
-                                <span style={{ textDecoration: 'line-through', color: 'red' }}>
-                                  {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
-                                </span>
-                                <Typography>
-                                  <span>
-                                    {promotionPrice
-                                      ?.toString()
-                                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                                    VNĐ
-                                  </span>
-                                </Typography>
-                              </>
-                            ) : (
-                              <Typography>
-                                {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
-                              </Typography>
-                            )}
+                          <TableCell align="left" style={{ maxWidth: '150px' }}>
+                            {note}
                           </TableCell>
-                          <TableCell align="left">
+                          <TableCell align="left" style={{ maxWidth: '100px' }}>
                             <Label
                               variant="ghost"
                               color={(status === false && 'error') || 'success'}
                             >
-                              {sentenceCase(status ? 'Available' : 'Unavailable')}
+                              {sentenceCase(status ? 'Active' : 'Deleted')}
                             </Label>
                           </TableCell>
 
                           <TableCell align="right">
                             <AdminUserMoreMenu
-                              onBlock={() => handleBlockPackage(packageId)}
-                              onUnblock={() => handleUnBlockPackage(packageId)}
-                              textFirstItem="Tạm ngưng"
-                              textFirstItemAfter="Kích hoạt"
+                              onBlock={() => handleBlockSurvey(surveyId)}
+                              onUnblock={() => handleUnBlocSurvey(surveyId)}
+                              textFirstItem="Đóng khảo sát"
+                              textFirstItemAfter="Mở lại khảo sát"
                               status={status}
-                              id={packageId}
-                              path={PATH_DASHBOARD.package.root}
+                              id={surveyId}
+                              path={PATH_DASHBOARD.survey.root}
                             />
                           </TableCell>
                         </TableRow>
@@ -281,7 +257,7 @@ export default function PackageManagement() {
                     })}
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={12} />
+                      <TableCell colSpan={6} />
                     </TableRow>
                   )}
                 </TableBody>
@@ -301,14 +277,16 @@ export default function PackageManagement() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={packageList.length}
+            count={surveyList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
             onRowsPerPageChange={(e) => handleChangeRowsPerPage}
           />
         </Card>
-        {selected && <DialogPackageManagement open={open} onClose={handleClose} />}
+        {/* {selected && (
+          <DialogBracketManagement open={open} onClose={handleClose} bracket={selected} />
+        )} */}
       </Container>
     </Page>
   );

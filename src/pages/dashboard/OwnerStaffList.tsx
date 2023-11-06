@@ -41,6 +41,7 @@ import {
   UserListToolbar,
   AdminUserMoreMenu
 } from '../../components/_dashboard/user/list';
+import DialogRequestManagement from './DialogRequestManagement';
 
 // ----------------------------------------------------------------------
 
@@ -48,7 +49,7 @@ const TABLE_HEAD = [
   { id: 'username', label: 'Tên tài khoản', alignRight: false },
   { id: 'fullName', label: 'Họ và tên', alignRight: false },
   { id: 'phone', label: 'Số điện thoại', alignRight: false },
-  { id: 'survey', label: 'Khảo sát', alignRight: false },
+  { id: 'request', label: 'Yêu cầu khảo sát', alignRight: false },
   { id: 'status', label: 'Trạng thái', alignRight: false }
 ];
 
@@ -213,12 +214,12 @@ export default function UserList() {
                       const {
                         accountId,
                         username,
-                        status,
-                        survey,
                         firstname,
                         lastname,
                         phone,
-                        role: { roleName }
+                        isLeader,
+                        isFree,
+                        requestStaff
                       } = row;
                       const isItemSelected = selected.indexOf(username) !== -1;
 
@@ -244,17 +245,32 @@ export default function UserList() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{`${firstname} ${lastname}`}</TableCell>
+                          <TableCell align="left">
+                            {`${firstname} ${lastname}`}
+                            {isLeader && (
+                              <Label variant="ghost" color="primary" sx={{ ml: 1 }}>
+                                {sentenceCase('Leader')}
+                              </Label>
+                            )}
+                          </TableCell>
                           <TableCell align="left">{phone}</TableCell>
                           <TableCell align="left">
-                            {survey.length > 0 ? 'Có khảo sát' : 'Chưa có khảo sát'}
+                            {isFree || isFree === null ? (
+                              <DialogRequestManagement staffId={accountId} />
+                            ) : (
+                              'Đang trong 3 khảo sát'
+                            )}
                           </TableCell>
                           <TableCell align="left">
                             <Label
                               variant="ghost"
-                              color={(status === false && 'error') || 'success'}
+                              color={isFree || isFree === null ? 'success' : 'warning'}
                             >
-                              {sentenceCase(status ? 'Available' : 'Unavailable')}
+                              {sentenceCase(
+                                isFree || isFree === null
+                                  ? `Available ${requestStaff.length} out of 3`
+                                  : 'Unavailable 3 out of 3'
+                              )}
                             </Label>
                           </TableCell>
                         </TableRow>

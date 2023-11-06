@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -21,6 +21,11 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
+import { fDateTime } from 'utils/formatTime';
+import { disableRequest, getRequestList } from 'redux/slices/staff/request';
+import { useSnackbar } from 'notistack5';
+import useAuth from 'hooks/useAuth';
+
 import { getUserList, deleteUserApi, updateUser } from '../../redux/slices/admin/user';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
@@ -41,16 +46,18 @@ import {
   UserListToolbar,
   AdminUserMoreMenu
 } from '../../components/_dashboard/user/list';
+import { RequestManager, RequestStaff } from '../../@types/request';
+import DialogCreateContractManagement from './DialogCreateContractManagement';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'username', label: 'Tên tài khoản', alignRight: false },
-  { id: 'fullName', label: 'Họ và tên', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'phone', label: 'Số điện thoại', alignRight: false },
-  { id: 'status', label: 'Trạng thái', alignRight: false },
-  { id: '' }
+  { id: '', label: '', alignRight: false },
+  { id: 'packageName', label: 'Tên combo', alignRight: false },
+  { id: 'username', label: 'Tài khoản khách hàng', alignRight: false },
+  { id: 'description', label: 'Mô tả', alignRight: false },
+  { id: 'createAt', label: 'Ngày tạo', alignRight: false },
+  { id: 'tools', label: '', alignRight: false }
 ];
 
 // ----------------------------------------------------------------------
@@ -74,7 +81,7 @@ function getComparator(order: string, orderBy: string) {
 }
 
 function applySortFilter(
-  array: UserManager[],
+  array: RequestStaff[],
   comparator: (a: any, b: any) => number,
   query: string
 ) {
@@ -87,27 +94,32 @@ function applySortFilter(
   if (query) {
     return filter(
       array,
-      (_user) => _user.username.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_request) => _request.account.username.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserList() {
+export default function OwnerRequestList({ staffId }: { staffId: string }) {
   const { themeStretch } = useSettings();
+  const { user } = useAuth();
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
-  const { userList } = useSelector((state: RootState) => state.userList);
+  const { requestList } = useSelector((state: RootState) => state.staffRequestList);
+  const requestAvailableList = requestList.filter((request) => request);
+  // const requestAvailableList = requestList.filter((request) => request);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string>('');
   const [orderBy, setOrderBy] = useState('username');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    dispatch(getUserList());
+    dispatch(getRequestList(user?.userInfo.accountId));
   }, [dispatch]);
 
   const handleRequestSort = (property: string) => {
@@ -116,31 +128,16 @@ export default function UserList() {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (checked: boolean) => {
-    if (checked) {
-      const newSelecteds = userList.map((n) => n.username);
-      setSelected(newSelecteds);
+  const handleClick = (requestId: string) => {
+    if (requestId === selected) {
+      setSelected('');
       return;
     }
-    setSelected([]);
+    setSelected(requestId);
   };
 
-  const handleClick = (name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: string[] = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
+  const handleAssignRequest = () => {
+    dispatch(disableRequest(selected, staffId));
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -152,46 +149,44 @@ export default function UserList() {
     setFilterName(filterName);
   };
 
-  const handleBlockUser = (userId: string) => {
-    dispatch(deleteUserApi(userId));
-  };
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - requestList.length) : 0;
 
-  const handleUnBlockUser = (userId: string) => {
-    dispatch(updateUser({ accountId: userId }, true));
-  };
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
-
-  const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(
+    requestAvailableList,
+    getComparator(order, orderBy),
+    filterName
+  );
 
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="Danh sách tài khoản | Minh Phát">
+    <Page title="Danh sách các yêu cầu mới | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Danh sách tài khoản"
+          heading="Danh sách các yêu cầu mới"
           links={[
             { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
-            { name: 'Danh sách tài khoản' }
+            { name: 'Danh sách các yêu cầu mới' }
           ]}
           action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.user.newUser}
-              startIcon={<Icon icon={plusFill} />}
-            >
-              Tạo tài khoản
-            </Button>
+            // <Button
+            //   variant="contained"
+            //   component={RouterLink}
+            //   to={PATH_DASHBOARD.product.newProduct}
+            //   startIcon={<Icon icon={plusFill} />}
+            // >
+            //   Tạo sản phẩm
+            // </Button>
+            <></>
           }
         />
-
         <Card>
           <UserListToolbar
             numSelected={selected.length}
             filterName={filterName}
+            placeholder="Tìm theo tài khoản khách hàng..."
             onFilterName={handleFilterByName}
+            onAssignRequest={handleAssignRequest}
           />
 
           <Scrollbar>
@@ -201,31 +196,30 @@ export default function UserList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={userList.length}
+                  rowCount={requestAvailableList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
+                  onSelectAllClick={() => {}}
+                  isShowCheckbox={false}
                 />
                 <TableBody>
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       const {
-                        accountId,
-                        username,
-                        status,
-                        isLeader,
-                        firstname,
-                        lastname,
-                        phone,
-                        role: { roleName }
+                        requestId,
+                        package: { name },
+                        createAt,
+                        account: { username },
+                        description,
+                        status
                       } = row;
-                      const isItemSelected = selected.indexOf(username) !== -1;
+                      const isItemSelected = selected.indexOf(requestId) !== -1;
 
                       return (
                         <TableRow
                           hover
-                          key={accountId}
+                          key={requestId}
                           tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
@@ -234,43 +228,26 @@ export default function UserList() {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
-                              onClick={() => handleClick(username)}
+                              onClick={() => handleClick(requestId)}
                             />
                           </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <Typography variant="subtitle2" noWrap>
-                                {username}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{`${firstname} ${lastname}`}</TableCell>
-                          <TableCell align="left">
-                            {roleName}
-                            {isLeader && (
-                              <Label variant="ghost" color="primary" sx={{ ml: 1 }}>
-                                {sentenceCase('Leader')}
+                          <TableCell align="left">{name}</TableCell>
+                          <TableCell align="left">{username}</TableCell>
+                          <TableCell align="left">{description}</TableCell>
+                          <TableCell align="left">{fDateTime(createAt)}</TableCell>
+                          <TableCell align="center" style={{ width: '200px' }}>
+                            {status ? (
+                              <Button
+                                onClick={() => navigate(PATH_DASHBOARD.contract.newContractStaff)}
+                                variant="contained"
+                              >
+                                Tạo hợp đồng
+                              </Button>
+                            ) : (
+                              <Label variant="ghost" color="error">
+                                CANCELLED
                               </Label>
                             )}
-                          </TableCell>
-                          <TableCell align="left">{phone}</TableCell>
-                          <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={(status === false && 'error') || 'success'}
-                            >
-                              {sentenceCase(status ? 'Active' : 'Banned')}
-                            </Label>
-                          </TableCell>
-
-                          <TableCell align="right">
-                            <AdminUserMoreMenu
-                              onBlock={() => handleBlockUser(accountId)}
-                              onUnblock={() => handleUnBlockUser(accountId)}
-                              status={status}
-                              id={accountId}
-                              path={PATH_DASHBOARD.user.root}
-                            />
                           </TableCell>
                         </TableRow>
                       );
@@ -297,7 +274,7 @@ export default function UserList() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={userList.length}
+            count={requestAvailableList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}

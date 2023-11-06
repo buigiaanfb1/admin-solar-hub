@@ -77,15 +77,27 @@ export default function Router() {
       children: [
         { path: '/', element: <Navigate to="/dashboard/contract" replace /> },
         {
+          path: 'staff',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/staff/contract/list" replace />
+            },
+            { path: 'contract/list', element: <StaffContractManagement /> },
+            { path: '/contract/:name/edit', element: <ContractManagementCreate /> },
+            { path: 'contract/new', element: <ContractManagementCreate /> }
+          ]
+        },
+        {
           path: 'contract',
           children: [
             {
               path: '/',
               element: <Navigate to="/dashboard/contract/list" replace />
             },
-            { path: 'list', element: <ContractManagement /> }
-            // { path: '/:name/edit', element: <PackageManagementCreate /> },
-            // { path: 'new', element: <PackageManagementCreate /> }
+            { path: 'list', element: <ContractManagement /> },
+            { path: '/:name/edit', element: <ContractManagementCreate /> },
+            { path: 'new', element: <ContractManagementCreate /> }
           ]
         },
         { path: 'app', element: <GeneralApp /> },
@@ -131,6 +143,16 @@ export default function Router() {
           ]
         },
         {
+          path: 'request',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/request/list" replace />
+            },
+            { path: 'list', element: <StaffRequestList /> }
+          ]
+        },
+        {
           path: 'feedback',
           children: [
             {
@@ -150,6 +172,18 @@ export default function Router() {
             { path: 'list', element: <ProductManagement /> },
             { path: '/:name/edit', element: <ProductManagementCreate /> },
             { path: 'new', element: <ProductManagementCreate /> }
+          ]
+        },
+        {
+          path: 'survey',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/survey/list" replace />
+            },
+            { path: 'list', element: <SurveyManagement /> },
+            { path: '/:name/edit', element: <SurveyManagementCreate /> },
+            { path: 'new', element: <SurveyManagementCreate /> }
           ]
         },
         {
@@ -307,6 +341,12 @@ const VerifyCode = Loadable(lazy(() => import('../pages/authentication/VerifyCod
 // Dashboard
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));
 const ContractManagement = Loadable(lazy(() => import('../pages/dashboard/ContractManagement')));
+const StaffContractManagement = Loadable(
+  lazy(() => import('../pages/dashboard/StaffContractManagement'))
+);
+const ContractManagementCreate = Loadable(
+  lazy(() => import('../pages/dashboard/ContractManagementCreate'))
+);
 const GeneralEcommerce = Loadable(lazy(() => import('../pages/dashboard/GeneralEcommerce')));
 const GeneralAnalytics = Loadable(lazy(() => import('../pages/dashboard/GeneralAnalytics')));
 const EcommerceShop = Loadable(lazy(() => import('../pages/dashboard/EcommerceShop')));
@@ -334,6 +374,7 @@ const PromotionManagementList = Loadable(
 const FeedbackManagementList = Loadable(
   lazy(() => import('../pages/dashboard/FeedbackManagement'))
 );
+const StaffRequestList = Loadable(lazy(() => import('../pages/dashboard/StaffRequestList')));
 const PackageManagement = Loadable(lazy(() => import('../pages/dashboard/PackageManagement')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
 const AdminUserCreate = Loadable(lazy(() => import('../pages/dashboard/AdminUserCreate')));
@@ -347,6 +388,10 @@ const ProductManagement = Loadable(lazy(() => import('../pages/dashboard/Product
 const BracketManagement = Loadable(lazy(() => import('../pages/dashboard/BracketManagement')));
 const ProductManagementCreate = Loadable(
   lazy(() => import('../pages/dashboard/ProductManagementCreate'))
+);
+const SurveyManagement = Loadable(lazy(() => import('../pages/dashboard/SurveyManagement')));
+const SurveyManagementCreate = Loadable(
+  lazy(() => import('../pages/dashboard/SurveyManagementCreate'))
 );
 const BracketManagementCreate = Loadable(
   lazy(() => import('../pages/dashboard/BracketManagementCreate'))

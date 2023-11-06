@@ -26,16 +26,14 @@ import useAuth from 'hooks/useAuth';
 import axios from 'utils/axiosIntegrated';
 import { PATH_DASHBOARD } from 'routes/paths';
 import { AuthUser } from '../../../@types/authentication';
-import { BracketManager } from '../../../@types/bracket';
-import Upload from './Upload';
-import CarouselBracket from './CarouselBracket';
+import { SurveyManager } from '../../../@types/survey';
 // import { roles, genders, loginTypes } from './roles';
 
 // ----------------------------------------------------------------------
 
-type BracketNewFormProps = {
+type SurveyNewFormProps = {
   isEdit: boolean;
-  currentBracket?: BracketManager;
+  currentSurvey?: SurveyManager;
   isDisabled?: boolean;
 };
 
@@ -67,28 +65,21 @@ const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
   }
 );
 
-export default function AdminBracketNewForm({
+export default function SurveyNewForm({
   isEdit = false,
-  currentBracket,
+  currentSurvey,
   isDisabled = false
-}: BracketNewFormProps) {
+}: SurveyNewFormProps) {
   const navigate = useNavigate();
-  const { uploadImages } = useAuth();
+  const { user } = useAuth();
   const [files, setFiles] = useState<(File | string)[]>([]);
-
-  useEffect(() => {
-    if (currentBracket?.image && currentBracket?.image.length > 0) {
-      setFiles(currentBracket?.image.map((image) => image.imageData));
-    }
-  }, [currentBracket]);
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const NewBracketSchema = Yup.object().shape({
-    productId: Yup.string(),
-    name: Yup.string().required('Tên khung đỡ là bắt buộc'),
-    price: Yup.number().required('Giá khung đỡ là bắt buộc'),
-    manufacturer: Yup.string().required('Nhà sản xuất là bắt buộc')
+  const NewSurveySchema = Yup.object().shape({
+    surveyId: Yup.string(),
+    note: Yup.string().required('Ghi chú về khảo sát'),
+    description: Yup.string().required('Mô tả chi tiết là bắt buộc')
   });
 
   const handleGetFile = (files: (File | string)[]) => {
@@ -98,42 +89,36 @@ export default function AdminBracketNewForm({
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      bracketId: currentBracket?.bracketId || 'default',
-      name: currentBracket?.name || '',
-      price: currentBracket?.price || '',
-      manufacturer: currentBracket?.manufacturer || ''
+      surveyId: currentSurvey?.surveyId || 'default',
+      note: currentSurvey?.note || '',
+      description: currentSurvey?.description || '',
+      status: currentSurvey?.status || '',
+      staffId: currentSurvey?.staffId || ''
     },
-    validationSchema: NewBracketSchema,
+    validationSchema: NewSurveySchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        let imageUrls: { image: string }[] = [];
-        if (files.length > 0) {
-          imageUrls = await (await uploadImages(files)).map((url) => ({ image: url }));
-        }
         if (isEdit) {
-          await axios.put('api/Bracket/Update-bracket-by-id', {
-            bracketId: values?.bracketId,
-            name: values?.name,
-            price: values?.price,
-            manufacturer: values?.manufacturer,
-            image: imageUrls
+          await axios.put('api/Survey/Update-survey-by-id', {
+            surveyId: values?.surveyId,
+            note: values?.note,
+            description: values?.description,
+            status: currentSurvey?.status,
+            staffId: currentSurvey?.staffId
           });
         } else {
-          await axios.post('api/Bracket/Insert-Bracket', {
-            bracketId: values?.bracketId,
-            name: values?.name,
-            price: values?.price,
-            manufacturer: values?.manufacturer,
-            status: true,
-            image: imageUrls
+          await axios.post('api/Survey/Insert-survey', {
+            note: values?.note,
+            description: values?.description,
+            staffId: user?.userInfo.accountId
           });
         }
         resetForm();
         setSubmitting(false);
-        enqueueSnackbar(!isEdit ? 'Tạo khung đỡ thành công' : 'Cập nhật khung đỡ thành công', {
+        enqueueSnackbar(!isEdit ? 'Tạo khảo sát thành công' : 'Cập nhật khảo sát thành công', {
           variant: 'success'
         });
-        navigate(PATH_DASHBOARD.bracket.list);
+        navigate(PATH_DASHBOARD.survey.list);
       } catch (error: any) {
         console.error(error);
         setSubmitting(false);
@@ -159,54 +144,31 @@ export default function AdminBracketNewForm({
         <Grid container spacing={3}>
           <Grid item xs={12} md={12}>
             <Card sx={{ p: 3 }}>
-              {isEdit && currentBracket?.image && currentBracket?.image.length > 0 && (
-                <Stack spacing={3} sx={{ marginBottom: '1.5em' }}>
-                  <CarouselBracket images={currentBracket.image} />
-                </Stack>
-              )}
               <Stack spacing={3}>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
                     disabled={isDisabled}
-                    label="Tên khung đỡ"
-                    {...getFieldProps('name')}
-                    error={Boolean(touched.name && errors.name)}
-                    helperText={touched.name && errors.name}
-                  />
-                  <TextField
-                    fullWidth
-                    disabled={isDisabled}
-                    label="Nhà sản xuất"
-                    {...getFieldProps('manufacturer')}
-                    error={Boolean(touched.manufacturer && errors.manufacturer)}
-                    helperText={touched.manufacturer && errors.manufacturer}
+                    label="Ghi chú"
+                    {...getFieldProps('note')}
+                    error={Boolean(touched.note && errors.note)}
+                    helperText={touched.note && errors.note}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
-                    label="Giá tiền"
                     disabled={isDisabled}
-                    {...getFieldProps('price')}
-                    InputProps={{
-                      inputProps: { min: 1 },
-                      endAdornment: <InputAdornment position="start">VNĐ</InputAdornment>,
-                      inputComponent: NumericFormatCustom as any
-                    }}
-                    error={Boolean(touched.price && errors.price)}
-                    helperText={touched.price && errors.price}
+                    label="Mô tả"
+                    {...getFieldProps('description')}
+                    error={Boolean(touched.description && errors.description)}
+                    helperText={touched.description && errors.description}
                   />
                 </Stack>
-
-                <Stack>
-                  <Upload onGetFile={handleGetFile} defaultFiles={files} />
-                </Stack>
-
                 {!isDisabled && (
                   <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                     <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                      {!isEdit ? 'Thêm khung đỡ' : 'Cập nhật'}
+                      {!isEdit ? 'Tạo khảo sát' : 'Cập nhật'}
                     </LoadingButton>
                   </Box>
                 )}

@@ -1,37 +1,24 @@
 import { useState, useCallback, useEffect } from 'react';
-// material
-import { styled } from '@material-ui/core/styles';
-import {
-  Box,
-  Card,
-  Stack,
-  Switch,
-  Container,
-  CardHeader,
-  Typography,
-  CardContent,
-  FormControlLabel
-} from '@material-ui/core';
-// routes
-import { PATH_PAGE } from '../../../routes/paths';
-// utils
-import { fData } from '../../../utils/formatNumber';
-// components
-import Page from '../../Page';
-import HeaderBreadcrumbs from '../../HeaderBreadcrumbs';
-import { UploadAvatar, UploadMultiFile, UploadSingleFile } from '../../upload';
+import { UploadMultiFile } from '../../upload';
 
 // ----------------------------------------------------------------------
 
 interface UploadProps {
-  onGetFile: (file: File[]) => void;
+  onGetFile: (file: (File | string)[]) => void;
+  defaultFiles?: (File | string)[];
 }
-export default function Upload({ onGetFile }: UploadProps) {
-  const [files, setFiles] = useState<File[]>([]);
+export default function Upload({ onGetFile, defaultFiles = [] }: UploadProps) {
+  const [files, setFiles] = useState<(File | string)[]>(defaultFiles);
 
   useEffect(() => {
     onGetFile(files);
   }, [files]);
+
+  useEffect(() => {
+    if (defaultFiles.length > 0) {
+      setFiles(defaultFiles);
+    }
+  }, [defaultFiles]);
 
   const handleDropMultiFile = useCallback(
     (acceptedFiles) => {

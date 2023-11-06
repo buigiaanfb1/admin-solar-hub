@@ -26,7 +26,7 @@ import { MHidden } from '../../components/@material-extend';
 //
 import { DocIcon } from '../../assets';
 
-import { adminSidebarConfig, ownerSidebarConfig } from './SidebarConfig';
+import { adminSidebarConfig, ownerSidebarConfig, staffSidebarConfig } from './SidebarConfig';
 
 // ----------------------------------------------------------------------
 
@@ -125,7 +125,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       case 'Owner':
         return <NavSection navConfig={ownerSidebarConfig} isShow={!isCollapse} />;
       case 'Staff':
-        return <NavSection navConfig={adminSidebarConfig} isShow={!isCollapse} />;
+        return <NavSection navConfig={staffSidebarConfig} isShow={!isCollapse} />;
       default:
         return null;
     }

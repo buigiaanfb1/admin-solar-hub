@@ -23,7 +23,7 @@ import useAuth from 'hooks/useAuth';
 import axios from 'utils/axiosIntegrated';
 import { AuthUser } from '../../../@types/authentication';
 import { UserManager } from '../../../@types/admin-user';
-import { roles, genders, loginTypes } from './roles';
+import { roles, genders, loginTypes, staffTypes } from './roles';
 
 // ----------------------------------------------------------------------
 
@@ -64,7 +64,8 @@ export default function UserNewForm({
     address: Yup.string(),
     roleId: Yup.string(),
     gender: Yup.string(),
-    isGoogleProvider: Yup.string()
+    isGoogleProvider: Yup.string(),
+    isLeader: Yup.string()
   });
 
   const UpdateUserSchema = Yup.object().shape({
@@ -77,7 +78,8 @@ export default function UserNewForm({
     address: Yup.string(),
     roleId: Yup.string(),
     gender: Yup.string(),
-    isGoogleProvider: Yup.string()
+    isGoogleProvider: Yup.string(),
+    isLeader: Yup.string()
   });
 
   const formik = useFormik({
@@ -92,7 +94,8 @@ export default function UserNewForm({
       address: currentUser?.address || '',
       roleId: currentUser?.roleId || '4',
       gender: currentUser?.gender ? '0' : '1',
-      isGoogleProvider: currentUser?.isGoogleProvider ? 'google' : 'manual'
+      isGoogleProvider: currentUser?.isGoogleProvider ? 'google' : 'manual',
+      isLeader: currentUser?.isLeader ? 'leader' : 'staff'
     },
     validationSchema: isEdit ? UpdateUserSchema : NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -104,7 +107,10 @@ export default function UserNewForm({
             firstname: values.firstname,
             lastname: values.lastname,
             address: values.address,
+            phone: values.phone,
             gender: values.gender === '0' || false,
+            roleId: values.roleId,
+            ...(values.roleId == '3' && { isLeader: values.isLeader === 'leader' || false }),
             ...(isSetDefaultPassword && { password: 'default' }),
             isGoogleProvider: values.isGoogleProvider === 'google' || false
           });
@@ -125,7 +131,8 @@ export default function UserNewForm({
             roleId: values.roleId,
             gender: values.gender === '0' || false,
             password: values.passwordOfUser,
-            isGoogleProvider: values.isGoogleProvider === 'google' || false
+            isGoogleProvider: values.isGoogleProvider === 'google' || false,
+            ...(values.roleId == '3' && { isLeader: values.isLeader === 'leader' || false })
           });
         }
         resetForm();
@@ -257,6 +264,13 @@ export default function UserNewForm({
                       error={Boolean(touched.usernameOfUser && errors.usernameOfUser)}
                       helperText={touched.usernameOfUser && errors.usernameOfUser}
                     />
+                    <TextField
+                      fullWidth
+                      label="Số điện thoại"
+                      {...getFieldProps('phone')}
+                      error={Boolean(touched.phone && errors.phone)}
+                      helperText={touched.phone && errors.phone}
+                    />
                   </Stack>
                 )}
 
@@ -284,13 +298,6 @@ export default function UserNewForm({
                 )}
 
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="Số điện thoại"
-                    {...getFieldProps('phone')}
-                    error={Boolean(touched.phone && errors.phone)}
-                    helperText={touched.phone && errors.phone}
-                  />
                   {currentAdmin.role && (
                     <TextField
                       select
@@ -304,6 +311,32 @@ export default function UserNewForm({
                     >
                       {roles[currentAdmin.role].map((option: any) => (
                         <option key={option.code} value={option.code} defaultValue={values.roleId}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  )}
+
+                  {values.roleId === '3' && (
+                    <TextField
+                      select
+                      fullWidth
+                      label="Chúc vụ nhân viên"
+                      placeholder="Trưởng, nhân viên..."
+                      {...getFieldProps('isLeader')}
+                      onChange={(e) => {
+                        setFieldValue('isLeader', e.target.value);
+                      }}
+                      SelectProps={{ native: true }}
+                      error={Boolean(touched.isLeader && errors.isLeader)}
+                      helperText={touched.isLeader && errors.isLeader}
+                    >
+                      {staffTypes.map((option: any) => (
+                        <option
+                          key={option.code}
+                          value={option.code}
+                          defaultValue={values.isLeader === 'leader' ? 'leader' : 'staff'}
+                        >
                           {option.label}
                         </option>
                       ))}

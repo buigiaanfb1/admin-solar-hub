@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react';
 import searchFill from '@iconify/icons-eva/search-fill';
-import trash2Fill from '@iconify/icons-eva/trash-2-fill';
+import navigation2Fill from '@iconify/icons-eva/navigation-2-fill';
 import roundFilterList from '@iconify/icons-ic/round-filter-list';
 // material
 import { useTheme, styled } from '@material-ui/core/styles';
@@ -43,15 +43,18 @@ type UserListToolbarProps = {
   filterName: string;
   placeholder?: string;
   onFilterName: (value: string) => void;
+  onAssignRequest?: () => void;
 };
 
 export default function UserListToolbar({
   numSelected,
   filterName,
   placeholder = 'Tìm tài khoản...',
-  onFilterName
+  onFilterName,
+  onAssignRequest
 }: UserListToolbarProps) {
   const theme = useTheme();
+
   const isLight = theme.palette.mode === 'light';
 
   return (
@@ -65,7 +68,7 @@ export default function UserListToolbar({
     >
       {numSelected > 0 ? (
         <Typography component="div" variant="subtitle1">
-          {numSelected} selected
+          Selected
         </Typography>
       ) : (
         <SearchStyle
@@ -81,9 +84,9 @@ export default function UserListToolbar({
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <Icon icon={trash2Fill} />
+        <Tooltip title="Yêu cầu khảo sát">
+          <IconButton onClick={onAssignRequest}>
+            <Icon icon={navigation2Fill} />
           </IconButton>
         </Tooltip>
       ) : (

@@ -205,46 +205,33 @@ const staffSidebarConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
   {
-    subheader: 'Quản lý',
+    subheader: 'Công việc',
     items: [
       {
-        title: 'Tài khoản',
-        path: PATH_DASHBOARD.user.root,
-        icon: ICONS.user,
+        title: 'Yêu cầu khảo sát',
+        path: PATH_DASHBOARD.request.root,
+        icon: ICONS.user
+      },
+      {
+        title: 'Khảo sát',
+        path: PATH_DASHBOARD.survey.list,
+        icon: ICONS.kanban,
         children: [
-          { title: 'Quản lý tài khoản', path: PATH_DASHBOARD.user.list },
-          { title: 'create', path: PATH_DASHBOARD.user.newUser }
+          { title: 'Khảo sát của bạn', path: PATH_DASHBOARD.survey.list },
+          { title: 'Tạo khảo sát', path: PATH_DASHBOARD.survey.newSurvey }
         ]
       },
       {
-        title: 'Mã khuyến mãi',
-        path: PATH_DASHBOARD.promotion.root,
-        icon: ICONS.mail,
+        title: 'Hợp đồng',
+        path: PATH_DASHBOARD.survey.list,
+        icon: ICONS.ecommerce,
         children: [
-          { title: 'Quản lý mã khuyến mãi', path: PATH_DASHBOARD.promotion.list },
-          { title: 'Tạo khuyến mãi', path: PATH_DASHBOARD.promotion.newPromotion }
-        ]
-      },
-      {
-        title: 'Gói',
-        path: PATH_DASHBOARD.package.root,
-        icon: ICONS.dashboard,
-        children: [
-          { title: 'Quản lý gói', path: PATH_DASHBOARD.package.list },
-          { title: 'Tạo gói', path: PATH_DASHBOARD.package.newPackage }
-        ]
-      },
-      {
-        title: 'Sản phẩm',
-        path: PATH_DASHBOARD.product.root,
-        icon: ICONS.dashboard,
-        children: [
-          { title: 'Quản lý sản phẩm', path: PATH_DASHBOARD.product.list },
-          { title: 'Tạo sản phẩm', path: PATH_DASHBOARD.product.newProduct }
+          { title: 'Danh sách Hợp đồng', path: PATH_DASHBOARD.contract.listStaff },
+          { title: 'Tạo hợp đồng', path: PATH_DASHBOARD.contract.newContractStaff }
         ]
       }
     ]
   }
 ];
 
-export { adminSidebarConfig, ownerSidebarConfig };
+export { adminSidebarConfig, ownerSidebarConfig, staffSidebarConfig };

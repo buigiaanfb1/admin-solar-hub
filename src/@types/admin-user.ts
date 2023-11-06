@@ -1,6 +1,7 @@
 // ----------------------------------------------------------------------
 
 import { FormikProps } from 'formik';
+import { RequestStaff } from './request';
 
 export type UserManager = {
   accountId: string;
@@ -16,6 +17,9 @@ export type UserManager = {
   createAt: string;
   gender: boolean;
   isGoogleProvider: boolean;
+  isLeader: boolean;
+  isFree: boolean;
+  requestStaff: RequestStaff[];
   role: {
     roleId: string;
     roleName: string;

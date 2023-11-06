@@ -74,15 +74,18 @@ function AuthProvider({ children }: { children: ReactNode }) {
               password: 'default'
             });
 
-            if (response.data.user.roleId === '4' || !response.data.user.status) {
+            if (
+              response.data.user.roleId === '4' ||
+              !response.data.user.status ||
+              (response.data.user.roleId === '3' && !response.data.user.isLeader)
+            ) {
               throw new Error();
             } else {
+              localStorage.removeItem('credential');
               dispatch({
                 type: Types.Initial,
                 payload: { isAuthenticated: true, user: { ...user, userInfo: response.data.user } }
               });
-
-              console.log(response.data.token);
 
               axios.interceptors.request.use(
                 (config) => {
@@ -101,6 +104,9 @@ function AuthProvider({ children }: { children: ReactNode }) {
               payload: { isAuthenticated: false, user: null }
             });
           }
+        } else if (localStorage.getItem('credential')) {
+          const credential = JSON.parse(localStorage.getItem('credential') || '');
+          login(credential?.username, credential?.password);
         } else if (!state.user) {
           dispatch({
             type: Types.Initial,
@@ -120,9 +126,14 @@ function AuthProvider({ children }: { children: ReactNode }) {
         password
       });
 
-      if (response.data.user.role.roleId === '4' || !response.data.user.status) {
+      if (
+        response.data.user.role.roleId === '4' ||
+        (response.data.user.role.roleId === '3' && !response.data.user.isLeader) ||
+        !response.data.user.status
+      ) {
         throw new Error();
       } else {
+        localStorage.setItem('credential', JSON.stringify({ username, password }));
         dispatch({
           type: Types.Initial,
           payload: {
@@ -193,7 +204,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     await firebase.auth().sendPasswordResetEmail(email);
   };
 
-  const uploadImages = async (files: File[]): Promise<string[]> => {
+  const uploadImages = async (files: (File | string)[]): Promise<string[]> => {
     if (!state.user) {
       throw new Error('User not authenticated');
     }
@@ -214,10 +225,25 @@ function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     // Upload all files in parallel
-    await Promise.all(files.map((file) => uploadFile(file)));
+    await Promise.all(
+      files.map((file) => {
+        if (file instanceof File) {
+          return uploadFile(file);
+        }
+
+        if (typeof file === 'string') {
+          // If it's a string (URL), directly add it to the downloadURLs array
+          downloadURLs.push(file);
+        }
+
+        // Always return a resolved promise to avoid the "consistent-return" error
+        return Promise.resolve();
+      })
+    );
 
     return downloadURLs;
   };
+
   const auth = { ...state.user };
 
   return (
@@ -241,7 +267,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
           city: profile?.city || '',
           zipCode: profile?.zipCode || '',
           about: profile?.about || '',
-          isPublic: profile?.isPublic || false
+          isPublic: profile?.isPublic || false,
+          userInfo: auth.userInfo
         },
         login,
         register,

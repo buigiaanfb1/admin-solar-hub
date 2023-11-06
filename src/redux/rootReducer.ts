@@ -9,8 +9,12 @@ import userReducer from './slices/user';
 import userListReducer from './slices/admin/user';
 import promotionListReducer from './slices/admin/promotion';
 import productListReducer from './slices/admin/product';
+import requestListReducer from './slices/admin/request';
 import packageListReducer from './slices/admin/package';
 import bracketListReducer from './slices/admin/bracket';
+import staffRequestListReducer from './slices/staff/request';
+import staffSurveyListReducer from './slices/staff/survey';
+import contractListReducer from './slices/admin/contract';
 import productReducer from './slices/product';
 import calendarReducer from './slices/calendar';
 import kanbanReducer from './slices/kanban';
@@ -41,6 +45,10 @@ const rootReducer = combineReducers({
   productList: productListReducer,
   packageList: packageListReducer,
   bracketList: bracketListReducer,
+  requestList: requestListReducer,
+  staffRequestList: staffRequestListReducer,
+  staffSurveyList: staffSurveyListReducer,
+  contractList: contractListReducer,
   calendar: calendarReducer,
   kanban: kanbanReducer,
   product: persistReducer(productPersistConfig, productReducer)
