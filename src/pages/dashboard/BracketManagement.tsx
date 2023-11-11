@@ -50,9 +50,10 @@ import DialogBracketManagement from './DialogBracketManagement';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Tên khung đỡ', alignRight: false },
-  { id: 'price', label: 'Giá', alignRight: false },
+  { id: 'size', label: 'Kích thước (m2)', alignRight: false },
+  { id: 'material', label: 'Chất liệu', alignRight: false },
   { id: 'manufacturer', label: 'Nhà sản xuất', alignRight: false },
-  { id: 'image', label: 'Hỉnh ảnh', alignRight: false },
+  { id: 'price', label: 'Giá', alignRight: false },
   { id: 'status', label: 'Trạng thái', alignRight: false },
   { id: '' }
 ];
@@ -204,7 +205,7 @@ export default function ProductManagement() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { bracketId, name, price, manufacturer, image, status } = row;
+                      const { bracketId, name, price, manufacturer, size, material, status } = row;
 
                       return (
                         <TableRow
@@ -226,16 +227,16 @@ export default function ProductManagement() {
                             </Stack>
                           </TableCell>
                           <TableCell align="left" style={{ maxWidth: '150px' }}>
-                            {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
+                            {size?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                          </TableCell>
+                          <TableCell align="left" style={{ maxWidth: '150px' }}>
+                            {material}
                           </TableCell>
                           <TableCell align="left" style={{ maxWidth: '150px' }}>
                             {manufacturer}
                           </TableCell>
-                          <TableCell align="left">
-                            {image &&
-                              thumbnailItemsExternal(
-                                image.slice(0, image.length > 3 ? 3 : image.length)
-                              )}
+                          <TableCell align="left" style={{ maxWidth: '150px' }}>
+                            {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
                           </TableCell>
                           <TableCell align="left" style={{ maxWidth: '100px' }}>
                             <Label

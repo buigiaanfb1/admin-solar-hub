@@ -126,11 +126,7 @@ const adminSidebarConfig = [
       {
         title: 'Tài khoản',
         path: PATH_DASHBOARD.user.root,
-        icon: ICONS.user,
-        children: [
-          { title: 'Quản lý', path: PATH_DASHBOARD.user.list },
-          { title: 'Tạo tài khoản', path: PATH_DASHBOARD.user.newUser }
-        ]
+        icon: ICONS.user
       }
     ]
   }
@@ -141,7 +137,7 @@ const ownerSidebarConfig = [
     subheader: 'Quản lý',
     items: [
       {
-        title: 'Quản lý Nhân viên',
+        title: 'Quản lý yêu cầu',
         path: PATH_DASHBOARD.staff.list,
         icon: ICONS.user
       },
@@ -163,20 +159,12 @@ const ownerSidebarConfig = [
       {
         title: 'Quản lý sản phẩm',
         path: PATH_DASHBOARD.product.root,
-        icon: ICONS.cart,
-        children: [
-          { title: 'Quản lý sản phẩm', path: PATH_DASHBOARD.product.list },
-          { title: 'Tạo sản phẩm', path: PATH_DASHBOARD.product.newProduct }
-        ]
+        icon: ICONS.cart
       },
       {
         title: 'Quản lý gói',
         path: PATH_DASHBOARD.package.root,
-        icon: ICONS.ecommerce,
-        children: [
-          { title: 'Quản lý gói', path: PATH_DASHBOARD.package.list },
-          { title: 'Tạo gói', path: PATH_DASHBOARD.package.newPackage }
-        ]
+        icon: ICONS.ecommerce
       }
     ]
   },
@@ -186,11 +174,7 @@ const ownerSidebarConfig = [
       {
         title: 'Khung đỡ',
         path: PATH_DASHBOARD.bracket.root,
-        icon: ICONS.ecommerce,
-        children: [
-          { title: 'Quản lý khung đỡ', path: PATH_DASHBOARD.bracket.list },
-          { title: 'Thêm khung đỡ', path: PATH_DASHBOARD.bracket.newBracket }
-        ]
+        icon: ICONS.ecommerce
       }
     ]
   },

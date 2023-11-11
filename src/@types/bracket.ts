@@ -6,6 +6,8 @@ export type BracketManager = {
   name: string;
   price: number;
   manufacturer: string;
+  size: number;
+  material: string;
   status: boolean;
   constructionContract: Array<any>;
   image: Image[];
