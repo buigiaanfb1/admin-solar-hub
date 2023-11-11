@@ -52,7 +52,7 @@ import { RequestManager } from '../../@types/request';
 
 const TABLE_HEAD = [
   { id: '', label: '', alignRight: false },
-  { id: 'packageId', label: 'Mã combo', alignRight: false },
+  { id: 'packageId', label: 'Mã gói', alignRight: false },
   { id: 'username', label: 'Tài khoản khách hàng', alignRight: false },
   { id: 'description', label: 'Mô tả', alignRight: false },
   { id: 'createAt', label: 'Ngày tạo', alignRight: false }

@@ -79,13 +79,15 @@ export default function DialogViewContractManagement({
             <br />
             <ContractInfo contract={contract} />
             <Stack spacing={3} sx={{ marginBottom: '1.5em', mt: 3 }}>
-              <LargeItem
-                item={{
-                  image: contract.imageFile,
-                  title: 'image contract',
-                  description: 'image contract'
-                }}
-              />
+              {contract.imageFile && (
+                <LargeItem
+                  item={{
+                    image: contract.imageFile,
+                    title: 'image contract',
+                    description: 'image contract'
+                  }}
+                />
+              )}
             </Stack>
             <ProductPackage
               promotion={{

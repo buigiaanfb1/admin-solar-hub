@@ -20,7 +20,7 @@ const initialState: FeedbackState = {
 };
 
 const slice = createSlice({
-  name: 'package',
+  name: 'feedback',
   initialState,
   reducers: {
     // START LOADING
@@ -59,13 +59,13 @@ export function getFeedbackList() {
   };
 }
 
-export function deleteFeedbackApi(packageId: string) {
+export function deleteFeedbackApi(feedbackId: string) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
       await axios.delete('/api/Feedback/delete-feedback', {
         params: {
-          packageId
+          dto: feedbackId
         }
       });
       // TODO: need to refactor

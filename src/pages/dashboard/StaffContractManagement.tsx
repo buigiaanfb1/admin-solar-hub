@@ -51,7 +51,7 @@ import { SurveyManager } from '../../@types/survey';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'packageName', label: 'Tên combo', alignRight: false },
+  { id: 'packageName', label: 'Tên gói', alignRight: false },
   { id: 'username', label: 'Tài khoản khách hàng', alignRight: false },
   { id: 'bracket', label: 'Tên khung đỡ', alignRight: false },
   { id: 'totalcost', label: 'Thành tiền', alignRight: false },

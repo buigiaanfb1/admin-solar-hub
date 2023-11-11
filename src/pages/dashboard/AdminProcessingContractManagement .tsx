@@ -256,7 +256,7 @@ export default function StaffContractManagement() {
                           {bracketName}
                         </TableCell>
                         <TableCell align="left" style={{ maxWidth: '150px' }}>
-                          {lastnameCus + firstnameCus}
+                          {`${lastnameCus} ${firstnameCus}`}
                         </TableCell>
                         <TableCell align="left" style={{ maxWidth: '150px' }}>
                           <span>
@@ -264,7 +264,7 @@ export default function StaffContractManagement() {
                           </span>
                         </TableCell>
                         <TableCell align="left" style={{ maxWidth: '150px' }}>
-                          {firstname + lastname}
+                          {`${lastname} ${firstname}`}
                         </TableCell>
                         {/* <TableCell align="right">
                           <MoreMenu

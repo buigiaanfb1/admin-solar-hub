@@ -1,3 +1,6 @@
+import { UserManager } from './admin-user';
+import { ConstructionContractManager } from './contract';
+import { PackageManager } from './package';
 import { ProductManager } from './product';
 import { PromotionManager } from './promotion';
 
@@ -12,7 +15,7 @@ export type FeedbackManager = {
   image: string;
   // TODO: TBU
   packageId: string;
-  account: any;
-  contructionContract: any;
-  package: any;
+  account: UserManager;
+  contructionContract: ConstructionContractManager;
+  package: PackageManager;
 };

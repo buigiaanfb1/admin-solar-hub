@@ -156,6 +156,11 @@ const ownerSidebarConfig = [
         icon: ICONS.mail
       },
       {
+        title: 'Quản lý thanh toán',
+        path: PATH_DASHBOARD.package.root,
+        icon: ICONS.cart
+      },
+      {
         title: 'Quản lý sản phẩm',
         path: PATH_DASHBOARD.product.root,
         icon: ICONS.cart,
@@ -165,12 +170,12 @@ const ownerSidebarConfig = [
         ]
       },
       {
-        title: 'Quản lý combo',
+        title: 'Quản lý gói',
         path: PATH_DASHBOARD.package.root,
         icon: ICONS.ecommerce,
         children: [
-          { title: 'Quản lý combo', path: PATH_DASHBOARD.package.list },
-          { title: 'Tạo combo', path: PATH_DASHBOARD.package.newPackage }
+          { title: 'Quản lý gói', path: PATH_DASHBOARD.package.list },
+          { title: 'Tạo gói', path: PATH_DASHBOARD.package.newPackage }
         ]
       }
     ]
