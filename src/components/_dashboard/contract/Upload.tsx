@@ -1,22 +1,22 @@
 import { useState, useCallback, useEffect } from 'react';
-import { UploadMultiFile } from '../../upload';
+import UploadSingleFile from './UploadSingleFile';
 
 // ----------------------------------------------------------------------
 
 interface UploadProps {
-  onGetFile: (file: (File | string)[]) => void;
-  defaultFiles?: (File | string)[];
+  onGetFile: (file: File | string) => void;
+  defaultFiles?: File | string;
 }
-export default function Upload({ onGetFile, defaultFiles = [] }: UploadProps) {
-  const [files, setFiles] = useState<(File | string)[]>(defaultFiles);
+export default function Upload({ onGetFile, defaultFiles = '' }: UploadProps) {
+  const [file, setFile] = useState<File | string>(defaultFiles);
 
   useEffect(() => {
-    onGetFile(files);
-  }, [files]);
+    onGetFile(file);
+  }, [file]);
 
   useEffect(() => {
-    if (defaultFiles.length > 0) {
-      setFiles(defaultFiles);
+    if (defaultFiles !== null) {
+      setFile(defaultFiles);
     }
   }, [defaultFiles]);
 
@@ -27,28 +27,10 @@ export default function Upload({ onGetFile, defaultFiles = [] }: UploadProps) {
           preview: URL.createObjectURL(file)
         })
       );
-      setFiles(files);
+      setFile(files[0]);
     },
-    [setFiles]
+    [setFile]
   );
 
-  const handleRemoveAll = () => {
-    setFiles([]);
-  };
-
-  const handleRemove = (file: File | string) => {
-    const filteredItems = files.filter((_file) => _file !== file);
-    setFiles(filteredItems);
-  };
-
-  return (
-    <UploadMultiFile
-      accept="image/*"
-      showPreview={true}
-      files={files}
-      onDrop={handleDropMultiFile}
-      onRemove={handleRemove}
-      onRemoveAll={handleRemoveAll}
-    />
-  );
+  return <UploadSingleFile accept="image/*" file={file} onDrop={handleDropMultiFile} />;
 }

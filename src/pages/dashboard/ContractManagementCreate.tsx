@@ -53,6 +53,7 @@ export default function ContractManagementCreate() {
         <AdminContractNewForm
           isEdit={isEdit}
           currentContructionContract={currentConstructionContract}
+          staffId={user?.userInfo.accountId}
         />
       </Container>
     </Page>

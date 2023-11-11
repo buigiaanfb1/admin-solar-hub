@@ -30,6 +30,8 @@ import {
   AccountChangePassword
 } from '../../components/_dashboard/user/account';
 import AdminPendingContractManagement from './AdminPendingContractManagement';
+import AdminProcessingContractManagement from './AdminProcessingContractManagement ';
+import AdminHistoryContractManagement from './AdminHistoryContractManagement';
 
 // ----------------------------------------------------------------------
 
@@ -82,6 +84,16 @@ export default function ContractManagementTabs() {
       {currentTab === 'pending' && (
         <div>
           <AdminPendingContractManagement />
+        </div>
+      )}
+      {currentTab === 'approved' && (
+        <div>
+          <AdminProcessingContractManagement />
+        </div>
+      )}
+      {currentTab === 'history' && (
+        <div>
+          <AdminHistoryContractManagement />
         </div>
       )}
     </>

@@ -66,6 +66,12 @@ export const PATH_DASHBOARD = {
     newContractStaff: path(ROOTS_DASHBOARD, '/staff/contract/new'),
     editByIdStaff: path(ROOTS_DASHBOARD, '/staff/contract/ada-lindgren/edit')
   },
+  staffContract: {
+    root: path(ROOTS_DASHBOARD, '/staff/contract'),
+    list: path(ROOTS_DASHBOARD, '/staff/contract/list'),
+    newContract: path(ROOTS_DASHBOARD, '/staff/contract/new'),
+    editById: path(ROOTS_DASHBOARD, '/staff/contract/ada-lindgren/edit')
+  },
   bracket: {
     root: path(ROOTS_DASHBOARD, '/bracket'),
     list: path(ROOTS_DASHBOARD, '/bracket/list'),

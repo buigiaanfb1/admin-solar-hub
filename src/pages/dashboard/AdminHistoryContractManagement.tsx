@@ -138,7 +138,7 @@ export default function StaffContractManagement() {
 
   const { constructionContractList } = useSelector((state: RootState) => state.contractList);
   const pendingConstructionContractList = constructionContractList.filter(
-    (contract) => contract.status === '1'
+    (contract) => contract.status === '3' || '0'
   );
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');

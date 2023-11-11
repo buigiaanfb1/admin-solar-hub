@@ -47,6 +47,18 @@ export default slice.reducer;
 
 // ----------------------------------------------------------------------
 
+export function getPackageListStaff() {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.get('/api/Package/get-Package');
+      dispatch(slice.actions.getPackageListSuccess(response.data.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
 export function getPackageList() {
   return async () => {
     dispatch(slice.actions.startLoading());

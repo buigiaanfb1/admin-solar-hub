@@ -59,6 +59,50 @@ export function getContractList() {
   };
 }
 
+export function deleteContractApi(constructionContractId: string) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.delete(
+        `/api/ConstructionContract/Delete-Construction-contract?constructionContractId=${constructionContractId}`
+      );
+      dispatch(slice.actions.startLoading());
+      try {
+        const response = await axios.get(`/api/ConstructionContract/get-all-Construction-Contract`);
+        dispatch(slice.actions.getConstructionContractListSuccess(response.data.data));
+      } catch (error) {
+        dispatch(slice.actions.hasError(error));
+      }
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function enableContractApi(constructionContractId: string) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.put(
+        `/api/ConstructionContract/Update-construction-contract-with-id`,
+        {
+          constructionContractId,
+          status: '1'
+        }
+      );
+      dispatch(slice.actions.startLoading());
+      try {
+        const response = await axios.get(`/api/ConstructionContract/get-all-Construction-Contract`);
+        dispatch(slice.actions.getConstructionContractListSuccess(response.data.data));
+      } catch (error) {
+        dispatch(slice.actions.hasError(error));
+      }
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
 export function getContractListByStaff(staffId: string) {
   return async () => {
     dispatch(slice.actions.startLoading());

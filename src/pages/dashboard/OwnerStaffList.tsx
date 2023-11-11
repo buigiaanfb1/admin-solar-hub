@@ -199,6 +199,7 @@ export default function UserList() {
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <UserListHead
+                  isShowCheckbox={false}
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -232,12 +233,6 @@ export default function UserList() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onClick={() => handleClick(username)}
-                            />
-                          </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Typography variant="subtitle2" noWrap>
@@ -268,7 +263,9 @@ export default function UserList() {
                             >
                               {sentenceCase(
                                 isFree || isFree === null
-                                  ? `Available ${requestStaff.length} out of 3`
+                                  ? `Available ${
+                                      requestStaff.filter((request) => request.status).length
+                                    } out of 3`
                                   : 'Unavailable 3 out of 3'
                               )}
                             </Label>

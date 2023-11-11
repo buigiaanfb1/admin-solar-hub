@@ -4,7 +4,7 @@ import { PackageManager } from './package';
 
 export type ConstructionContractManager = {
   constructioncontractId: string;
-  status: boolean;
+  status: '0' | '1' | '2' | '3';
   startdate: string;
   enddate: string;
   totalcost: number;
@@ -20,6 +20,7 @@ export type ConstructionContractManager = {
   staff: UserManager;
   acceptance: any;
   feedback: any;
+  description: string;
   paymentProcess: any[];
   warrantyReport: any[];
 };

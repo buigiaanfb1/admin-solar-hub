@@ -26,9 +26,9 @@ import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselPr
 import useAuth from 'hooks/useAuth';
 import { ConstructionContractManager } from '../../@types/contract';
 import {
-  getContractListByStaff
-  // updateContract,
-  // deleteContractApi
+  getContractListByStaff,
+  enableContractApi,
+  deleteContractApi
 } from '../../redux/slices/admin/contract';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
@@ -43,11 +43,8 @@ import Scrollbar from '../../components/Scrollbar';
 
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import {
-  UserListHead,
-  UserListToolbar,
-  AdminUserMoreMenu
-} from '../../components/_dashboard/user/list';
+import { UserListHead, UserListToolbar } from '../../components/_dashboard/user/list';
+import MoreMenu from '../../components/_dashboard/contract/MoreMenu';
 import DialogViewContractManagement from './DialogViewContractManagement';
 import { SurveyManager } from '../../@types/survey';
 
@@ -104,6 +101,37 @@ function applySortFilter(
   return stabilizedThis.map((el) => el[0]);
 }
 
+export const handleRenderLabel = (status: string) => {
+  switch (status) {
+    case '0':
+      return (
+        <Label variant="ghost" color="error">
+          Đã huỷ
+        </Label>
+      );
+    case '1':
+      return <Label variant="ghost">Chờ duyệt</Label>;
+    case '2':
+      return (
+        <Label variant="ghost" color="primary">
+          Đang thi công
+        </Label>
+      );
+    case '3':
+      return (
+        <Label variant="ghost" color="success">
+          Hoàn tất
+        </Label>
+      );
+    default:
+      return (
+        <Label variant="ghost" color="warning">
+          Unknown
+        </Label>
+      );
+  }
+};
+
 export default function StaffContractManagement() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
@@ -156,11 +184,11 @@ export default function StaffContractManagement() {
   };
 
   const handleBlockSurvey = (constructioncontractId: string) => {
-    // dispatch(deleteContractApi(constructioncontractId));
+    dispatch(deleteContractApi(constructioncontractId));
   };
 
-  const handleUnBlocSurvey = (status: boolean = true) => {
-    // dispatch(updateContract(status));
+  const handleUnBlocSurvey = (constructioncontractId: string) => {
+    dispatch(enableContractApi(constructioncontractId));
   };
 
   const emptyRows =
@@ -227,6 +255,7 @@ export default function StaffContractManagement() {
                         startdate,
                         totalcost,
                         enddate,
+                        description,
                         customer: { username },
                         package: { name: packageName }
                       } = row;
@@ -265,20 +294,20 @@ export default function StaffContractManagement() {
                             </span>{' '}
                           </TableCell>
                           <TableCell align="left" style={{ maxWidth: '150px' }}>
-                            {fDateTime(startdate)}
+                            {description}
                           </TableCell>
                           <TableCell align="left" style={{ maxWidth: '150px' }}>
-                            {fDateTime(enddate)}
+                            {handleRenderLabel(status)}
                           </TableCell>
                           <TableCell align="right">
-                            <AdminUserMoreMenu
+                            <MoreMenu
                               onBlock={() => handleBlockSurvey(constructioncontractId)}
-                              onUnblock={() => handleUnBlocSurvey()}
+                              onUnblock={() => handleUnBlocSurvey(constructioncontractId)}
+                              status={status === '1'}
                               textFirstItem="Huỷ hợp đồng"
                               textFirstItemAfter="Mở lại hợp đồng"
-                              status={status}
                               id={constructioncontractId}
-                              path={PATH_DASHBOARD.survey.root}
+                              path={PATH_DASHBOARD.staffContract.root}
                             />
                           </TableCell>
                         </TableRow>

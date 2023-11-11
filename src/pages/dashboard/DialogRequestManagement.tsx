@@ -44,7 +44,7 @@ export default function MaxWidthDialog({ staffId }: { staffId: string }) {
   return (
     <>
       <Button variant="contained" onClick={handleClickOpen}>
-        Yêu cầu
+        Gán khảo sát
       </Button>
 
       <Dialog open={open} maxWidth={maxWidth} onClose={handleClose} fullWidth={fullWidth}>

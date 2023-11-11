@@ -68,7 +68,7 @@ type CarouselItemProps = {
   image: string;
 };
 
-function LargeItem({ item }: { item: CarouselItemProps }) {
+export function LargeItem({ item }: { item: CarouselItemProps }) {
   const { image, title } = item;
 
   return (
@@ -108,7 +108,7 @@ function ThumbnailItem({ item }: { item: CarouselItemProps }) {
   return <ThumbImgStyle alt={title} src={image} />;
 }
 
-function ThumbnailItemExternal({ item }: { item: CarouselItemProps }) {
+export function ThumbnailItemExternal({ item }: { item: CarouselItemProps }) {
   const { image, title } = item;
 
   return <ThumbImgExternalStyle alt={title} src={image} />;

@@ -9,7 +9,7 @@ import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 // material
 import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@material-ui/core';
 // routes
-import { PATH_DASHBOARD } from '../../../../routes/paths';
+import { PATH_DASHBOARD } from '../../../routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -53,25 +53,14 @@ export default function UserMoreMenu({
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        {status ? (
+        {status && (
           <MenuItem onClick={onBlock} sx={{ color: 'text.secondary' }}>
             <ListItemIcon>
               <Icon icon={lockFill} width={24} height={24} />
             </ListItemIcon>
             <ListItemText primary={textFirstItem} primaryTypographyProps={{ variant: 'body2' }} />
           </MenuItem>
-        ) : (
-          <MenuItem onClick={onUnblock} sx={{ color: 'text.secondary' }}>
-            <ListItemIcon>
-              <Icon icon={unlockFill} width={24} height={24} />
-            </ListItemIcon>
-            <ListItemText
-              primary={textFirstItemAfter}
-              primaryTypographyProps={{ variant: 'body2' }}
-            />
-          </MenuItem>
         )}
-
         <MenuItem component={RouterLink} to={`${path}/${id}/edit`} sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
             <Icon icon={editFill} width={24} height={24} />
