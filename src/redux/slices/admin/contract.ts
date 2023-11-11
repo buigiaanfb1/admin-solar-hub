@@ -52,7 +52,7 @@ export function getContractList() {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(`/api/ConstructionContract/get-all-Construction-Contract`);
-      dispatch(slice.actions.getConstructionContractListSuccess(response.data.data));
+      dispatch(slice.actions.getConstructionContractListSuccess(response.data.data || []));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -110,7 +110,7 @@ export function getContractListByStaff(staffId: string) {
       const response = await axios.get(
         `/api/ConstructionContract/get-Construction-Contract-by-staffid?staffId=${staffId}`
       );
-      dispatch(slice.actions.getConstructionContractListSuccess(response.data.data));
+      dispatch(slice.actions.getConstructionContractListSuccess(response.data.data || []));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

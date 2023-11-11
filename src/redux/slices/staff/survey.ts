@@ -52,7 +52,7 @@ export function getSurveyList(staffId: string) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(`/api/Survey/Get-survey-staffid?staffId=${staffId}`);
-      dispatch(slice.actions.getSurveyListSuccess(response.data.data));
+      dispatch(slice.actions.getSurveyListSuccess(response.data.data || []));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
