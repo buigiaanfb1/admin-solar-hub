@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -46,14 +46,15 @@ import {
 } from '../../components/_dashboard/user/list';
 import DialogBracketManagement from './DialogBracketManagement';
 import { SurveyManager } from '../../@types/survey';
+import { ConstructionContractManager } from '../../@types/contract';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'surveyId', label: 'Mã khào sát', alignRight: false },
+  { id: 'surveyId', label: 'Mã khảo sát', alignRight: false },
   { id: 'description', label: 'Mô tả', alignRight: false },
   { id: 'note', label: 'Ghi chú', alignRight: false },
-  { id: 'status', label: 'Trạng thái', alignRight: false },
+  { id: 'tools', label: '', alignRight: false },
   { id: '' }
 ];
 
@@ -102,6 +103,7 @@ export default function SurveyManagement() {
   const theme = useTheme();
   const { user } = useAuth();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { surveyList } = useSelector((state: RootState) => state.staffSurveyList);
   const [page, setPage] = useState(0);
@@ -134,6 +136,38 @@ export default function SurveyManagement() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleRenderContractButton = (
+    contract: ConstructionContractManager,
+    suveryId: string,
+    accountId: string | null
+  ) => {
+    if (!contract) {
+      return (
+        <Button
+          onClick={() =>
+            navigate(
+              `${PATH_DASHBOARD.contract.newContractStaff}?suveryId=${suveryId}&accountId=${
+                accountId || ''
+              }`
+            )
+          }
+          variant="contained"
+        >
+          Tạo hợp đồng
+        </Button>
+      );
+    }
+
+    return (
+      <Button
+        onClick={() => navigate(`/dashboard/contract/${contract.constructioncontractId}/edit`)}
+        variant="contained"
+      >
+        Xem hợp đồng
+      </Button>
+    );
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -205,7 +239,8 @@ export default function SurveyManagement() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { surveyId, note, description, status } = row;
+                      const { surveyId, note, description, status, constructionContract, request } =
+                        row;
 
                       return (
                         <TableRow
@@ -233,12 +268,11 @@ export default function SurveyManagement() {
                             {note}
                           </TableCell>
                           <TableCell align="left" style={{ maxWidth: '100px' }}>
-                            <Label
-                              variant="ghost"
-                              color={(status === false && 'error') || 'success'}
-                            >
-                              {sentenceCase(status ? 'Active' : 'Deleted')}
-                            </Label>
+                            {handleRenderContractButton(
+                              constructionContract,
+                              surveyId,
+                              request?.account?.accountId
+                            )}
                           </TableCell>
 
                           <TableCell align="right">

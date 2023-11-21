@@ -18,6 +18,7 @@ import {
 import axios from 'utils/axiosIntegrated';
 import { useSnackbar } from 'notistack5';
 import { LargeItem } from 'components/_dashboard/contract/CarouselContract';
+import Timeline from 'components/_dashboard/contract/components/Timeline';
 import useAuth from 'hooks/useAuth';
 
 import { ConstructionContractManager } from '../../@types/contract';
@@ -40,7 +41,7 @@ export default function DialogViewContractManagement({
   const { enqueueSnackbar } = useSnackbar();
 
   const { user } = useAuth();
-  console.log(user?.userInfo);
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: { description: contract.description || '', isRejected: false },
@@ -78,6 +79,9 @@ export default function DialogViewContractManagement({
           <DialogContent>
             <br />
             <ContractInfo contract={contract} />
+            <Stack spacing={3} sx={{ marginBottom: '1.5em', mt: 3 }}>
+              <Timeline />
+            </Stack>
             <Stack spacing={3} sx={{ marginBottom: '1.5em', mt: 3 }}>
               {contract.imageFile && (
                 <LargeItem

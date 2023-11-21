@@ -22,7 +22,9 @@ export default function SurveyManagementCreate() {
   const { user } = useAuth();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+  const queryParams = new URLSearchParams(search);
+  const requestId = queryParams.get('requestId');
   // TODO: research why it is name not accountId?
   const { name } = useParams();
   const { surveyList } = useSelector((state: RootState) => state.staffSurveyList);
@@ -43,7 +45,7 @@ export default function SurveyManagementCreate() {
           ]}
         />
 
-        <SurveyNewForm isEdit={isEdit} currentSurvey={currentSurvey} />
+        <SurveyNewForm isEdit={isEdit} requestId={requestId} currentSurvey={currentSurvey} />
       </Container>
     </Page>
   );

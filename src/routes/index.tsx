@@ -202,8 +202,8 @@ export default function Router() {
         {
           path: 'user',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
-            { path: 'profile', element: <UserProfile /> },
+            { path: '/', element: <Navigate to="/dashboard/user/list" replace /> },
+            // { path: 'profile', element: <UserProfile /> },
             { path: 'cards', element: <UserCards /> },
             { path: 'list', element: <AdminUserList /> },
             { path: 'new', element: <AdminUserCreate /> },

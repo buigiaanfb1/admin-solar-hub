@@ -1,6 +1,8 @@
+import { AcceptanceManager } from './acceptance';
 import { UserManager } from './admin-user';
 import { BracketManager } from './bracket';
 import { PackageManager } from './package';
+import { ProcessManager } from './process';
 
 export type ConstructionContractManager = {
   constructioncontractId: string;
@@ -18,9 +20,10 @@ export type ConstructionContractManager = {
   customer: UserManager;
   package: PackageManager;
   staff: UserManager;
-  acceptance: any;
+  acceptance: AcceptanceManager[];
   feedback: any;
   description: string;
   paymentProcess: any[];
   warrantyReport: any[];
+  process: ProcessManager[];
 };

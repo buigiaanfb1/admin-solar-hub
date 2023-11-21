@@ -105,7 +105,7 @@ export default function UploadSingleFile({
 
         <Box sx={{ p: 3, ml: { md: 2 } }}>
           <Typography gutterBottom variant="h5">
-            Tải lên ảnh thực tế, hồ sơ của khách hàng
+            Tải lên ảnh
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>

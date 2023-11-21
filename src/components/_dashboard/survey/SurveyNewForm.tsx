@@ -1,27 +1,14 @@
 /* eslint-disable */
 import * as Yup from 'yup';
-import { forwardRef, useCallback, useEffect, useState } from 'react';
+import { forwardRef } from 'react';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { NumericFormat, NumericFormatProps } from 'react-number-format';
 
 // material
-import eyeFill from '@iconify/icons-eva/eye-fill';
-import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
-import { Icon } from '@iconify/react';
-import { DesktopDatePicker, LoadingButton } from '@material-ui/lab';
-import {
-  Box,
-  Card,
-  Checkbox,
-  Grid,
-  Stack,
-  TextField,
-  FormControlLabel,
-  InputAdornment,
-  IconButton
-} from '@material-ui/core';
+import { LoadingButton } from '@material-ui/lab';
+import { Box, Card, Grid, Stack, TextField } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import axios from 'utils/axiosIntegrated';
 import { PATH_DASHBOARD } from 'routes/paths';
@@ -34,6 +21,7 @@ import { SurveyManager } from '../../../@types/survey';
 type SurveyNewFormProps = {
   isEdit: boolean;
   currentSurvey?: SurveyManager;
+  requestId: string | null;
   isDisabled?: boolean;
 };
 
@@ -68,12 +56,11 @@ const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
 export default function SurveyNewForm({
   isEdit = false,
   currentSurvey,
+  requestId,
   isDisabled = false
 }: SurveyNewFormProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [files, setFiles] = useState<(File | string)[]>([]);
-
   const { enqueueSnackbar } = useSnackbar();
 
   const NewSurveySchema = Yup.object().shape({
@@ -82,14 +69,11 @@ export default function SurveyNewForm({
     description: Yup.string().required('Mô tả chi tiết là bắt buộc')
   });
 
-  const handleGetFile = (files: (File | string)[]) => {
-    setFiles(files);
-  };
-
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       surveyId: currentSurvey?.surveyId || 'default',
+      requestId,
       note: currentSurvey?.note || '',
       description: currentSurvey?.description || '',
       status: currentSurvey?.status || '',
@@ -101,6 +85,7 @@ export default function SurveyNewForm({
         if (isEdit) {
           await axios.put('api/Survey/Update-survey-by-id', {
             surveyId: values?.surveyId,
+            requestId: values?.requestId,
             note: values?.note,
             description: values?.description,
             status: currentSurvey?.status,
@@ -110,6 +95,7 @@ export default function SurveyNewForm({
           await axios.post('api/Survey/Insert-survey', {
             note: values?.note,
             description: values?.description,
+            requestId: values?.requestId,
             staffId: user?.userInfo.accountId
           });
         }
@@ -145,6 +131,14 @@ export default function SurveyNewForm({
           <Grid item xs={12} md={12}>
             <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
+                    fullWidth
+                    disabled={true}
+                    label="Mã yêu cầu"
+                    {...getFieldProps('requestId')}
+                  />
+                </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth

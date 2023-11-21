@@ -24,6 +24,8 @@ import {
 import { fDateTime } from 'utils/formatTime';
 import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
 import useAuth from 'hooks/useAuth';
+import { isWithinInterval, parseISO } from 'date-fns';
+
 import { ConstructionContractManager } from '../../@types/contract';
 import {
   getContractList,
@@ -106,9 +108,15 @@ export default function StaffContractManagement() {
   const dispatch = useDispatch();
 
   const { constructionContractList } = useSelector((state: RootState) => state.contractList);
-  const pendingConstructionContractList = constructionContractList.filter(
-    (contract) => contract.status === '1'
-  );
+  const currentDate = new Date();
+
+  const inProgressConstructionContractList = constructionContractList.filter((item) => {
+    const startDate = parseISO(item.startdate);
+    const endDate = parseISO(item.enddate);
+
+    return isWithinInterval(currentDate, { start: startDate, end: endDate }) && item.status === '2';
+  });
+
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<ConstructionContractManager | null>(null);
@@ -159,10 +167,12 @@ export default function StaffContractManagement() {
   };
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - pendingConstructionContractList.length) : 0;
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - inProgressConstructionContractList.length)
+      : 0;
 
   const filteredUsers = applySortFilter(
-    pendingConstructionContractList,
+    inProgressConstructionContractList,
     getComparator(order, orderBy),
     filterName
   );
@@ -187,7 +197,7 @@ export default function StaffContractManagement() {
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={pendingConstructionContractList.length}
+                rowCount={inProgressConstructionContractList.length}
                 numSelected={0}
                 onRequestSort={() => {}}
                 onSelectAllClick={() => {}}
@@ -225,7 +235,7 @@ export default function StaffContractManagement() {
                           {bracketName}
                         </TableCell>
                         <TableCell align="left" style={{ maxWidth: '150px' }}>
-                          {lastnameCus} {firstnameCus}
+                          {`${lastnameCus} ${firstnameCus}`}
                         </TableCell>
                         <TableCell align="left" style={{ maxWidth: '150px' }}>
                           <span>
@@ -233,7 +243,7 @@ export default function StaffContractManagement() {
                           </span>
                         </TableCell>
                         <TableCell align="left" style={{ maxWidth: '150px' }}>
-                          {lastname} {firstname}
+                          {`${lastname} ${firstname}`}
                         </TableCell>
                         {/* <TableCell align="right">
                           <MoreMenu
@@ -271,7 +281,7 @@ export default function StaffContractManagement() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={pendingConstructionContractList.length}
+          count={inProgressConstructionContractList.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={(e, page) => setPage(page)}

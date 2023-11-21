@@ -29,7 +29,7 @@ const MENU_OPTIONS = [
   {
     label: 'Profile',
     icon: personFill,
-    linkTo: PATH_DASHBOARD.user.profile
+    linkTo: PATH_DASHBOARD.user.account
   },
   {
     label: 'Settings',

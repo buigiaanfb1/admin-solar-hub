@@ -24,6 +24,8 @@ import {
 import { fDateTime } from 'utils/formatTime';
 import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
 import useAuth from 'hooks/useAuth';
+import { isWithinInterval, isAfter, parseISO } from 'date-fns';
+
 import { ConstructionContractManager } from '../../@types/contract';
 import {
   getContractListByStaff,
@@ -51,12 +53,11 @@ import { SurveyManager } from '../../@types/survey';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: 'usernameCus', label: 'Tài khoản khách hàng', alignRight: false },
+  { id: 'fullnameCus', label: 'Tên khách hàng', alignRight: false },
   { id: 'packageName', label: 'Tên gói', alignRight: false },
-  { id: 'username', label: 'Tài khoản khách hàng', alignRight: false },
-  { id: 'bracket', label: 'Tên khung đỡ', alignRight: false },
   { id: 'totalcost', label: 'Thành tiền', alignRight: false },
-  { id: 'startdate', label: 'Ghi chú', alignRight: false },
-  { id: 'enddate', label: 'Trạng thái', alignRight: false },
+  { id: 'status', label: 'Trạng thái', alignRight: false },
   { id: '' }
 ];
 
@@ -101,7 +102,16 @@ function applySortFilter(
   return stabilizedThis.map((el) => el[0]);
 }
 
-export const handleRenderLabel = (status: string) => {
+const isInProgress = (startdate: string, enddate: string) => {
+  const currentDate = new Date();
+
+  const startDate = parseISO(startdate);
+  const endDate = parseISO(enddate);
+
+  return isWithinInterval(currentDate, { start: startDate, end: endDate });
+};
+
+export const handleRenderLabel = (status: string, startdate: string, enddate: string) => {
   switch (status) {
     case '0':
       return (
@@ -112,9 +122,13 @@ export const handleRenderLabel = (status: string) => {
     case '1':
       return <Label variant="ghost">Chờ duyệt</Label>;
     case '2':
-      return (
+      return isInProgress(startdate, enddate) ? (
         <Label variant="ghost" color="primary">
           Đang thi công
+        </Label>
+      ) : (
+        <Label variant="ghost" color="secondary">
+          Đang hoạt động
         </Label>
       );
     case '3':
@@ -143,9 +157,9 @@ export default function StaffContractManagement() {
     (contract) => contract.status && !contract.isConfirmed
   );
   const [page, setPage] = useState(0);
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
   const [selected, setSelected] = useState<ConstructionContractManager | null>(null);
-  const [orderBy, setOrderBy] = useState('username');
+  const [orderBy, setOrderBy] = useState('status');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -189,6 +203,13 @@ export default function StaffContractManagement() {
 
   const handleUnBlocSurvey = (constructioncontractId: string) => {
     dispatch(enableContractApi(constructioncontractId));
+  };
+
+  const handleRequestSort = (property: string) => {
+    console.log(property);
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
   };
 
   const emptyRows =
@@ -241,7 +262,7 @@ export default function StaffContractManagement() {
                   headLabel={TABLE_HEAD}
                   rowCount={pendingConstructionContractList.length}
                   numSelected={0}
-                  onRequestSort={() => {}}
+                  onRequestSort={handleRequestSort}
                   onSelectAllClick={() => {}}
                 />
                 <TableBody>
@@ -256,7 +277,7 @@ export default function StaffContractManagement() {
                         totalcost,
                         enddate,
                         description,
-                        customer: { username },
+                        customer: { username, lastname, firstname },
                         package: { name: packageName }
                       } = row;
 
@@ -269,35 +290,22 @@ export default function StaffContractManagement() {
                           role="checkbox"
                           onClick={(e: any) => handleClickOpen(e, row)}
                         >
-                          {/* <TableCell
-                            component="th"
-                            scope="row"
-                            padding="none"
-                            style={{ maxWidth: '200px' }}
-                          >
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <Typography variant="subtitle2">{constructioncontractId}</Typography>
-                            </Stack>
-                          </TableCell> */}
-                          <TableCell align="left" style={{ maxWidth: '150px' }}>
-                            {packageName}
-                          </TableCell>
                           <TableCell align="left" style={{ maxWidth: '150px' }}>
                             {username}
                           </TableCell>
                           <TableCell align="left" style={{ maxWidth: '150px' }}>
-                            {bracketName}
+                            {lastname} {firstname}
+                          </TableCell>
+                          <TableCell align="left" style={{ maxWidth: '150px' }}>
+                            {packageName}
                           </TableCell>
                           <TableCell align="left" style={{ maxWidth: '150px' }}>
                             <span>
                               {totalcost?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
-                            </span>{' '}
+                            </span>
                           </TableCell>
                           <TableCell align="left" style={{ maxWidth: '150px' }}>
-                            {description}
-                          </TableCell>
-                          <TableCell align="left" style={{ maxWidth: '150px' }}>
-                            {handleRenderLabel(status)}
+                            {handleRenderLabel(status, startdate, enddate)}
                           </TableCell>
                           <TableCell align="right">
                             <MoreMenu

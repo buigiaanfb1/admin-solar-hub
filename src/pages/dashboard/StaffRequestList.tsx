@@ -48,13 +48,14 @@ import {
 } from '../../components/_dashboard/user/list';
 import { RequestManager, RequestStaff } from '../../@types/request';
 import DialogCreateContractManagement from './DialogCreateContractManagement';
+import { SurveyManager } from '../../@types/survey';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: '', label: '', alignRight: false },
-  { id: 'packageName', label: 'Tên gói', alignRight: false },
   { id: 'username', label: 'Tài khoản khách hàng', alignRight: false },
+  { id: 'name', label: 'Tên gói', alignRight: false },
   { id: 'description', label: 'Mô tả', alignRight: false },
   { id: 'createAt', label: 'Ngày tạo', alignRight: false },
   { id: 'tools', label: '', alignRight: false }
@@ -121,6 +122,38 @@ export default function OwnerRequestList({ staffId }: { staffId: string }) {
   useEffect(() => {
     dispatch(getRequestList(user?.userInfo.accountId));
   }, [dispatch]);
+
+  const handleRenderSurvey = (survey: SurveyManager[], status: boolean, requestId: string) => {
+    if (!status) {
+      return (
+        <Label variant="ghost" color="error">
+          CANCELLED
+        </Label>
+      );
+    }
+
+    if (survey.length > 0) {
+      return (
+        <Button
+          onClick={() =>
+            navigate(`/dashboard/survey/${survey[0].surveyId}/edit?requestId=${requestId}`)
+          }
+          variant="contained"
+        >
+          Xem khảo sát
+        </Button>
+      );
+    }
+
+    return (
+      <Button
+        onClick={() => navigate(`${PATH_DASHBOARD.survey.newSurvey}?requestId=${requestId}`)}
+        variant="contained"
+      >
+        Tạo khảo sát
+      </Button>
+    );
+  };
 
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -212,7 +245,8 @@ export default function OwnerRequestList({ staffId }: { staffId: string }) {
                         createAt,
                         account: { username },
                         description,
-                        status
+                        status,
+                        survey
                       } = row;
                       const isItemSelected = selected.indexOf(requestId) !== -1;
 
@@ -231,23 +265,12 @@ export default function OwnerRequestList({ staffId }: { staffId: string }) {
                               onClick={() => handleClick(requestId)}
                             />
                           </TableCell>
-                          <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{username}</TableCell>
+                          <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{description}</TableCell>
                           <TableCell align="left">{fDateTime(createAt)}</TableCell>
                           <TableCell align="center" style={{ width: '200px' }}>
-                            {status ? (
-                              <Button
-                                onClick={() => navigate(PATH_DASHBOARD.contract.newContractStaff)}
-                                variant="contained"
-                              >
-                                Tạo hợp đồng
-                              </Button>
-                            ) : (
-                              <Label variant="ghost" color="error">
-                                CANCELLED
-                              </Label>
-                            )}
+                            {handleRenderSurvey(survey, status, requestId)}
                           </TableCell>
                         </TableRow>
                       );

@@ -1,36 +1,20 @@
 import { Icon } from '@iconify/react';
-import { capitalCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import bellFill from '@iconify/icons-eva/bell-fill';
-import shareFill from '@iconify/icons-eva/share-fill';
 import archiveFill from '@iconify/icons-eva/archive-fill';
-import roundVpnKey from '@iconify/icons-ic/round-vpn-key';
 import roundReceipt from '@iconify/icons-ic/round-receipt';
-import roundAccountBox from '@iconify/icons-ic/round-account-box';
 // material
-import { Container, Tab, Box, Tabs } from '@material-ui/core';
+import { Tab, Box, Tabs } from '@material-ui/core';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import {
-  getCards,
-  getProfile,
-  getInvoices,
-  getAddressBook,
-  getNotifications
-} from '../../redux/slices/user';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
-import {
-  AccountGeneral,
-  AccountBilling,
-  AccountSocialLinks,
-  AccountNotifications,
-  AccountChangePassword
-} from '../../components/_dashboard/user/account';
+import { AccountGeneral } from '../../components/_dashboard/user/account';
 import AdminPendingContractManagement from './AdminPendingContractManagement';
-import AdminProcessingContractManagement from './AdminProcessingContractManagement ';
+import AdminApprovedContractManagement from './AdminApprovedContractManagement ';
+import AdminInProgressContractManagement from './AdminInProgressContractManagement ';
 import AdminHistoryContractManagement from './AdminHistoryContractManagement';
 
 // ----------------------------------------------------------------------
@@ -56,6 +40,12 @@ export default function ContractManagementTabs() {
     {
       value: 'approved',
       label: 'Đã duyệt',
+      icon: <Icon icon={roundReceipt} width={20} height={20} />,
+      component: <AccountGeneral />
+    },
+    {
+      value: 'inProgress',
+      label: 'Đang thi công',
       icon: <Icon icon={roundReceipt} width={20} height={20} />,
       component: <AccountGeneral />
     },
@@ -88,7 +78,12 @@ export default function ContractManagementTabs() {
       )}
       {currentTab === 'approved' && (
         <div>
-          <AdminProcessingContractManagement />
+          <AdminApprovedContractManagement />
+        </div>
+      )}
+      {currentTab === 'inProgress' && (
+        <div>
+          <AdminInProgressContractManagement />
         </div>
       )}
       {currentTab === 'history' && (

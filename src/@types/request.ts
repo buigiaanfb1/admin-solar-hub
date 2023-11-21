@@ -1,17 +1,19 @@
 import { UserManager } from './admin-user';
 import { PackageManager } from './package';
+import { SurveyManager } from './survey';
 
 export type RequestManager = {
   requestId: string;
   packageId: string;
   accountId: string;
   createAt: Date;
-  status: string;
+  status: boolean;
   description: string;
   staffId: string;
   account: UserManager;
-  package: any;
-  staff: any;
+  package: PackageManager;
+  staff: UserManager;
+  survey: SurveyManager[];
 };
 
 export type RequestStaff = {
@@ -19,10 +21,11 @@ export type RequestStaff = {
   packageId: string;
   accountId: string;
   createAt: Date;
-  status: string;
+  status: boolean;
   description: string;
   staffId: string;
   account: UserManager;
   package: PackageManager;
   staff: UserManager;
+  survey: SurveyManager[];
 };

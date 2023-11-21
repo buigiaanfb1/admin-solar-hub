@@ -85,7 +85,7 @@ export default function ContractInfo({ contract }: { contract: ConstructionContr
               <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
                 Trạng thái: &nbsp;
               </Typography>
-              {handleRenderLabel(contract.status)}
+              {handleRenderLabel(contract.status, contract.startdate, contract.enddate)}
             </Typography>
           </Grid>
           <Grid item xs={12} md={6}>

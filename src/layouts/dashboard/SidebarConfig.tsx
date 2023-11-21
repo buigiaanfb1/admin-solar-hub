@@ -125,7 +125,7 @@ const adminSidebarConfig = [
       // MANAGEMENT : USER
       {
         title: 'Tài khoản',
-        path: PATH_DASHBOARD.user.root,
+        path: PATH_DASHBOARD.user.list,
         icon: ICONS.user
       }
     ]
@@ -204,20 +204,12 @@ const staffSidebarConfig = [
       {
         title: 'Khảo sát',
         path: PATH_DASHBOARD.survey.list,
-        icon: ICONS.kanban,
-        children: [
-          { title: 'Khảo sát của bạn', path: PATH_DASHBOARD.survey.list },
-          { title: 'Tạo khảo sát', path: PATH_DASHBOARD.survey.newSurvey }
-        ]
+        icon: ICONS.kanban
       },
       {
         title: 'Hợp đồng',
-        path: PATH_DASHBOARD.survey.list,
-        icon: ICONS.ecommerce,
-        children: [
-          { title: 'Danh sách Hợp đồng', path: PATH_DASHBOARD.contract.listStaff },
-          { title: 'Tạo hợp đồng', path: PATH_DASHBOARD.contract.newContractStaff }
-        ]
+        path: PATH_DASHBOARD.contract.listStaff,
+        icon: ICONS.ecommerce
       }
     ]
   }

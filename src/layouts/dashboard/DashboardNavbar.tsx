@@ -7,10 +7,7 @@ import { Box, Stack, AppBar, Toolbar, IconButton } from '@material-ui/core';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import { MHidden } from '../../components/@material-extend';
-import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
-import LanguagePopover from './LanguagePopover';
-import ContactsPopover from './ContactsPopover';
 import NotificationsPopover from './NotificationsPopover';
 
 // ----------------------------------------------------------------------
@@ -63,7 +60,6 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           </IconButton>
         </MHidden>
 
-        <Searchbar />
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>

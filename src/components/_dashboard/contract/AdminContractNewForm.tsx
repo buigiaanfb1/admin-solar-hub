@@ -5,10 +5,11 @@ import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { NumericFormat, NumericFormatProps } from 'react-number-format';
+import { parseISO, isAfter } from 'date-fns';
 
 // material
 import { DesktopDatePicker, LoadingButton } from '@material-ui/lab';
-import { Box, Card, Grid, Stack, TextField, Typography } from '@material-ui/core';
+import { Box, Card, Grid, List, Stack, TextField, Typography } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import axios from 'utils/axiosIntegrated';
 import { PATH_DASHBOARD } from 'routes/paths';
@@ -18,16 +19,101 @@ import { ConstructionContractManager } from '../../../@types/contract';
 import CustomerList from '../../../pages/dashboard/ContractCreate/CustomerList';
 import PackageList from '../../../pages/dashboard/ContractCreate/PackageList';
 import BracketList from '../../../pages/dashboard/ContractCreate/BracketList';
+import Process from './components/Process';
+import Acceptance from './components/Acceptance';
 
-// import { roles, genders, loginTypes } from './roles';
+export const isInProgressAndFurther = (startdate: string) => {
+  const currentDate = new Date();
 
-// ----------------------------------------------------------------------
+  const startDate = parseISO(startdate);
 
+  return isAfter(currentDate, startDate);
+};
+
+const handleRenderProcess = (currentContructionContract?: ConstructionContractManager) => {
+  if (!currentContructionContract)
+    return (
+      <Stack>
+        <Typography variant="overline" sx={{ color: 'text.secondary' }}>
+          Loading
+        </Typography>
+      </Stack>
+    );
+  if (currentContructionContract.status === '1')
+    return (
+      <Stack>
+        <Typography variant="overline" sx={{ color: 'text.primary' }}>
+          Tiến trình
+        </Typography>
+        <Typography variant="overline" sx={{ color: 'text.secondary' }}>
+          Để thêm và cập nhật tiến trình cho dự án, vui lòng đợi đến ngày thi công diễn ra để thêm
+          và hệ thống sẽ đóng khi thời gian dự án kết thúc hoặc quá trình nghiệm thu bắt đầu.
+        </Typography>
+      </Stack>
+    );
+
+  if (currentContructionContract.process.length === 0 && currentContructionContract.status !== '2')
+    return (
+      <Stack>
+        <Typography variant="overline" sx={{ color: 'text.primary' }}>
+          Tiến trình
+        </Typography>
+        <Typography variant="overline" sx={{ color: 'text.secondary' }}>
+          Chưa có tiến trình nào. Để thêm tiến trình vui lòng cập nhật thời gian và trạng thái thi
+          công.
+        </Typography>
+      </Stack>
+    );
+  return (
+    <Stack spacing={{ xs: 3, sm: 2 }}>
+      <Typography variant="overline" sx={{ color: 'text.primary' }}>
+        Tiến trình
+      </Typography>
+      <Process currentContructionContract={currentContructionContract} />
+    </Stack>
+  );
+};
+
+const handleRenderAcceptance = (currentContructionContract?: ConstructionContractManager) => {
+  if (!currentContructionContract)
+    return (
+      <Stack>
+        <Typography variant="overline" sx={{ color: 'text.secondary' }}>
+          Loading
+        </Typography>
+      </Stack>
+    );
+
+  if (currentContructionContract.process.filter((process) => process.status).length === 0)
+    return (
+      <Stack>
+        <Typography variant="overline" sx={{ color: 'text.primary' }}>
+          Nghiệm thu
+        </Typography>
+        <Typography variant="overline" sx={{ color: 'text.secondary' }}>
+          Chưa có nghiệm thu nào. Để thêm nghiệm thu vui lòng cập nhật tiến trình thi công phía
+          trên.
+        </Typography>
+      </Stack>
+    );
+  return (
+    <Stack spacing={{ xs: 3, sm: 2 }}>
+      <Typography variant="overline" sx={{ color: 'text.primary' }}>
+        Nghiệm thu
+      </Typography>
+      <Typography variant="overline" sx={{ color: 'text.secondary' }}>
+        Lưu ý, sau khi cập nhật biên bản nghiệm thu, tiến trình thi công sẽ bị khoá.
+      </Typography>
+      <Acceptance currentContructionContract={currentContructionContract} />
+    </Stack>
+  );
+};
 type ProductNewFormProps = {
   isEdit: boolean;
   currentContructionContract?: ConstructionContractManager;
   isDisabled?: boolean;
   staffId?: string;
+  customerId?: string | null;
 };
 
 interface CustomProps {
@@ -62,7 +148,8 @@ export default function AdminContractNewForm({
   isEdit = false,
   currentContructionContract,
   isDisabled = false,
-  staffId
+  staffId,
+  customerId
 }: ProductNewFormProps) {
   const navigate = useNavigate();
   const { uploadImages, user } = useAuth();
@@ -90,7 +177,6 @@ export default function AdminContractNewForm({
   });
 
   const handleGetFile = (file: File | string) => {
-    console.log(file);
     setFiles([file]);
   };
 
@@ -173,83 +259,89 @@ export default function AdminContractNewForm({
   const handleSetValue = (name: string, value: string) => {
     setFieldValue(name, value);
   };
-  console.log(errors, values);
-
   return (
-    <FormikProvider value={formik}>
-      <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={12}>
-            <Card sx={{ p: 3 }}>
-              <Stack spacing={3}>
-                <Stack>
-                  <Upload onGetFile={handleGetFile} defaultFiles={files[0]} />
-                </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                  <DesktopDatePicker
-                    label="Ngày bắt đầu"
-                    {...getFieldProps('startdate')}
-                    onChange={(newValue) => {
-                      setFieldValue('startdate', newValue);
-                    }}
-                    maxDate={values.enddate && new Date(values.enddate)}
-                    renderInput={(params) => (
-                      <TextField
-                        fullWidth
-                        {...params}
-                        error={Boolean(touched.startdate && errors.startdate)}
-                        helperText={touched.startdate && errors.startdate}
-                      />
-                    )}
-                  />
-                  <DesktopDatePicker
-                    label="Ngày kết thúc thi công"
-                    {...getFieldProps('enddate')}
-                    onChange={(newValue) => {
-                      setFieldValue('enddate', newValue);
-                    }}
-                    minDate={values.startdate && new Date(values.startdate)}
-                    renderInput={(params) => (
-                      <TextField
-                        fullWidth
-                        {...params}
-                        error={Boolean(touched.startdate && errors.startdate)}
-                        helperText={touched.startdate && errors.startdate}
-                      />
-                    )}
-                  />
-                </Stack>
+    <Grid container spacing={3}>
+      <Grid item xs={12} md={12}>
+        <Card sx={{ p: 3 }}>
+          <Stack spacing={3}>
+            {handleRenderProcess(currentContructionContract)}
+            {handleRenderAcceptance(currentContructionContract)}
+            <FormikProvider value={formik}>
+              <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
+                <Stack spacing={3}>
+                  <Stack>
+                    <Typography variant="overline" sx={{ color: 'text.primary' }}>
+                      Hợp đồng
+                    </Typography>
+                  </Stack>
+                  <Stack>
+                    <Upload onGetFile={handleGetFile} defaultFiles={files[0]} />
+                  </Stack>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                    <DesktopDatePicker
+                      label="Ngày bắt đầu"
+                      {...getFieldProps('startdate')}
+                      onChange={(newValue) => {
+                        setFieldValue('startdate', newValue);
+                      }}
+                      maxDate={values.enddate && new Date(values.enddate)}
+                      renderInput={(params) => (
+                        <TextField
+                          fullWidth
+                          {...params}
+                          error={Boolean(touched.startdate && errors.startdate)}
+                          helperText={touched.startdate && errors.startdate}
+                        />
+                      )}
+                    />
+                    <DesktopDatePicker
+                      label="Ngày kết thúc thi công"
+                      {...getFieldProps('enddate')}
+                      onChange={(newValue) => {
+                        setFieldValue('enddate', newValue);
+                      }}
+                      minDate={values.startdate && new Date(values.startdate)}
+                      renderInput={(params) => (
+                        <TextField
+                          fullWidth
+                          {...params}
+                          error={Boolean(touched.startdate && errors.startdate)}
+                          helperText={touched.startdate && errors.startdate}
+                        />
+                      )}
+                    />
+                  </Stack>
+                  <Stack>
+                    <Typography gutterBottom variant="overline">
+                      Khách hàng yêu cầu:
+                    </Typography>
+                    <CustomerList
+                      staffId={user?.userInfo.accountId}
+                      onSetValue={handleSetValue}
+                      selectedValue={customerId || values.customerId || ''}
+                    />
+                  </Stack>
 
-                <Stack>
-                  <Typography gutterBottom variant="h6">
-                    Khách hàng yêu cầu:
-                  </Typography>
-                  <CustomerList
-                    staffId={user?.userInfo.accountId}
-                    onSetValue={handleSetValue}
-                    selectedValue={values.customerId || ''}
-                  />
-                </Stack>
-
-                <Stack>
-                  <Typography gutterBottom variant="h6">
-                    Gói sản phẩm thi công:
-                  </Typography>
-                  <PackageList
-                    staffId={user?.userInfo.accountId}
-                    onSetValue={handleSetValue}
-                    selectedValue={values.packageId || ''}
-                  />
-                </Stack>
-                <Stack>
-                  <Typography gutterBottom variant="h6">
-                    Khung đỡ sản phẩm:
-                  </Typography>
-                  <BracketList
-                    staffId={user?.userInfo.accountId}
-                    onSetValue={handleSetValue}
-                    selectedValue={values.bracketId || ''}
-                  />
+                  <Stack>
+                    <Typography gutterBottom variant="overline">
+                      Gói sản phẩm thi công:
+                    </Typography>
+                    <PackageList
+                      staffId={user?.userInfo.accountId}
+                      onSetValue={handleSetValue}
+                      selectedValue={values.packageId || ''}
+                    />
+                  </Stack>
+                  <Stack>
+                    <Typography gutterBottom variant="overline">
+                      Khung đỡ sản phẩm:
+                    </Typography>
+                    <BracketList
+                      staffId={user?.userInfo.accountId}
+                      onSetValue={handleSetValue}
+                      selectedValue={values.bracketId || ''}
+                    />
+                  </Stack>
                 </Stack>
 
                 {!isDisabled && (
@@ -259,11 +351,11 @@ export default function AdminContractNewForm({
                     </LoadingButton>
                   </Box>
                 )}
-              </Stack>
-            </Card>
-          </Grid>
-        </Grid>
-      </Form>
-    </FormikProvider>
+              </Form>
+            </FormikProvider>
+          </Stack>
+        </Card>
+      </Grid>
+    </Grid>
   );
 }

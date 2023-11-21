@@ -131,6 +131,8 @@ export default function AdminBracketNewForm({
             name: values?.name,
             price: values?.price,
             manufacturer: values?.manufacturer,
+            size: values?.size,
+            material: values?.material,
             status: true,
             image: imageUrls
           });

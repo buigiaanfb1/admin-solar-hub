@@ -22,10 +22,12 @@ export default function ContractManagementCreate() {
   const { user } = useAuth();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   // TODO: research why it is name not accountId?
   const { name } = useParams();
   const { constructionContractList } = useSelector((state: RootState) => state.contractList);
+  const queryParams = new URLSearchParams(search);
+  const customerId = queryParams.get('accountId');
   const isEdit = pathname.includes('edit');
   const currentConstructionContract = constructionContractList.find(
     (contract) => contract.constructioncontractId === name
@@ -54,6 +56,7 @@ export default function ContractManagementCreate() {
           isEdit={isEdit}
           currentContructionContract={currentConstructionContract}
           staffId={user?.userInfo.accountId}
+          customerId={customerId}
         />
       </Container>
     </Page>

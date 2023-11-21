@@ -99,37 +99,6 @@ function applySortFilter(
   return stabilizedThis.map((el) => el[0]);
 }
 
-const handleRenderLabel = (status: string) => {
-  switch (status) {
-    case '0':
-      return (
-        <Label variant="ghost" color="error">
-          Đã huỷ
-        </Label>
-      );
-    case '1':
-      return <Label variant="ghost">Chờ duyệt</Label>;
-    case '2':
-      return (
-        <Label variant="ghost" color="primary">
-          Đang thi công
-        </Label>
-      );
-    case '3':
-      return (
-        <Label variant="ghost" color="success">
-          Hoàn tất
-        </Label>
-      );
-    default:
-      return (
-        <Label variant="ghost" color="warning">
-          Unknown
-        </Label>
-      );
-  }
-};
-
 export default function StaffContractManagement() {
   const { themeStretch } = useSettings();
   const theme = useTheme();

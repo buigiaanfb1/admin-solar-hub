@@ -38,58 +38,33 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type UserListToolbarProps = {
-  numSelected: number;
+type ListToolbarProps = {
   filterName: string;
   placeholder?: string;
   onFilterName: (value: string) => void;
-  onAssignRequest?: () => void;
 };
 
-export default function UserListToolbar({
-  numSelected,
+export default function ListToolbar({
   filterName,
   placeholder = 'Tìm tài khoản...',
-  onFilterName,
-  onAssignRequest
-}: UserListToolbarProps) {
+  onFilterName
+}: ListToolbarProps) {
   const theme = useTheme();
 
   const isLight = theme.palette.mode === 'light';
 
   return (
-    <RootStyle
-      sx={{
-        ...(numSelected > 0 && {
-          color: isLight ? 'primary.main' : 'text.primary',
-          bgcolor: isLight ? 'primary.lighter' : 'primary.dark'
-        })
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography component="div" variant="subtitle1">
-          Selected
-        </Typography>
-      ) : (
-        <SearchStyle
-          value={filterName}
-          onChange={(e) => onFilterName(e.target.value)}
-          placeholder={placeholder}
-          startAdornment={
-            <InputAdornment position="start">
-              <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />
-            </InputAdornment>
-          }
-        />
-      )}
-
-      {numSelected > 0 && (
-        <Tooltip title="Yêu cầu khảo sát">
-          <IconButton onClick={onAssignRequest}>
-            <Icon icon={navigation2Fill} />
-          </IconButton>
-        </Tooltip>
-      )}
+    <RootStyle>
+      <SearchStyle
+        value={filterName}
+        onChange={(e) => onFilterName(e.target.value)}
+        placeholder={placeholder}
+        startAdornment={
+          <InputAdornment position="start">
+            <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />
+          </InputAdornment>
+        }
+      />
     </RootStyle>
   );
 }

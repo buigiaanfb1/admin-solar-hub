@@ -40,13 +40,10 @@ import Label from '../../../components/Label';
 import Scrollbar from '../../../components/Scrollbar';
 import SearchNotFound from '../../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import {
-  UserListHead,
-  UserListToolbar,
-  AdminUserMoreMenu
-} from '../../../components/_dashboard/user/list';
+import { UserListHead } from '../../../components/_dashboard/user/list';
 import AlertDialog from '../DialogRequestManagement';
 import { RequestManager } from '../../../@types/request';
+import ListToolbar from './ListToolbar';
 
 // ----------------------------------------------------------------------
 
@@ -163,12 +160,10 @@ export default function OwnerRequestList({
 
   return (
     <Card>
-      <UserListToolbar
-        numSelected={selected.length}
+      <ListToolbar
         filterName={filterName}
         placeholder="Tìm theo tài khoản..."
         onFilterName={handleFilterByName}
-        onAssignRequest={handleAssignRequest}
       />
 
       <Scrollbar>

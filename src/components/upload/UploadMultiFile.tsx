@@ -136,7 +136,7 @@ export default function UploadMultiFile({
 
         <Box sx={{ p: 3, ml: { md: 2 } }}>
           <Typography gutterBottom variant="h5">
-            Thả hoặc chọn nhiều hình ảnh về sản phẩm
+            Tải lên hoặc chọn nhiều hình ảnh
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
