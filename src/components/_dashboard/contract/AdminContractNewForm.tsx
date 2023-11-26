@@ -199,7 +199,6 @@ export default function AdminContractNewForm({
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         let imageUrls: { image: string }[] = [];
-        console.log(imageUrls);
         if (files.length > 0) {
           imageUrls = await (await uploadImages(files)).map((url) => ({ image: url }));
         }
