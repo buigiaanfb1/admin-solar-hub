@@ -46,7 +46,7 @@ export default function ProductPackage({
 }: {
   promotion: { promotionId: string | null; amount: number };
   onSetProductList: (productList: AvailableProductsProps[]) => void;
-  currentPackage: PackageManager;
+  currentPackage: Partial<PackageManager>;
 }) {
   const { productList } = useSelector((state: RootState) => state.productList);
   const [products, setProducts] = useState<AvailableProductsProps[]>([]);
@@ -69,13 +69,15 @@ export default function ProductPackage({
 
       // Merge products from the API into the existing products array
       const mergedProducts = activeProducts.map((activeProduct) => {
-        const apiProduct = currentPackage.packageProduct.find(
-          (apiProduct) => apiProduct.productId === activeProduct.productId
-        );
+        if (currentPackage.packageProduct) {
+          const apiProduct = currentPackage.packageProduct.find(
+            (apiProduct) => apiProduct.productId === activeProduct.productId
+          );
 
-        if (apiProduct) {
-          // If there's a matching product in the API, merge it with the existing product
-          return { ...activeProduct, ...apiProduct };
+          if (apiProduct) {
+            // If there's a matching product in the API, merge it with the existing product
+            return { ...activeProduct, ...apiProduct };
+          }
         }
         return activeProduct;
       });

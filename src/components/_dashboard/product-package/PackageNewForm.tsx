@@ -31,6 +31,7 @@ import { PackageManager } from '../../../@types/package';
 import { PromotionManager } from '../../../@types/promotion';
 import ProductPackage, { AvailableProductsProps } from './components/ProductPackage';
 import { NumericFormatCustom } from '../product/AdminProductNewForm';
+import Upload from '../contract/Upload';
 // import { roles, genders, loginTypes } from './roles';
 
 // ----------------------------------------------------------------------
@@ -59,11 +60,23 @@ export default function PackageNewForm({
   isDisabled = false
 }: PackageNewFormProps) {
   const navigate = useNavigate();
+  const { uploadImages } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
+  const [files, setFiles] = useState<(File | string)[]>([]);
+
+  useEffect(() => {
+    if (currentPackage?.presentImage) {
+      setFiles([currentPackage.presentImage]);
+    }
+  }, [currentPackage]);
+
   const NewPackageSchema = Yup.object().shape({
     packageId: Yup.string(),
     name: Yup.string().required('Tên gói sản phẩm là bắt buộc'),
-    description: Yup.string().required('Mô tả là bắt buộc')
+    description: Yup.string().required('Mô tả là bắt buộc'),
+    roofArea: Yup.string().required('Diện tích mái là bắt buộc'),
+    electricBill: Yup.string().required('Hoá đơn điện là bắt buộc'),
+    presentImage: Yup.string()
   });
 
   const formik = useFormik({
@@ -74,6 +87,7 @@ export default function PackageNewForm({
       description: currentPackage?.description || '',
       amount: currentPackage?.promotion?.amount || 0,
       roofArea: currentPackage?.roofArea || null,
+      presentImage: currentPackage?.presentImage || '',
       electricBill: currentPackage?.electricBill || null,
       promotionId: currentPackage?.promotionId || null,
       listProduct: currentPackage?.packageProduct || []
@@ -81,6 +95,10 @@ export default function PackageNewForm({
     validationSchema: NewPackageSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
+        let imageUrls: { image: string }[] = [];
+        if (files.length > 0) {
+          imageUrls = await (await uploadImages(files)).map((url) => ({ image: url }));
+        }
         if (isEdit) {
           await axios.put('api/Package/update-Package', {
             packageId: values?.packageId,
@@ -88,6 +106,9 @@ export default function PackageNewForm({
             description: values?.description,
             roofArea: values?.roofArea,
             electricBill: values?.electricBill,
+            presentImage:
+              imageUrls[0]?.image ||
+              'https://climate.onep.go.th/wp-content/uploads/2020/01/default-image.jpg',
             ...(values?.promotionId &&
               values?.promotionId !== 'NOPROMOTION' && { promotionId: values?.promotionId }),
             isDisablePromotion: values?.promotionId === 'NOPROMOTION'
@@ -106,6 +127,9 @@ export default function PackageNewForm({
             description: values?.description,
             roofArea: values?.roofArea,
             electricBill: values?.electricBill,
+            presentImage:
+              imageUrls[0]?.image ||
+              'https://climate.onep.go.th/wp-content/uploads/2020/01/default-image.jpg',
             ...(values?.promotionId &&
               values?.promotionId !== 'NOPROMOTION' && { promotionId: values?.promotionId }),
             isDisablePromotion: values?.promotionId === 'NOPROMOTION'
@@ -151,6 +175,10 @@ export default function PackageNewForm({
     setFieldTouched
   } = formik;
 
+  const handleGetFile = (file: File | string) => {
+    setFiles([file]);
+  };
+
   const handleSetProductList = (productList: AvailableProductsProps[]) => {
     setFieldValue('listProduct', productList);
   };
@@ -164,6 +192,9 @@ export default function PackageNewForm({
           <Grid item xs={12} md={12}>
             <Card sx={{ p: 3 }}>
               <Stack spacing={3}>
+                <Stack>
+                  <Upload onGetFile={handleGetFile} defaultFiles={files[0]} />
+                </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
@@ -243,18 +274,16 @@ export default function PackageNewForm({
                       ))}
                   </TextField>
                 </Stack>
-                {isEdit && currentPackage && (
-                  <Stack>
-                    <ProductPackage
-                      currentPackage={currentPackage}
-                      promotion={{
-                        promotionId: values.promotionId,
-                        amount: Number(values?.amount) || 0
-                      }}
-                      onSetProductList={handleSetProductList}
-                    />
-                  </Stack>
-                )}
+                <Stack>
+                  <ProductPackage
+                    currentPackage={currentPackage || { packageProduct: [] }}
+                    promotion={{
+                      promotionId: values.promotionId,
+                      amount: Number(values?.amount) || 0
+                    }}
+                    onSetProductList={handleSetProductList}
+                  />
+                </Stack>
                 {!isDisabled && (
                   <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                     <LoadingButton type="submit" variant="contained" loading={isSubmitting}>

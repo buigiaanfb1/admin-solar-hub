@@ -16,6 +16,7 @@ export type PackageManager = {
   constructionContract: Array<any>;
   feedback: Array<any>;
   packageProduct: PackageProduct[];
+  presentImage: string;
 };
 
 export type PackageProduct = {
