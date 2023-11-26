@@ -57,6 +57,7 @@ export default function AccountPopover() {
 
   const handleLogout = async () => {
     try {
+      localStorage.removeItem('credential');
       await logout?.();
       if (isMountedRef.current) {
         navigate('/');
