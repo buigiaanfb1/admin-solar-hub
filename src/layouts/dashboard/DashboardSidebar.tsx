@@ -26,7 +26,12 @@ import { MHidden } from '../../components/@material-extend';
 //
 import { DocIcon } from '../../assets';
 
-import { adminSidebarConfig, ownerSidebarConfig, staffSidebarConfig } from './SidebarConfig';
+import {
+  adminSidebarConfig,
+  ownerSidebarConfig,
+  staffSidebarConfig,
+  supportSidebarConfig
+} from './SidebarConfig';
 
 // ----------------------------------------------------------------------
 
@@ -113,8 +118,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   const { pathname } = useLocation();
   const { user } = useAuth();
 
-  console.log(user);
-
   const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
 
@@ -126,6 +129,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         return <NavSection navConfig={ownerSidebarConfig} isShow={!isCollapse} />;
       case 'Staff':
         return <NavSection navConfig={staffSidebarConfig} isShow={!isCollapse} />;
+      case 'Consultant':
+        return <NavSection navConfig={supportSidebarConfig} isShow={!isCollapse} />;
       default:
         return null;
     }

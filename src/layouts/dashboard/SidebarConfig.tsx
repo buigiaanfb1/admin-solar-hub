@@ -215,4 +215,19 @@ const staffSidebarConfig = [
   }
 ];
 
-export { adminSidebarConfig, ownerSidebarConfig, staffSidebarConfig };
+const supportSidebarConfig = [
+  // GENERAL
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'Hỗ trợ',
+    items: [
+      {
+        title: 'Hỗ trợ khách hàng',
+        path: PATH_DASHBOARD.support.root,
+        icon: ICONS.user
+      }
+    ]
+  }
+];
+
+export { adminSidebarConfig, ownerSidebarConfig, staffSidebarConfig, supportSidebarConfig };

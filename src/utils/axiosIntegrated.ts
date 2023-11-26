@@ -3,7 +3,7 @@ import axios from 'axios';
 // ----------------------------------------------------------------------
 
 const axiosInstance = axios.create({
-  baseURL: 'https://solarcapstone.azurewebsites.net/',
+  baseURL: 'https://solar-caps.azurewebsites.net/',
   headers: {
     'Content-Type': 'application/json'
   }

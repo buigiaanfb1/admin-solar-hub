@@ -101,7 +101,7 @@ export default function PackageNewForm({
             }))
           });
         } else {
-          await axios.post('api/Package/Insert-Package', {
+          const response = await axios.post('api/Package/Insert-Package', {
             name: values?.name,
             description: values?.description,
             roofArea: values?.roofArea,
@@ -110,6 +110,18 @@ export default function PackageNewForm({
               values?.promotionId !== 'NOPROMOTION' && { promotionId: values?.promotionId }),
             isDisablePromotion: values?.promotionId === 'NOPROMOTION'
           });
+
+          const packageId = response.data.data.packageId;
+
+          if (packageId) {
+            await axios.post('api/Package/Insert-product-package', {
+              packageId: packageId,
+              listProduct: values.listProduct.map((product: any) => ({
+                productId: product.productId,
+                quantity: product.quantity
+              }))
+            });
+          }
         }
         resetForm();
         setSubmitting(false);

@@ -238,11 +238,11 @@ export default function Router() {
           ]
         },
         {
-          path: 'chat',
+          path: 'support',
           children: [
-            { path: '/', element: <Chat /> },
-            { path: 'new', element: <Chat /> },
-            { path: ':conversationKey', element: <Chat /> }
+            { path: '/', element: <Support /> },
+            { path: 'new', element: <Support /> },
+            { path: ':conversationKey', element: <Support /> }
           ]
         },
         { path: 'calendar', element: <Calendar /> },
@@ -397,6 +397,7 @@ const BracketManagementCreate = Loadable(
   lazy(() => import('../pages/dashboard/BracketManagementCreate'))
 );
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
+const Support = Loadable(lazy(() => import('../pages/dashboard/Support')));
 const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
 const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
 const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));

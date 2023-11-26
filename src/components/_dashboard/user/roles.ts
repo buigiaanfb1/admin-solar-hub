@@ -11,6 +11,10 @@ const roles = {
     {
       code: '4',
       label: 'Customer'
+    },
+    {
+      code: '5',
+      label: 'Consultant'
     }
   ],
   Owner: [
@@ -56,6 +60,10 @@ const staffTypes = [
   {
     code: 'staff',
     label: 'Nhân viên'
+  },
+  {
+    code: 'consultant',
+    label: 'Nhân viên tư vấn'
   }
 ];
 
@@ -63,7 +71,8 @@ const roleMapping: any = {
   '1': 'Admin',
   '2': 'Owner',
   '3': 'Staff',
-  '4': 'Customer'
+  '4': 'Customer',
+  '5': 'Consultant'
 };
 
 export { roles, roleMapping, genders, loginTypes, staffTypes };
