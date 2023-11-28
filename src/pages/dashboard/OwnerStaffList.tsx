@@ -13,10 +13,10 @@ import {
   Avatar,
   Button,
   Checkbox,
+  Container,
   TableRow,
   TableBody,
   TableCell,
-  Container,
   Typography,
   TableContainer,
   TablePagination
@@ -42,15 +42,17 @@ import {
   AdminUserMoreMenu
 } from '../../components/_dashboard/user/list';
 import DialogRequestManagement from './DialogRequestManagement';
+import ListToolbar from './ContractCreate/ListToolbar';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: '', label: '', alignRight: false },
   { id: 'username', label: 'Tên tài khoản', alignRight: false },
   { id: 'fullName', label: 'Họ và tên', alignRight: false },
   { id: 'phone', label: 'Số điện thoại', alignRight: false },
-  { id: 'request', label: 'Yêu cầu khảo sát', alignRight: false },
-  { id: 'status', label: 'Trạng thái', alignRight: false }
+  // { id: 'request', label: 'Yêu cầu khảo sát', alignRight: false },
+  { id: 'isFree', label: 'Trạng thái', alignRight: false }
 ];
 
 // ----------------------------------------------------------------------
@@ -93,7 +95,11 @@ function applySortFilter(
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserList() {
+export default function UserList({
+  handleSelectUser
+}: {
+  handleSelectUser: (accountId: string) => void;
+}) {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -101,9 +107,9 @@ export default function UserList() {
   const { userList } = useSelector((state: RootState) => state.userList);
   const staffList = userList.filter((user) => user.roleId === '3');
   const [page, setPage] = useState(0);
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-  const [selected, setSelected] = useState<string[]>([]);
-  const [orderBy, setOrderBy] = useState('username');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
+  const [selected, setSelected] = useState<string>('');
+  const [orderBy, setOrderBy] = useState('isFree');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -117,31 +123,13 @@ export default function UserList() {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (checked: boolean) => {
-    if (checked) {
-      const newSelecteds = staffList.map((n) => n.username);
-      setSelected(newSelecteds);
+  const handleClick = (accountId: string) => {
+    handleSelectUser(accountId);
+    if (accountId === selected) {
+      setSelected('');
       return;
     }
-    setSelected([]);
-  };
-
-  const handleClick = (name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: string[] = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
+    setSelected(accountId);
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -151,14 +139,6 @@ export default function UserList() {
 
   const handleFilterByName = (filterName: string) => {
     setFilterName(filterName);
-  };
-
-  const handleBlockUser = (userId: string) => {
-    dispatch(deleteUserApi(userId));
-  };
-
-  const handleUnBlockUser = (userId: string) => {
-    dispatch(updateUser({ accountId: userId }, true));
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - staffList.length) : 0;
@@ -176,22 +156,12 @@ export default function UserList() {
             { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
             { name: 'Danh sách nhân viên' }
           ]}
-          // action={
-          //   <Button
-          //     variant="contained"
-          //     component={RouterLink}
-          //     to={PATH_DASHBOARD.user.newUser}
-          //     startIcon={<Icon icon={plusFill} />}
-          //   >
-          //     Xem khảo sát
-          //   </Button>
-          // }
         />
 
         <Card>
-          <UserListToolbar
-            numSelected={selected.length}
+          <ListToolbar
             filterName={filterName}
+            placeholder="Tìm theo tài khoản..."
             onFilterName={handleFilterByName}
           />
 
@@ -206,7 +176,7 @@ export default function UserList() {
                   rowCount={staffList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
+                  onSelectAllClick={() => {}}
                 />
                 <TableBody>
                   {filteredUsers
@@ -222,7 +192,7 @@ export default function UserList() {
                         isFree,
                         requestStaff
                       } = row;
-                      const isItemSelected = selected.indexOf(username) !== -1;
+                      const isItemSelected = selected.indexOf(accountId) !== -1;
 
                       return (
                         <TableRow
@@ -233,6 +203,16 @@ export default function UserList() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
+                          {isFree || isFree === null ? (
+                            <TableCell padding="checkbox">
+                              <Checkbox
+                                checked={isItemSelected}
+                                onClick={() => handleClick(accountId)}
+                              />
+                            </TableCell>
+                          ) : (
+                            <TableCell padding="checkbox" />
+                          )}
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Typography variant="subtitle2" noWrap>
@@ -249,13 +229,13 @@ export default function UserList() {
                             )}
                           </TableCell>
                           <TableCell align="left">{phone}</TableCell>
-                          <TableCell align="left">
+                          {/* <TableCell align="left">
                             {isFree || isFree === null ? (
                               <DialogRequestManagement staffId={accountId} />
                             ) : (
                               'Đang trong 3 khảo sát'
                             )}
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell align="left">
                             <Label
                               variant="ghost"

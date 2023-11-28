@@ -21,6 +21,8 @@ import {
 } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import axios from 'utils/axiosIntegrated';
+import { PATH_DASHBOARD } from 'routes/paths';
+
 import { AuthUser } from '../../../@types/authentication';
 import { UserManager } from '../../../@types/admin-user';
 import { roles, genders, loginTypes, staffTypes } from './roles';
@@ -33,20 +35,23 @@ type UserNewFormProps = {
   currentAdmin: AuthUser & {
     role?: 'Admin' | 'Owner' | 'Staff';
   };
+  handleFetchUsers: (isFetch: true) => void;
 };
 
 export default function UserNewForm({
   isEdit = false,
   currentUser,
-  currentAdmin
+  currentAdmin,
+  handleFetchUsers
 }: UserNewFormProps) {
   console.log(currentUser);
   const { register } = useAuth();
-  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const [isSetDefaultPassword, setIsSetDefaultPassword] = useState(false);
   const [isGoogleProvider, setIsGoogleProvider] = useState(currentUser?.isGoogleProvider);
+  const navigate = useNavigate();
+
   // manual
   const [showPasswordField, setShowPasswordField] = useState(true);
 
@@ -135,11 +140,15 @@ export default function UserNewForm({
             ...(values.roleId == '3' && { isLeader: values.isLeader === 'leader' || false })
           });
         }
-        resetForm();
         setSubmitting(false);
         enqueueSnackbar(!isEdit ? 'Tạo tài khoản thành công' : 'Cập nhật thành công', {
           variant: 'success'
         });
+        if (isEdit) {
+          handleFetchUsers(true);
+        } else {
+          navigate(PATH_DASHBOARD.user.root);
+        }
       } catch (error: any) {
         console.error(error);
         setSubmitting(false);
@@ -239,7 +248,7 @@ export default function UserNewForm({
                     fullWidth
                     label="Email"
                     {...getFieldProps('email')}
-                    disabled={isEdit && isGoogleProvider}
+                    disabled={isEdit || isGoogleProvider}
                     error={Boolean(touched.email && errors.email)}
                     helperText={touched.email && errors.email}
                   />
@@ -266,6 +275,7 @@ export default function UserNewForm({
                     />
                     <TextField
                       fullWidth
+                      disabled={isEdit}
                       label="Số điện thoại"
                       {...getFieldProps('phone')}
                       error={Boolean(touched.phone && errors.phone)}

@@ -162,7 +162,7 @@ export default function Acceptance({ currentContructionContract }: ProcessNewFor
             <Upload onGetFile={handleGetFile} defaultFiles={files[0]} />
           </Stack>
           <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between' }}>
-            {acceptances[0]?.acceptanceId && (
+            {currentContructionContract.status === '2' && acceptances[0]?.acceptanceId && (
               <LoadingButton
                 onClick={() => handleDeleteAcceptance(acceptances[0].acceptanceId)}
                 color="error"
@@ -172,9 +172,11 @@ export default function Acceptance({ currentContructionContract }: ProcessNewFor
                 Xoá
               </LoadingButton>
             )}
-            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              {!acceptances[0]?.imageFile ? 'Thêm nghiệm thu' : 'Cập nhật'}
-            </LoadingButton>
+            {currentContructionContract.status === '2' && (
+              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                {!acceptances[0]?.imageFile ? 'Thêm nghiệm thu' : 'Cập nhật'}
+              </LoadingButton>
+            )}
           </Box>
         </Paper>
       </Form>

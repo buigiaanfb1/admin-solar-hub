@@ -10,10 +10,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.response.use(
-  (response) => {
-    console.log(response);
-    return response;
-  },
+  (response) => response,
   (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
 );
 

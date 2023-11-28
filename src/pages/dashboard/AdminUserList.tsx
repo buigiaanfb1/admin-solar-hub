@@ -47,7 +47,7 @@ import {
 const TABLE_HEAD = [
   { id: 'username', label: 'Tên tài khoản', alignRight: false },
   { id: 'fullName', label: 'Họ và tên', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
+  { id: 'roleId', label: 'Role', alignRight: false },
   { id: 'phone', label: 'Số điện thoại', alignRight: false },
   { id: 'status', label: 'Trạng thái', alignRight: false },
   { id: '' }
@@ -87,7 +87,7 @@ function applySortFilter(
   if (query) {
     return filter(
       array,
-      (_user) => _user.username.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_user) => _user.username?.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -205,6 +205,7 @@ export default function UserList() {
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
+                  isShowCheckbox={false}
                 />
                 <TableBody>
                   {filteredUsers
@@ -231,12 +232,6 @@ export default function UserList() {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onClick={() => handleClick(username)}
-                            />
-                          </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Typography variant="subtitle2" noWrap>

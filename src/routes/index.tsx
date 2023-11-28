@@ -1,5 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
+import useAuth from 'hooks/useAuth';
+
 // layouts
 import MainLayout from '../layouts/main';
 import DashboardLayout from '../layouts/dashboard';
@@ -40,6 +42,172 @@ const Loadable = (Component: any) => (props: any) => {
 };
 
 export default function Router() {
+  const { user } = useAuth();
+  const roleId = user?.userInfo?.role?.roleId || null;
+
+  const handleRenderRoute = () => {
+    if (roleId === '1') {
+      return [
+        {
+          path: 'user',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/user/list" replace /> },
+            // { path: 'profile', element: <UserProfile /> },
+            { path: 'cards', element: <UserCards /> },
+            { path: 'list', element: <AdminUserList /> },
+            { path: 'new', element: <AdminUserCreate /> },
+            { path: '/:name/edit', element: <AdminUserCreate /> },
+            { path: 'account', element: <UserAccount /> }
+          ]
+        }
+      ];
+    }
+    if (roleId === '2') {
+      return [
+        {
+          path: 'staff',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/staff1/list" replace /> },
+            { path: 'list', element: <OwnerRequestList /> }
+          ]
+        },
+        {
+          path: 'package',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/package/list" replace />
+            },
+            { path: 'list', element: <PackageManagement /> },
+            { path: '/:name/edit', element: <PackageManagementCreate /> },
+            { path: 'new', element: <PackageManagementCreate /> }
+          ]
+        },
+        {
+          path: 'team',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/team/list" replace />
+            },
+            { path: 'list', element: <PackageManagement /> },
+            { path: '/:name/edit', element: <PackageManagementCreate /> },
+            { path: 'new', element: <PackageManagementCreate /> }
+          ]
+        },
+        {
+          path: 'bracket',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/bracket/list" replace />
+            },
+            { path: 'list', element: <BracketManagement /> },
+            { path: '/:name/edit', element: <BracketManagementCreate /> },
+            { path: 'new', element: <BracketManagementCreate /> }
+          ]
+        },
+        {
+          path: 'contract',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/contract/list" replace />
+            },
+            { path: 'list', element: <ContractManagement /> },
+            { path: '/:name/edit', element: <ContractManagementCreate /> },
+            { path: 'new', element: <ContractManagementCreate /> }
+          ]
+        },
+        {
+          path: 'promotion',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/promotion/list" replace />
+            },
+            { path: 'list', element: <PromotionManagementList /> },
+            { path: '/:name/edit', element: <PromotionManagementCreate /> },
+            { path: 'new', element: <PromotionManagementCreate /> }
+          ]
+        },
+        {
+          path: 'feedback',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/feedback/list" replace />
+            },
+            { path: 'list', element: <FeedbackManagementList /> }
+          ]
+        },
+        {
+          path: 'product',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/product/list" replace />
+            },
+            { path: 'list', element: <ProductManagement /> },
+            { path: '/:name/edit', element: <ProductManagementCreate /> },
+            { path: 'new', element: <ProductManagementCreate /> }
+          ]
+        }
+      ];
+    }
+    if (roleId === '3') {
+      return [
+        {
+          path: 'request',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/request/list" replace />
+            },
+            { path: 'list', element: <StaffRequestList /> }
+          ]
+        },
+        {
+          path: 'survey',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/survey/list" replace />
+            },
+            { path: 'list', element: <SurveyManagement /> },
+            { path: '/:name/edit', element: <SurveyManagementCreate /> },
+            { path: 'new', element: <SurveyManagementCreate /> }
+          ]
+        },
+        {
+          path: 'staff',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/staff/contract/list" replace />
+            },
+            { path: 'contract/list', element: <StaffContractManagement /> },
+            { path: '/contract/:name/edit', element: <ContractManagementCreate /> },
+            { path: 'contract/new', element: <ContractManagementCreate /> }
+          ]
+        }
+      ];
+    }
+    if (roleId === '5') {
+      return [
+        {
+          path: 'support',
+          children: [
+            { path: '/', element: <Support /> },
+            { path: 'new', element: <Support /> },
+            { path: ':conversationKey', element: <Support /> }
+          ]
+        }
+      ];
+    }
+    return [];
+  };
+
   return useRoutes([
     {
       path: 'auth',
@@ -75,178 +243,8 @@ export default function Router() {
         </AuthGuard>
       ),
       children: [
-        { path: '/', element: <Navigate to="/dashboard/contract" replace /> },
-        {
-          path: 'staff',
-          children: [
-            {
-              path: '/',
-              element: <Navigate to="/dashboard/staff/contract/list" replace />
-            },
-            { path: 'contract/list', element: <StaffContractManagement /> },
-            { path: '/contract/:name/edit', element: <ContractManagementCreate /> },
-            { path: 'contract/new', element: <ContractManagementCreate /> }
-          ]
-        },
-        {
-          path: 'contract',
-          children: [
-            {
-              path: '/',
-              element: <Navigate to="/dashboard/contract/list" replace />
-            },
-            { path: 'list', element: <ContractManagement /> },
-            { path: '/:name/edit', element: <ContractManagementCreate /> },
-            { path: 'new', element: <ContractManagementCreate /> }
-          ]
-        },
-        { path: 'app', element: <GeneralApp /> },
-        { path: 'ecommerce', element: <GeneralEcommerce /> },
-        {
-          path: 'analytics',
-          element: <GeneralAnalytics />
-        },
-        {
-          path: 'package',
-          children: [
-            {
-              path: '/',
-              element: <Navigate to="/dashboard/package/list" replace />
-            },
-            { path: 'list', element: <PackageManagement /> },
-            { path: '/:name/edit', element: <PackageManagementCreate /> },
-            { path: 'new', element: <PackageManagementCreate /> }
-          ]
-        },
-        {
-          path: 'bracket',
-          children: [
-            {
-              path: '/',
-              element: <Navigate to="/dashboard/bracket/list" replace />
-            },
-            { path: 'list', element: <BracketManagement /> },
-            { path: '/:name/edit', element: <BracketManagementCreate /> },
-            { path: 'new', element: <BracketManagementCreate /> }
-          ]
-        },
-        {
-          path: 'promotion',
-          children: [
-            {
-              path: '/',
-              element: <Navigate to="/dashboard/promotion/list" replace />
-            },
-            { path: 'list', element: <PromotionManagementList /> },
-            { path: '/:name/edit', element: <PromotionManagementCreate /> },
-            { path: 'new', element: <PromotionManagementCreate /> }
-          ]
-        },
-        {
-          path: 'request',
-          children: [
-            {
-              path: '/',
-              element: <Navigate to="/dashboard/request/list" replace />
-            },
-            { path: 'list', element: <StaffRequestList /> }
-          ]
-        },
-        {
-          path: 'feedback',
-          children: [
-            {
-              path: '/',
-              element: <Navigate to="/dashboard/feedback/list" replace />
-            },
-            { path: 'list', element: <FeedbackManagementList /> }
-          ]
-        },
-        {
-          path: 'product',
-          children: [
-            {
-              path: '/',
-              element: <Navigate to="/dashboard/product/list" replace />
-            },
-            { path: 'list', element: <ProductManagement /> },
-            { path: '/:name/edit', element: <ProductManagementCreate /> },
-            { path: 'new', element: <ProductManagementCreate /> }
-          ]
-        },
-        {
-          path: 'survey',
-          children: [
-            {
-              path: '/',
-              element: <Navigate to="/dashboard/survey/list" replace />
-            },
-            { path: 'list', element: <SurveyManagement /> },
-            { path: '/:name/edit', element: <SurveyManagementCreate /> },
-            { path: 'new', element: <SurveyManagementCreate /> }
-          ]
-        },
-        {
-          path: 'e-commerce',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/e-commerce/shop" replace /> },
-            { path: 'shop', element: <EcommerceShop /> },
-            { path: 'product/:name', element: <EcommerceProductDetails /> },
-            { path: 'list', element: <EcommerceProductList /> },
-            { path: 'product/new', element: <EcommerceProductCreate /> },
-            { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
-            { path: 'checkout', element: <EcommerceCheckout /> },
-            { path: 'invoice', element: <EcommerceInvoice /> }
-          ]
-        },
-        {
-          path: 'user',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/user/list" replace /> },
-            // { path: 'profile', element: <UserProfile /> },
-            { path: 'cards', element: <UserCards /> },
-            { path: 'list', element: <AdminUserList /> },
-            { path: 'new', element: <AdminUserCreate /> },
-            { path: '/:name/edit', element: <AdminUserCreate /> },
-            { path: 'account', element: <UserAccount /> }
-          ]
-        },
-        {
-          path: 'staff',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/staff/list" replace /> },
-            { path: 'list', element: <OwnerStaffList /> }
-          ]
-        },
-        {
-          path: 'blog',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/blog/posts" replace /> },
-            { path: 'posts', element: <BlogPosts /> },
-            { path: 'post/:title', element: <BlogPost /> },
-            { path: 'new-post', element: <BlogNewPost /> }
-          ]
-        },
-        {
-          path: 'mail',
-          children: [
-            { path: '/', element: <Navigate to="/dashboard/mail/all" replace /> },
-            { path: 'label/:customLabel', element: <Mail /> },
-            { path: 'label/:customLabel/:mailId', element: <Mail /> },
-            { path: ':systemLabel', element: <Mail /> },
-            { path: ':systemLabel/:mailId', element: <Mail /> }
-          ]
-        },
-        {
-          path: 'support',
-          children: [
-            { path: '/', element: <Support /> },
-            { path: 'new', element: <Support /> },
-            { path: ':conversationKey', element: <Support /> }
-          ]
-        },
-        { path: 'calendar', element: <Calendar /> },
-        { path: 'kanban', element: <Kanban /> }
+        // { path: '/', element: <Navigate to="/dashboard/contract" replace /> },
+        ...handleRenderRoute()
       ]
     },
     // Main Routes
@@ -367,7 +365,7 @@ const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const AdminUserList = Loadable(lazy(() => import('../pages/dashboard/AdminUserList')));
-const OwnerStaffList = Loadable(lazy(() => import('../pages/dashboard/OwnerStaffList')));
+const OwnerRequestList = Loadable(lazy(() => import('../pages/dashboard/OwnerRequestList')));
 const PromotionManagementList = Loadable(
   lazy(() => import('../pages/dashboard/PromotionManagement'))
 );

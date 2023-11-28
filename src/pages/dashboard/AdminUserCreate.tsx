@@ -32,6 +32,12 @@ export default function UserCreate() {
     dispatch(getUserList());
   }, [dispatch]);
 
+  const handleFetchUsers = (isFetch: boolean) => {
+    if (isFetch) {
+      dispatch(getUserList());
+    }
+  };
+
   return (
     <Page title="Tạo mới tài khoản | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -47,6 +53,7 @@ export default function UserCreate() {
           isEdit={isEdit}
           currentUser={currentUser}
           currentAdmin={{ ...user, role: user?.role || 'Staff' }}
+          handleFetchUsers={handleFetchUsers}
         />
       </Container>
     </Page>

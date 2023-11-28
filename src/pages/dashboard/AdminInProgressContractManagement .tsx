@@ -24,7 +24,7 @@ import {
 import { fDateTime } from 'utils/formatTime';
 import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
 import useAuth from 'hooks/useAuth';
-import { isWithinInterval, parseISO } from 'date-fns';
+import { isAfter, parseISO } from 'date-fns';
 
 import { ConstructionContractManager } from '../../@types/contract';
 import {
@@ -49,6 +49,7 @@ import { UserListHead, UserListToolbar } from '../../components/_dashboard/user/
 import MoreMenu from '../../components/_dashboard/contract/MoreMenu';
 import DialogViewContractManagement from './DialogViewContractManagement';
 import { SurveyManager } from '../../@types/survey';
+import { handleRenderLabel } from './StaffContractManagement';
 
 // ----------------------------------------------------------------------
 
@@ -57,7 +58,8 @@ const TABLE_HEAD = [
   { id: 'bracket', label: 'Tên khung đỡ', alignRight: false },
   { id: 'username', label: 'Tên khách hàng', alignRight: false },
   { id: 'totalcost', label: 'Tổng giá', alignRight: false },
-  { id: 'startdate', label: 'Người tạo', alignRight: false }
+  { id: 'startdate', label: 'Người tạo', alignRight: false },
+  { id: 'status', label: 'Trạng thái', alignRight: false }
 ];
 
 // ----------------------------------------------------------------------
@@ -114,7 +116,7 @@ export default function StaffContractManagement() {
     const startDate = parseISO(item.startdate);
     const endDate = parseISO(item.enddate);
 
-    return isWithinInterval(currentDate, { start: startDate, end: endDate }) && item.status === '2';
+    return isAfter(currentDate, startDate) && item.status === '2';
   });
 
   const [page, setPage] = useState(0);
@@ -244,6 +246,9 @@ export default function StaffContractManagement() {
                         </TableCell>
                         <TableCell align="left" style={{ maxWidth: '150px' }}>
                           {`${lastname} ${firstname}`}
+                        </TableCell>
+                        <TableCell align="left" style={{ maxWidth: '150px' }}>
+                          {handleRenderLabel(status, startdate, enddate)}
                         </TableCell>
                         {/* <TableCell align="right">
                           <MoreMenu

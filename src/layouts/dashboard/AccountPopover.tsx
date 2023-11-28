@@ -63,6 +63,7 @@ export default function AccountPopover() {
         navigate('/');
         handleClose();
       }
+      window.location.replace('/dashboard');
     } catch (error) {
       console.error(error);
       enqueueSnackbar('Unable to logout', { variant: 'error' });

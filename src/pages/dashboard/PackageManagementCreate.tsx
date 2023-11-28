@@ -55,7 +55,7 @@ export default function PackageManagementCreate() {
         <PackageNewForm
           isEdit={isEdit}
           currentPackage={currentPackage}
-          promotionList={promotionList}
+          promotionList={promotionList.filter((promotion) => promotion.status)}
         />
       </Container>
     </Page>

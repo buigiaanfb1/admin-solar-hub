@@ -80,7 +80,7 @@ export default function Login() {
             </Tooltip>
           </Stack>
 
-          <AuthWithSocial />
+          {/* <AuthWithSocial /> */}
 
           <LoginForm />
 

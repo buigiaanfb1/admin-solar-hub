@@ -214,6 +214,7 @@ export default function Process({ currentContructionContract }: ProcessNewFormPr
                   onChange={(newValue) => {
                     setFieldValue('endDate', newValue);
                   }}
+                  disabled={!values.startDate}
                   minDate={values.startDate && new Date(values.startDate)}
                   maxDate={new Date(currentContructionContract.enddate)}
                   renderInput={(params) => (
@@ -328,14 +329,16 @@ export default function Process({ currentContructionContract }: ProcessNewFormPr
                 </Stack>
               )}
               <Stack>
-                <LoadingButton
-                  onClick={() => handleDeleteProcess(steps[activeStep].processId)}
-                  variant="outlined"
-                  color="error"
-                  loading={isLoading}
-                >
-                  Xoá tiến trình
-                </LoadingButton>
+                {currentContructionContract.status === '2' && (
+                  <LoadingButton
+                    onClick={() => handleDeleteProcess(steps[activeStep].processId)}
+                    variant="outlined"
+                    color="error"
+                    loading={isLoading}
+                  >
+                    Xoá tiến trình
+                  </LoadingButton>
+                )}
               </Stack>
             </Stack>
           </Paper>

@@ -47,6 +47,7 @@ import { UserListHead, UserListToolbar } from '../../components/_dashboard/user/
 import MoreMenu from '../../components/_dashboard/contract/MoreMenu';
 import DialogViewContractManagement from './DialogViewContractManagement';
 import { SurveyManager } from '../../@types/survey';
+import { isBeforeProgress } from './StaffContractManagement';
 
 // ----------------------------------------------------------------------
 
@@ -107,7 +108,7 @@ export default function StaffContractManagement() {
 
   const { constructionContractList } = useSelector((state: RootState) => state.contractList);
   const pendingConstructionContractList = constructionContractList.filter(
-    (contract) => contract.status === '2'
+    (contract) => contract.status === '2' && isBeforeProgress(contract.startdate)
   );
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');

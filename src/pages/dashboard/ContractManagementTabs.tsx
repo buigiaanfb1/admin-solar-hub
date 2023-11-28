@@ -26,20 +26,14 @@ export default function ContractManagementTabs() {
     (state: RootState) => state.user
   );
 
-  const [currentTab, setCurrentTab] = useState('pending');
+  const [currentTab, setCurrentTab] = useState('approved');
 
   useEffect(() => {}, [dispatch]);
 
   const ACCOUNT_TABS = [
     {
-      value: 'pending',
-      label: 'Chờ duyệt',
-      icon: <Icon icon={bellFill} width={20} height={20} />,
-      component: <AccountGeneral />
-    },
-    {
       value: 'approved',
-      label: 'Đã duyệt',
+      label: 'Hợp đồng mới',
       icon: <Icon icon={roundReceipt} width={20} height={20} />,
       component: <AccountGeneral />
     },
@@ -71,11 +65,6 @@ export default function ContractManagementTabs() {
         ))}
       </Tabs>
       <Box sx={{ mb: 5 }} />
-      {currentTab === 'pending' && (
-        <div>
-          <AdminPendingContractManagement />
-        </div>
-      )}
       {currentTab === 'approved' && (
         <div>
           <AdminApprovedContractManagement />

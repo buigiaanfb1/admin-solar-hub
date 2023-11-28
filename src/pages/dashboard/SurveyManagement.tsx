@@ -271,7 +271,7 @@ export default function SurveyManagement() {
                             {handleRenderContractButton(
                               constructionContract,
                               surveyId,
-                              request?.account?.accountId
+                              request?.accountId
                             )}
                           </TableCell>
 

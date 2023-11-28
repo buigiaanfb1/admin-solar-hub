@@ -1,9 +1,9 @@
 const roles = {
   Admin: [
-    {
-      code: '2',
-      label: 'Owner'
-    },
+    // {
+    //   code: '2',
+    //   label: 'Owner'
+    // },
     {
       code: '3',
       label: 'Staff'

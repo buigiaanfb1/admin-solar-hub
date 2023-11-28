@@ -78,6 +78,12 @@ export const PATH_DASHBOARD = {
     newBracket: path(ROOTS_DASHBOARD, '/bracket/new'),
     editById: path(ROOTS_DASHBOARD, '/bracket/ada-lindgren/edit')
   },
+  team: {
+    root: path(ROOTS_DASHBOARD, '/team'),
+    list: path(ROOTS_DASHBOARD, '/team/list'),
+    newBracket: path(ROOTS_DASHBOARD, '/team/new'),
+    editById: path(ROOTS_DASHBOARD, '/team/ada-lindgren/edit')
+  },
   staff: {
     root: path(ROOTS_DASHBOARD, '/staff'),
     list: path(ROOTS_DASHBOARD, '/staff/list')

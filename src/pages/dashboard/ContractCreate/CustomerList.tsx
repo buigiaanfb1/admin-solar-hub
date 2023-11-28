@@ -195,9 +195,14 @@ export default function OwnerRequestList({
                       selected={isItemSelected}
                       aria-checked={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isItemSelected} onClick={() => handleClick(accountId)} />
-                      </TableCell>
+                      {selectedValue ? (
+                        <TableCell padding="checkbox">
+                          <Checkbox checked={isItemSelected} />
+                        </TableCell>
+                      ) : (
+                        <TableCell padding="checkbox" />
+                      )}
+
                       <TableCell align="left">{firstname + lastname}</TableCell>
                       <TableCell align="left">{username}</TableCell>
                       <TableCell align="left">{phone}</TableCell>

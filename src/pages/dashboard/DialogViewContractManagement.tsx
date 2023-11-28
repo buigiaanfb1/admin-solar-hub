@@ -20,6 +20,10 @@ import { useSnackbar } from 'notistack5';
 import { LargeItem } from 'components/_dashboard/contract/CarouselContract';
 import Timeline from 'components/_dashboard/contract/components/Timeline';
 import useAuth from 'hooks/useAuth';
+import {
+  handleRenderProcess,
+  handleRenderAcceptance
+} from 'components/_dashboard/contract/AdminContractNewForm';
 
 import { ConstructionContractManager } from '../../@types/contract';
 
@@ -80,7 +84,8 @@ export default function DialogViewContractManagement({
             <br />
             <ContractInfo contract={contract} />
             <Stack spacing={3} sx={{ marginBottom: '1.5em', mt: 3 }}>
-              <Timeline />
+              {handleRenderProcess(contract)}
+              {handleRenderAcceptance(contract)}
             </Stack>
             <Stack spacing={3} sx={{ marginBottom: '1.5em', mt: 3 }}>
               {contract.imageFile && (
@@ -102,7 +107,7 @@ export default function DialogViewContractManagement({
               currentPackage={contract.package}
               currentBracket={contract.bracket}
             />
-            <Card sx={{ p: 3, mb: 6 }}>
+            {/* <Card sx={{ p: 3, mb: 6 }}>
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                 <TextField
                   fullWidth
@@ -115,10 +120,10 @@ export default function DialogViewContractManagement({
                   helperText={touched.description && errors.description}
                 />
               </Stack>
-            </Card>
+            </Card> */}
           </DialogContent>
           <DialogActions>
-            {contract.status === '1' && user?.userInfo.roleId === '2' && (
+            {/* {contract.status === '1' && user?.userInfo.roleId === '2' && (
               <>
                 <LoadingButton
                   type="submit"
@@ -137,7 +142,7 @@ export default function DialogViewContractManagement({
                   Từ chối
                 </LoadingButton>
               </>
-            )}
+            )} */}
             <Button onClick={onClose} variant="text">
               Đóng
             </Button>

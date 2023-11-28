@@ -24,7 +24,7 @@ import {
 import { fDateTime } from 'utils/formatTime';
 import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
 import useAuth from 'hooks/useAuth';
-import { isWithinInterval, isAfter, parseISO } from 'date-fns';
+import { isWithinInterval, isBefore, parseISO } from 'date-fns';
 
 import { ConstructionContractManager } from '../../@types/contract';
 import {
@@ -111,6 +111,14 @@ const isInProgress = (startdate: string, enddate: string) => {
   return isWithinInterval(currentDate, { start: startDate, end: endDate });
 };
 
+export const isBeforeProgress = (startdate: string) => {
+  const currentDate = new Date();
+
+  const startDate = parseISO(startdate);
+
+  return isBefore(currentDate, startDate);
+};
+
 export const handleRenderLabel = (status: string, startdate: string, enddate: string) => {
   switch (status) {
     case '0':
@@ -122,13 +130,13 @@ export const handleRenderLabel = (status: string, startdate: string, enddate: st
     case '1':
       return <Label variant="ghost">Chờ duyệt</Label>;
     case '2':
-      return isInProgress(startdate, enddate) ? (
-        <Label variant="ghost" color="primary">
-          Đang thi công
+      return isBeforeProgress(startdate) ? (
+        <Label variant="ghost" color="secondary">
+          Hợp đồng mới
         </Label>
       ) : (
-        <Label variant="ghost" color="secondary">
-          Đang hoạt động
+        <Label variant="ghost" color="primary">
+          Đang thi công
         </Label>
       );
     case '3':

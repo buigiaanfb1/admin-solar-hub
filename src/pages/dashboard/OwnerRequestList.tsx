@@ -13,10 +13,10 @@ import {
   Avatar,
   Button,
   Checkbox,
+  Container,
   TableRow,
   TableBody,
   TableCell,
-  Container,
   Typography,
   TableContainer,
   TablePagination
@@ -45,17 +45,17 @@ import {
   UserListToolbar,
   AdminUserMoreMenu
 } from '../../components/_dashboard/user/list';
-import AlertDialog from './DialogRequestManagement';
 import { RequestManager } from '../../@types/request';
+import DialogRequestManagement from './DialogRequestManagement';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: '', label: '', alignRight: false },
   { id: 'packageId', label: 'Mã gói', alignRight: false },
   { id: 'username', label: 'Tài khoản khách hàng', alignRight: false },
   { id: 'description', label: 'Mô tả', alignRight: false },
-  { id: 'createAt', label: 'Ngày tạo', alignRight: false }
+  { id: 'createAt', label: 'Ngày tạo', alignRight: false },
+  { id: 'tools', label: '', alignRight: false }
 ];
 
 // ----------------------------------------------------------------------
@@ -98,17 +98,17 @@ function applySortFilter(
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function OwnerRequestList({ staffId }: { staffId: string }) {
+export default function OwnerRequestList() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { requestList, error } = useSelector((state: RootState) => state.requestList);
+  const { requestList } = useSelector((state: RootState) => state.requestList);
   const requestAvailableList = requestList.filter(
     (request) => request.staffId === null && request.status
   );
-  // const requestAvailableList = requestList.filter((request) => request);
+  console.log(requestAvailableList);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string>('');
@@ -135,7 +135,7 @@ export default function OwnerRequestList({ staffId }: { staffId: string }) {
   };
 
   const handleAssignRequest = () => {
-    dispatch(updateRequest({ staffId, requestId: selected }));
+    // dispatch(updateRequest({ staffId, requestId: selected }));
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,6 +160,13 @@ export default function OwnerRequestList({ staffId }: { staffId: string }) {
   return (
     <Page title="Danh sách các yêu cầu mới | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
+        <HeaderBreadcrumbs
+          heading="Danh sách các yêu cầu mới"
+          links={[
+            { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
+            { name: 'Danh sách các yêu cầu mới' }
+          ]}
+        />
         <Card>
           <UserListToolbar
             numSelected={selected.length}
@@ -204,16 +211,13 @@ export default function OwnerRequestList({ staffId }: { staffId: string }) {
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onClick={() => handleClick(requestId)}
-                            />
-                          </TableCell>
                           <TableCell align="left">{packageId}</TableCell>
                           <TableCell align="left">{username}</TableCell>
                           <TableCell align="left">{description}</TableCell>
                           <TableCell align="left">{fDateTime(createAt)}</TableCell>
+                          <TableCell align="left">
+                            <DialogRequestManagement requestId={requestId} />
+                          </TableCell>
                         </TableRow>
                       );
                     })}

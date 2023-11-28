@@ -152,9 +152,9 @@ const ownerSidebarConfig = [
         icon: ICONS.mail
       },
       {
-        title: 'Quản lý thanh toán',
-        path: PATH_DASHBOARD.package.root,
-        icon: ICONS.cart
+        title: 'Quản lý nhóm',
+        path: PATH_DASHBOARD.team.root,
+        icon: ICONS.user
       },
       {
         title: 'Quản lý sản phẩm',

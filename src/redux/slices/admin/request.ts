@@ -1,5 +1,7 @@
 import { filter } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
+import { batch } from 'react-redux';
+
 import { dispatch } from '../../store';
 // utils
 import axios from '../../../utils/axiosIntegrated';
@@ -73,13 +75,18 @@ export function updateRequest(data: Partial<RequestManager> = {}) {
       dispatch(slice.actions.startLoading());
       try {
         const response = await axios.get('/api/Request/get-request');
-        dispatch(slice.actions.getRequestListSuccess(response.data.data));
-        dispatch(getUserList());
+        batch(() => {
+          dispatch(slice.actions.getRequestListSuccess(response.data.data));
+          dispatch(getUserList());
+          dispatch(getRequestList());
+        });
       } catch (error) {
         dispatch(slice.actions.hasError(error));
+        throw Error();
       }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
+      throw Error();
     }
   };
 }

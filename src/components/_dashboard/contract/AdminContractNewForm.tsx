@@ -30,7 +30,7 @@ export const isInProgressAndFurther = (startdate: string) => {
   return isAfter(currentDate, startDate);
 };
 
-const handleRenderProcess = (currentContructionContract?: ConstructionContractManager) => {
+export const handleRenderProcess = (currentContructionContract?: ConstructionContractManager) => {
   if (!currentContructionContract)
     return (
       <Stack>
@@ -74,7 +74,9 @@ const handleRenderProcess = (currentContructionContract?: ConstructionContractMa
   );
 };
 
-const handleRenderAcceptance = (currentContructionContract?: ConstructionContractManager) => {
+export const handleRenderAcceptance = (
+  currentContructionContract?: ConstructionContractManager
+) => {
   if (!currentContructionContract)
     return (
       <Stack>
@@ -207,6 +209,7 @@ export default function AdminContractNewForm({
             constructioncontractId: values.constructioncontractId,
             startdate: values.startdate,
             enddate: values.enddate,
+            isConfirmed: true,
             imageFile:
               imageUrls[0]?.image ||
               'https://climate.onep.go.th/wp-content/uploads/2020/01/default-image.jpg',
@@ -220,14 +223,16 @@ export default function AdminContractNewForm({
             startdate: values.startdate,
             enddate: values.enddate,
             totalcost: 0,
-            isConfirmed: false,
+            isConfirmed: true,
             imageFile:
               imageUrls[0]?.image ||
               'https://climate.onep.go.th/wp-content/uploads/2020/01/default-image.jpg',
             customerId: values.customerId,
             staffid: staffId,
+
             packageId: values.packageId,
-            bracketId: values.bracketId
+            bracketId: values.bracketId,
+            status: '2'
           });
         }
         resetForm();
@@ -263,8 +268,12 @@ export default function AdminContractNewForm({
       <Grid item xs={12} md={12}>
         <Card sx={{ p: 3 }}>
           <Stack spacing={3}>
-            {handleRenderProcess(currentContructionContract)}
-            {handleRenderAcceptance(currentContructionContract)}
+            {isEdit && (
+              <>
+                {handleRenderProcess(currentContructionContract)}
+                {handleRenderAcceptance(currentContructionContract)}
+              </>
+            )}
             <FormikProvider value={formik}>
               <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
                 <Stack spacing={3}>

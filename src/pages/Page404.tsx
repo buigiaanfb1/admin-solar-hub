@@ -4,6 +4,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import { Box, Button, Typography, Container } from '@material-ui/core';
 // components
+import useAuth from 'hooks/useAuth';
+
 import { MotionContainer, varBounceIn } from '../components/animate';
 import Page from '../components/Page';
 import { PageNotFoundIllustration } from '../assets';
@@ -21,6 +23,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Page404() {
+  const { user } = useAuth();
   return (
     <RootStyle title="404 Page Not Found | Minh Phát">
       <Container>
@@ -39,10 +42,15 @@ export default function Page404() {
             <motion.div variants={varBounceIn}>
               <PageNotFoundIllustration sx={{ height: 260, my: { xs: 5, sm: 10 } }} />
             </motion.div>
-
-            <Button to="/" size="large" variant="contained" component={RouterLink}>
-              Go to Home
-            </Button>
+            {user?.userInfo?.accountId ? (
+              <Button to="/dashboard" size="large" variant="contained" component={RouterLink}>
+                Về trang quản lí
+              </Button>
+            ) : (
+              <Button to="/" size="large" variant="contained" component={RouterLink}>
+                Về trang chủ
+              </Button>
+            )}
           </Box>
         </MotionContainer>
       </Container>
