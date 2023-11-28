@@ -110,7 +110,7 @@ export default function OwnerRequestList({ staffId }: { staffId: string }) {
   const navigate = useNavigate();
 
   const { requestList } = useSelector((state: RootState) => state.staffRequestList);
-  const requestAvailableList = requestList.filter((request) => request);
+  const requestAvailableList = requestList.filter((request) => request.status);
   // const requestAvailableList = requestList.filter((request) => request);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');

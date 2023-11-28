@@ -22,9 +22,11 @@ import {
   TablePagination
 } from '@material-ui/core';
 import { fDateTime } from 'utils/formatTime';
+import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
+import { getPaymentList } from 'redux/slices/admin/payment';
 
-import { PackageManager } from '../../@types/package';
-import { getPackageList, deletePackageApi, updatePackage } from '../../redux/slices/admin/package';
+import { PaymentManager } from '../../@types/admin-payment';
+import { getFeedbackList, deleteFeedbackApi } from '../../redux/slices/admin/feedback';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 // routes
@@ -47,9 +49,11 @@ import DialogPackageManagement from './DialogPackageManagement';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Gói sản phẩm', alignRight: false },
-  { id: 'description', label: 'Mô tả', alignRight: false },
-  { id: 'price', label: 'Giá', alignRight: false },
+  { id: 'paymentId', label: 'Mã thanh toán', alignRight: false },
+  { id: 'constructionContractId', label: 'Mã hợp đồng', alignRight: false },
+  { id: 'fullname', label: 'Tên khách hàng', alignRight: false },
+  { id: 'amount', label: 'Số tiền', alignRight: false },
+  { id: 'payDate', label: 'Ngày thanh toán', alignRight: false },
   { id: 'status', label: 'Trạng thái', alignRight: false },
   { id: '' }
 ];
@@ -75,7 +79,7 @@ function getComparator(order: string, orderBy: string) {
 }
 
 function applySortFilter(
-  array: PackageManager[],
+  array: PaymentManager[],
   comparator: (a: any, b: any) => number,
   query: string
 ) {
@@ -86,31 +90,34 @@ function applySortFilter(
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_payment) => {
+      const username = `${_payment.account.lastname} ${_payment.account.firstname}`;
+      return username.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+    });
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function PackageManagement() {
+export default function PaymentManagement() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const { packageList } = useSelector((state: RootState) => state.packageList);
+  const { paymentList } = useSelector((state: RootState) => state.paymentList);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-  const [selected, setSelected] = useState<PackageManager | null>(null);
-  const [orderBy, setOrderBy] = useState('username');
+  const [selected, setSelected] = useState<PaymentManager | null>(null);
+  const [orderBy, setOrderBy] = useState('status');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(getPackageList());
+    dispatch(getPaymentList());
   }, [dispatch]);
 
-  const handleClickOpen = (e: any, pacKage: PackageManager) => {
+  const handleClickOpen = (e: any, feedback: PaymentManager) => {
     const arrayOfTag = [
       '<g fill="currentColor"><circle cx="12" cy="15" r="1"></circle><path d="M17 8h-1V6.11a4 4 0 1 0-8 0V8H7a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-7-1.89A2.06 2.06 0 0 1 12 4a2.06 2.06 0 0 1 2 2.11V8h-4zM12 18a3 3 0 1 1 3-3a3 3 0 0 1-3 3z"></path></g>',
       '<g fill="currentColor"><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="19" r="2"></circle></g>',
@@ -121,7 +128,7 @@ export default function PackageManagement() {
       ''
     ];
     if (arrayOfTag.includes(e.target.innerHTML)) return;
-    setSelected(pacKage);
+    setSelected(feedback);
     setOpen(true);
   };
 
@@ -138,46 +145,32 @@ export default function PackageManagement() {
     setFilterName(filterName);
   };
 
-  const handleBlockPackage = (packageId: string) => {
-    dispatch(updatePackage({ packageId }, false));
+  const handleDeleteFeedback = (feedbackId: string) => {
+    dispatch(deleteFeedbackApi(feedbackId));
   };
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - paymentList.length) : 0;
 
-  const handleUnBlockPackage = (packageId: string) => {
-    dispatch(updatePackage({ packageId }, true));
-  };
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - packageList.length) : 0;
-
-  const filteredUsers = applySortFilter(packageList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(paymentList, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="Danh sách gói sản phẩm | Minh Phát">
+    <Page title="Feedbacks từ khách hàng | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Danh sách gói sản phẩm"
+          heading="Feedbacks từ khách hàng"
           links={[
             { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
-            { name: 'Danh sách gói sản phẩm' }
+            { name: 'Feedbacks từ khách hàng' }
           ]}
-          action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.package.newPackage}
-              startIcon={<Icon icon={plusFill} />}
-            >
-              Tạo gói sản phẩm
-            </Button>
-          }
+          action={<></>}
         />
 
         <Card>
           <UserListToolbar
             numSelected={0}
             filterName={filterName}
-            placeholder="Tìm gói sản phẩm..."
+            placeholder="Tìm theo tên khách hàng..."
             onFilterName={handleFilterByName}
           />
 
@@ -189,7 +182,7 @@ export default function PackageManagement() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={packageList.length}
+                  rowCount={paymentList.length}
                   numSelected={0}
                   onRequestSort={() => {}}
                   onSelectAllClick={() => {}}
@@ -198,17 +191,26 @@ export default function PackageManagement() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { packageId, name, price, description, status, promotionPrice } = row;
-                      console.log(promotionPrice, price, promotionPrice === price);
+                      const {
+                        paymentId,
+                        account: { lastname, firstname },
+                        constructionContractId,
+                        payDate,
+                        status,
+                        amount
+                      } = row;
+
                       return (
                         <TableRow
                           style={{ cursor: 'pointer' }}
-                          key={packageId}
+                          key={paymentId}
                           hover
                           tabIndex={-1}
                           role="checkbox"
                           onClick={(e: any) => handleClickOpen(e, row)}
                         >
+                          <TableCell align="left">{paymentId}</TableCell>
+                          <TableCell align="left">{constructionContractId}</TableCell>
                           <TableCell
                             component="th"
                             scope="row"
@@ -217,64 +219,23 @@ export default function PackageManagement() {
                           >
                             <div style={{ overflowWrap: 'break-word' }}>
                               <Typography variant="subtitle2" noWrap>
-                                {name}
+                                {lastname} {firstname}
                               </Typography>
                             </div>
                           </TableCell>
                           <TableCell align="left">
-                            <div
-                              style={{
-                                width: 200,
-                                overflowWrap: 'break-word',
-                                WebkitLineClamp: 3,
-                                WebkitBoxOrient: 'vertical',
-                                overflow: 'hidden',
-                                display: '-webkit-box'
-                              }}
-                            >
-                              <Typography variant="subtitle2">{description}</Typography>
-                            </div>
+                            <Typography>
+                              {amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
+                            </Typography>
                           </TableCell>
-                          <TableCell align="left">
-                            {promotionPrice !== null && promotionPrice !== price ? (
-                              <>
-                                <span style={{ textDecoration: 'line-through', color: 'red' }}>
-                                  {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
-                                </span>
-                                <Typography>
-                                  <span>
-                                    {promotionPrice
-                                      ?.toString()
-                                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                                    VNĐ
-                                  </span>
-                                </Typography>
-                              </>
-                            ) : (
-                              <Typography>
-                                {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
-                              </Typography>
-                            )}
-                          </TableCell>
+                          <TableCell align="left">{paymentId}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant="ghost"
-                              color={(status === false && 'error') || 'success'}
+                              color={status === 'sucess' || 'Paid' ? 'success' : 'warning'}
                             >
-                              {sentenceCase(status ? 'Available' : 'Unavailable')}
+                              {sentenceCase(status)}
                             </Label>
-                          </TableCell>
-
-                          <TableCell align="right">
-                            <AdminUserMoreMenu
-                              onBlock={() => handleBlockPackage(packageId)}
-                              onUnblock={() => handleUnBlockPackage(packageId)}
-                              textFirstItem="Tạm ngưng"
-                              textFirstItemAfter="Kích hoạt"
-                              status={status}
-                              id={packageId}
-                              path={PATH_DASHBOARD.package.root}
-                            />
                           </TableCell>
                         </TableRow>
                       );
@@ -301,7 +262,7 @@ export default function PackageManagement() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={packageList.length}
+            count={paymentList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}

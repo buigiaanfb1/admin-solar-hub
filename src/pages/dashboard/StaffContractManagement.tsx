@@ -93,11 +93,10 @@ function applySortFilter(
     return a[1] - b[1];
   });
   if (query) {
-    return filter(
-      array,
-      (_contract) =>
-        _contract.constructioncontractId.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    );
+    return filter(array, (_contract) => {
+      const username = `${_contract.customer.lastname} ${_contract.customer.firstname}`;
+      return username?.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+    });
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -214,7 +213,6 @@ export default function StaffContractManagement() {
   };
 
   const handleRequestSort = (property: string) => {
-    console.log(property);
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);

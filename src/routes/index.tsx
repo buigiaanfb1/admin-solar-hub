@@ -142,6 +142,16 @@ export default function Router() {
           ]
         },
         {
+          path: 'payment',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/payment/list" replace />
+            },
+            { path: 'list', element: <PaymentManagementList /> }
+          ]
+        },
+        {
           path: 'product',
           children: [
             {
@@ -372,6 +382,7 @@ const PromotionManagementList = Loadable(
 const FeedbackManagementList = Loadable(
   lazy(() => import('../pages/dashboard/FeedbackManagement'))
 );
+const PaymentManagementList = Loadable(lazy(() => import('../pages/dashboard/PaymentManagement')));
 const StaffRequestList = Loadable(lazy(() => import('../pages/dashboard/StaffRequestList')));
 const PackageManagement = Loadable(lazy(() => import('../pages/dashboard/PackageManagement')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));

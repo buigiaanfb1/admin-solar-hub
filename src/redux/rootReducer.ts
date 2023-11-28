@@ -16,6 +16,7 @@ import staffRequestListReducer from './slices/staff/request';
 import staffSurveyListReducer from './slices/staff/survey';
 import contractListReducer from './slices/admin/contract';
 import feedbackListReducer from './slices/admin/feedback';
+import paymentListReducer from './slices/admin/payment';
 import productReducer from './slices/product';
 import calendarReducer from './slices/calendar';
 import kanbanReducer from './slices/kanban';
@@ -50,6 +51,7 @@ const rootReducer = combineReducers({
   staffRequestList: staffRequestListReducer,
   staffSurveyList: staffSurveyListReducer,
   feedbackList: feedbackListReducer,
+  paymentList: paymentListReducer,
   contractList: contractListReducer,
   calendar: calendarReducer,
   kanban: kanbanReducer,
