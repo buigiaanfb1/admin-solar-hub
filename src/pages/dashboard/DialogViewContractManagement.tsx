@@ -101,7 +101,7 @@ export default function DialogViewContractManagement({
             <ProductPackage
               promotion={{
                 promotionId: contract.package.promotionId,
-                amount: Number(contract.package.promotion.amount)
+                amount: Number(contract.package.promotion?.amount)
               }}
               contract={contract}
               currentPackage={contract.package}
