@@ -203,14 +203,15 @@ export default function SurveyManagement() {
             { name: 'Danh sách các khảo sát' }
           ]}
           action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.survey.newSurvey}
-              startIcon={<Icon icon={plusFill} />}
-            >
-              Tạo khảo sát
-            </Button>
+            // <Button
+            //   variant="contained"
+            //   component={RouterLink}
+            //   to={PATH_DASHBOARD.survey.newSurvey}
+            //   startIcon={<Icon icon={plusFill} />}
+            // >
+            //   Tạo khảo sát
+            // </Button>
+            <></>
           }
         />
 

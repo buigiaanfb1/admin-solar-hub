@@ -239,14 +239,15 @@ export default function StaffContractManagement() {
             { name: 'Danh sách hợp đồng' }
           ]}
           action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.contract.newContractStaff}
-              startIcon={<Icon icon={plusFill} />}
-            >
-              Tạo hợp đồng
-            </Button>
+            // <Button
+            //   variant="contained"
+            //   component={RouterLink}
+            //   to={PATH_DASHBOARD.contract.newContractStaff}
+            //   startIcon={<Icon icon={plusFill} />}
+            // >
+            //   Tạo hợp đồng
+            // </Button>
+            <></>
           }
         />
 
