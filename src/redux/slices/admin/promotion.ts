@@ -89,7 +89,8 @@ export function updatePromotion(data: Partial<PromotionManager> = {}) {
     dispatch(slice.actions.startLoading());
     try {
       await axios.put('/api/Promotion/Update-promotion-by-id', {
-        ...data
+        ...data,
+        status: true
       });
       // TODO: need to refactor
       dispatch(slice.actions.startLoading());
