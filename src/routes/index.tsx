@@ -90,9 +90,9 @@ export default function Router() {
               path: '/',
               element: <Navigate to="/dashboard/team/list" replace />
             },
-            { path: 'list', element: <PackageManagement /> },
-            { path: '/:name/edit', element: <PackageManagementCreate /> },
-            { path: 'new', element: <PackageManagementCreate /> }
+            { path: 'list', element: <TeamManagement /> },
+            { path: '/:name/edit', element: <TeamManagementCreate /> },
+            { path: 'new', element: <TeamManagementCreate /> }
           ]
         },
         {
@@ -253,7 +253,11 @@ export default function Router() {
         </AuthGuard>
       ),
       children: [
-        // { path: '/', element: <Navigate to="/dashboard/contract" replace /> },
+        { path: '/', element: <Navigate to="/dashboard/intro" replace /> },
+        {
+          path: 'intro',
+          children: [{ path: '/', element: <PageIntro /> }]
+        },
         ...handleRenderRoute()
       ]
     },
@@ -395,6 +399,7 @@ const PackageManagementCreate = Loadable(
 );
 const ProductManagement = Loadable(lazy(() => import('../pages/dashboard/ProductManagement')));
 const BracketManagement = Loadable(lazy(() => import('../pages/dashboard/BracketManagement')));
+const TeamManagement = Loadable(lazy(() => import('../pages/dashboard/TeamManagement')));
 const ProductManagementCreate = Loadable(
   lazy(() => import('../pages/dashboard/ProductManagementCreate'))
 );
@@ -404,6 +409,9 @@ const SurveyManagementCreate = Loadable(
 );
 const BracketManagementCreate = Loadable(
   lazy(() => import('../pages/dashboard/BracketManagementCreate'))
+);
+const TeamManagementCreate = Loadable(
+  lazy(() => import('../pages/dashboard/TeamManagementCreate'))
 );
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
 const Support = Loadable(lazy(() => import('../pages/dashboard/Support')));
@@ -421,6 +429,7 @@ const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
 const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
+const PageIntro = Loadable(lazy(() => import('../pages/PageIntro')));
 // Components
 const ComponentsOverview = Loadable(lazy(() => import('../pages/ComponentsOverview')));
 const Color = Loadable(
@@ -454,6 +463,7 @@ const Buttons = Loadable(lazy(() => import('../pages/components-overview/materia
 const Checkbox = Loadable(
   lazy(() => import('../pages/components-overview/material-ui/Checkboxes'))
 );
+
 const Chip = Loadable(lazy(() => import('../pages/components-overview/material-ui/chips')));
 const Dialog = Loadable(lazy(() => import('../pages/components-overview/material-ui/dialog')));
 const Label = Loadable(lazy(() => import('../pages/components-overview/material-ui/Label')));

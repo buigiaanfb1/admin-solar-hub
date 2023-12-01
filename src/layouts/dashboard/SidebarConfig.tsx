@@ -154,13 +154,13 @@ const ownerSidebarConfig = [
       {
         title: 'Quản lý thanh toán',
         path: PATH_DASHBOARD.payment.root,
+        icon: ICONS.ecommerce
+      },
+      {
+        title: 'Quản lý nhóm',
+        path: PATH_DASHBOARD.team.root,
         icon: ICONS.user
       },
-      // {
-      //   title: 'Quản lý nhóm',
-      //   path: PATH_DASHBOARD.team.root,
-      //   icon: ICONS.user
-      // },
       {
         title: 'Quản lý sản phẩm',
         path: PATH_DASHBOARD.product.root,
@@ -179,7 +179,7 @@ const ownerSidebarConfig = [
       {
         title: 'Khung đỡ',
         path: PATH_DASHBOARD.bracket.root,
-        icon: ICONS.ecommerce
+        icon: ICONS.kanban
       }
     ]
   },

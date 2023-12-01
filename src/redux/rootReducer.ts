@@ -12,6 +12,7 @@ import productListReducer from './slices/admin/product';
 import requestListReducer from './slices/admin/request';
 import packageListReducer from './slices/admin/package';
 import bracketListReducer from './slices/admin/bracket';
+import teamListReducer from './slices/admin/team';
 import staffRequestListReducer from './slices/staff/request';
 import staffSurveyListReducer from './slices/staff/survey';
 import contractListReducer from './slices/admin/contract';
@@ -48,6 +49,7 @@ const rootReducer = combineReducers({
   packageList: packageListReducer,
   bracketList: bracketListReducer,
   requestList: requestListReducer,
+  teamList: teamListReducer,
   staffRequestList: staffRequestListReducer,
   staffSurveyList: staffSurveyListReducer,
   feedbackList: feedbackListReducer,
