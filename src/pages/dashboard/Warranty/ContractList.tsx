@@ -12,21 +12,22 @@ import {
   Stack,
   Avatar,
   Button,
-  Checkbox,
+  Radio,
   TableRow,
   TableBody,
   TableCell,
   Container,
   Typography,
   TableContainer,
-  TablePagination,
-  Radio
+  TablePagination
 } from '@material-ui/core';
 import { fDateTime } from 'utils/formatTime';
 import { getRequestList, updateRequest } from 'redux/slices/admin/request';
 import { useSnackbar } from 'notistack5';
-import { getPackageListStaff } from 'redux/slices/admin/package';
+import { getBracketList } from 'redux/slices/admin/bracket';
+import { getContractList } from 'redux/slices/admin/contract';
 
+import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
 import { getUserList, deleteUserApi, updateUser } from '../../../redux/slices/admin/user';
 // redux
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
@@ -35,14 +36,14 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
 import useSettings from '../../../hooks/useSettings';
 // @types
-import { PackageManager } from '../../../@types/package';
+import { ConstructionContractManager } from '../../../@types/contract';
 // components
 import Page from '../../../components/Page';
 import Label from '../../../components/Label';
 import Scrollbar from '../../../components/Scrollbar';
 import SearchNotFound from '../../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import { UserListHead, AdminUserMoreMenu } from '../../../components/_dashboard/user/list';
+import { UserListHead } from '../../../components/_dashboard/user/list';
 import AlertDialog from '../DialogRequestManagement';
 import ListToolbar from './ListToolbar';
 
@@ -50,9 +51,11 @@ import ListToolbar from './ListToolbar';
 
 const TABLE_HEAD = [
   { id: '', label: '', alignRight: false },
-  { id: 'name', label: 'Gói sản phẩm', alignRight: false },
-  { id: 'description', label: 'Mô tả', alignRight: false },
-  { id: 'price', label: 'Giá', alignRight: false }
+  { id: 'contractId', label: 'Mã hợp đồng', alignRight: false },
+  { id: 'packageName', label: 'Tên gói', alignRight: false },
+  { id: 'bracket', label: 'Tên khung đỡ', alignRight: false },
+  { id: 'username', label: 'Tên khách hàng', alignRight: false },
+  { id: 'totalcost', label: 'Tổng giá', alignRight: false }
 ];
 
 // ----------------------------------------------------------------------
@@ -76,7 +79,7 @@ function getComparator(order: string, orderBy: string) {
 }
 
 function applySortFilter(
-  array: PackageManager[],
+  array: ConstructionContractManager[],
   comparator: (a: any, b: any) => number,
   query: string
 ) {
@@ -87,43 +90,41 @@ function applySortFilter(
     return a[1] - b[1];
   });
   if (query) {
-    return filter(
-      array,
-      (_pacKage) => _pacKage.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    );
+    return filter(array, (_contract) => {
+      const username = `${_contract.customer.lastname} ${_contract.customer.firstname}`;
+      return username.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+    });
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
 export default function OwnerRequestList({
-  staffId,
-  onSetValue,
-  selectedValue
+  onSetValue
 }: {
-  staffId: string;
   onSetValue: (key: string, value: string) => void;
-  selectedValue: string;
 }) {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { packageList } = useSelector((state: RootState) => state.packageList);
-  const availablePackageList = packageList.filter((pacKage) => pacKage.status);
+  const { constructionContractList } = useSelector((state: RootState) => state.contractList);
+  const completedConstructionContractList = constructionContractList.filter(
+    (contract) => contract.status === '3'
+  );
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-  const [selected, setSelected] = useState<string>(selectedValue);
+  const [selected, setSelected] = useState<string>('');
   const [orderBy, setOrderBy] = useState('username');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    dispatch(getPackageListStaff());
+    dispatch(getContractList());
   }, [dispatch]);
 
   useEffect(() => {
-    onSetValue('packageId', selected);
+    onSetValue('contractId', selected);
   }, [selected]);
 
   const handleRequestSort = (property: string) => {
@@ -140,10 +141,6 @@ export default function OwnerRequestList({
     setSelected(requestId);
   };
 
-  const handleAssignRequest = () => {
-    dispatch(updateRequest({ staffId, requestId: selected }));
-  };
-
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -154,10 +151,10 @@ export default function OwnerRequestList({
   };
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - availablePackageList.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - completedConstructionContractList.length) : 0;
 
   const filteredUsers = applySortFilter(
-    availablePackageList,
+    completedConstructionContractList,
     getComparator(order, orderBy),
     filterName
   );
@@ -168,7 +165,7 @@ export default function OwnerRequestList({
     <Card>
       <ListToolbar
         filterName={filterName}
-        placeholder="Tìm theo tên gói..."
+        placeholder="Tìm theo tên khách hàng..."
         onFilterName={handleFilterByName}
       />
 
@@ -179,7 +176,7 @@ export default function OwnerRequestList({
               order={order}
               orderBy={orderBy}
               headLabel={TABLE_HEAD}
-              rowCount={availablePackageList.length}
+              rowCount={completedConstructionContractList.length}
               numSelected={selected.length}
               onRequestSort={handleRequestSort}
               onSelectAllClick={() => {}}
@@ -189,24 +186,53 @@ export default function OwnerRequestList({
               {filteredUsers
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
-                  const { packageId, name, description, price } = row;
-                  const isItemSelected = selected.indexOf(packageId) !== -1;
+                  const {
+                    constructioncontractId,
+                    bracket: { name: bracketName },
+                    status,
+                    startdate,
+                    totalcost,
+                    enddate,
+                    description,
+                    staff: { firstname, lastname },
+                    customer: { firstname: firstnameCus, lastname: lastnameCus },
+                    package: { name: packageName }
+                  } = row;
+
+                  const isItemSelected = selected.indexOf(constructioncontractId) !== -1;
 
                   return (
                     <TableRow
                       hover
-                      key={packageId}
+                      key={constructioncontractId}
                       tabIndex={-1}
                       role="checkbox"
                       selected={isItemSelected}
                       aria-checked={isItemSelected}
                     >
                       <TableCell padding="checkbox">
-                        <Radio checked={isItemSelected} onClick={() => handleClick(packageId)} />
+                        <Radio
+                          checked={isItemSelected}
+                          onClick={() => handleClick(constructioncontractId)}
+                        />
                       </TableCell>
-                      <TableCell align="left">{name}</TableCell>
-                      <TableCell align="left">{description}</TableCell>
-                      <TableCell align="left">{price}</TableCell>
+                      <TableCell align="left" style={{ maxWidth: '150px' }}>
+                        {constructioncontractId}
+                      </TableCell>
+                      <TableCell align="left" style={{ maxWidth: '150px' }}>
+                        {packageName}
+                      </TableCell>
+                      <TableCell align="left" style={{ maxWidth: '150px' }}>
+                        {bracketName}
+                      </TableCell>
+                      <TableCell align="left" style={{ maxWidth: '150px' }}>
+                        {`${lastnameCus} ${firstnameCus}`}
+                      </TableCell>
+                      <TableCell align="left" style={{ maxWidth: '150px' }}>
+                        <span>
+                          {totalcost?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
+                        </span>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -232,7 +258,7 @@ export default function OwnerRequestList({
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={availablePackageList.length}
+        count={completedConstructionContractList.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={(e, page) => setPage(page)}

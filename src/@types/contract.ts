@@ -6,7 +6,7 @@ import { ProcessManager } from './process';
 
 export type ConstructionContractManager = {
   constructioncontractId: string;
-  status: '0' | '1' | '2' | '3';
+  status: '0' | '1' | '2' | '3' | '4';
   startdate: string;
   enddate: string;
   totalcost: number;

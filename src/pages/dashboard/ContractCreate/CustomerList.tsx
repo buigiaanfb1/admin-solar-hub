@@ -19,7 +19,8 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination
+  TablePagination,
+  Radio
 } from '@material-ui/core';
 import { fDateTime } from 'utils/formatTime';
 import { getRequestList, updateRequest } from 'redux/slices/admin/request';
@@ -197,7 +198,7 @@ export default function OwnerRequestList({
                     >
                       {selectedValue ? (
                         <TableCell padding="checkbox">
-                          <Checkbox checked={isItemSelected} />
+                          <Radio checked={isItemSelected} />
                         </TableCell>
                       ) : (
                         <TableCell padding="checkbox" />

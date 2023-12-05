@@ -16,7 +16,7 @@ import {
 import useAuth from '../../hooks/useAuth';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // routes
-import { PATH_DASHBOARD, PATH_DOCS } from '../../routes/paths';
+import { PATH_DASHBOARD } from '../../routes/paths';
 // components
 import Logo from '../../components/Logo';
 import MyAvatar from '../../components/MyAvatar';
@@ -24,11 +24,11 @@ import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 //
-import { DocIcon } from '../../assets';
 
 import {
   adminSidebarConfig,
   ownerSidebarConfig,
+  staffLeadSidebarConfig,
   staffSidebarConfig,
   supportSidebarConfig
 } from './SidebarConfig';
@@ -127,8 +127,12 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         return <NavSection navConfig={adminSidebarConfig} isShow={!isCollapse} />;
       case 'Owner':
         return <NavSection navConfig={ownerSidebarConfig} isShow={!isCollapse} />;
-      case 'Staff':
-        return <NavSection navConfig={staffSidebarConfig} isShow={!isCollapse} />;
+      case 'Staff': {
+        if (!user?.userInfo.isLeader) {
+          return <NavSection navConfig={staffSidebarConfig} isShow={!isCollapse} />;
+        }
+        return <NavSection navConfig={staffLeadSidebarConfig} isShow={!isCollapse} />;
+      }
       case 'Consultant':
         return <NavSection navConfig={supportSidebarConfig} isShow={!isCollapse} />;
       default:

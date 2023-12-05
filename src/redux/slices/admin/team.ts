@@ -102,13 +102,13 @@ export function deleteTeamApi(leaderId: string) {
     try {
       await axios.delete('/api/Team/delete', {
         params: {
-          leaderId
+          leadId: leaderId
         }
       });
       // TODO: need to refactor
       dispatch(slice.actions.startLoading());
       try {
-        const response = await axios.get('/api/Team/get-all-team');
+        const response = await axios.get('/api/Team/get-all');
         dispatch(slice.actions.getTeamListSuccess(response.data.data));
       } catch (error) {
         dispatch(slice.actions.hasError(error));
@@ -134,7 +134,7 @@ export function updateTeam(data: Partial<TeamManager> = {}, status: boolean = fa
       // TODO: need to refactor
       dispatch(slice.actions.startLoading());
       try {
-        const response = await axios.get('/api/Team/get-all-team');
+        const response = await axios.get('/api/Team/get-all');
         dispatch(slice.actions.getTeamListSuccess(response.data.data));
       } catch (error) {
         dispatch(slice.actions.hasError(error));

@@ -152,6 +152,13 @@ export default function Router() {
           ]
         },
         {
+          path: 'admin-warranty',
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/admin-warranty/list" replace /> },
+            { path: 'list', element: <AdminWarrantyManagement /> }
+          ]
+        },
+        {
           path: 'product',
           children: [
             {
@@ -187,6 +194,17 @@ export default function Router() {
             { path: 'list', element: <SurveyManagement /> },
             { path: '/:name/edit', element: <SurveyManagementCreate /> },
             { path: 'new', element: <SurveyManagementCreate /> }
+          ]
+        },
+        {
+          path: 'warranty',
+          children: [
+            {
+              path: '/',
+              element: <Navigate to="/dashboard/warranty/list" replace />
+            },
+            { path: 'list', element: <StaffWarrantyManagement /> },
+            { path: '/:name/edit', element: <WarrantyManagementCreate /> }
           ]
         },
         {
@@ -386,6 +404,9 @@ const PromotionManagementList = Loadable(
 const FeedbackManagementList = Loadable(
   lazy(() => import('../pages/dashboard/FeedbackManagement'))
 );
+const AdminWarrantyManagement = Loadable(
+  lazy(() => import('../pages/dashboard/AdminWarrantyManagement'))
+);
 const PaymentManagementList = Loadable(lazy(() => import('../pages/dashboard/PaymentManagement')));
 const StaffRequestList = Loadable(lazy(() => import('../pages/dashboard/StaffRequestList')));
 const PackageManagement = Loadable(lazy(() => import('../pages/dashboard/PackageManagement')));
@@ -399,6 +420,12 @@ const PackageManagementCreate = Loadable(
 );
 const ProductManagement = Loadable(lazy(() => import('../pages/dashboard/ProductManagement')));
 const BracketManagement = Loadable(lazy(() => import('../pages/dashboard/BracketManagement')));
+const StaffWarrantyManagement = Loadable(
+  lazy(() => import('../pages/dashboard/StaffWarrantyManagement'))
+);
+const WarrantyManagementCreate = Loadable(
+  lazy(() => import('../pages/dashboard/WarrantyManagementCreate'))
+);
 const TeamManagement = Loadable(lazy(() => import('../pages/dashboard/TeamManagement')));
 const ProductManagementCreate = Loadable(
   lazy(() => import('../pages/dashboard/ProductManagementCreate'))

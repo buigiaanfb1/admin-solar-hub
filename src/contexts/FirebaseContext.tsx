@@ -76,8 +76,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
             if (
               response.data.user.roleId === '4' ||
-              !response.data.user.status ||
-              (response.data.user.roleId === '3' && !response.data.user.isLeader)
+              !response.data.user.status
+              // (response.data.user.roleId === '3' && !response.data.user.isLeader)
             ) {
               throw new Error();
             } else {
@@ -128,7 +128,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
       if (
         response.data.user.role.roleId === '4' ||
-        (response.data.user.role.roleId === '3' && !response.data.user.isLeader) ||
+        // (response.data.user.role.roleId === '3' && !response.data.user.isLeader) ||
         !response.data.user.status
       ) {
         throw new Error();
@@ -188,7 +188,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
           .set({
             uid: res.user?.uid,
             email,
-            displayName: `${firstName} ${lastName}`
+            displayName: `${lastName} ${firstName}`
           });
       });
 
@@ -258,7 +258,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
           displayName:
             auth.displayName ||
             profile?.displayName ||
-            `${auth.userInfo?.firstname} ${auth.userInfo?.lastname}`,
+            `${auth.userInfo?.lastname} ${auth.userInfo?.firstname}`,
           role: auth.userInfo?.role.roleName || '',
           phoneNumber: auth.phoneNumber || profile?.phoneNumber || '',
           country: profile?.country || '',

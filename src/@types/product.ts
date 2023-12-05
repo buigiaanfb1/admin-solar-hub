@@ -8,6 +8,7 @@ export type ProductManager = {
   warrantyDate: Date;
   status: boolean;
   image: Image[];
+  productWarrantyReport: [];
 };
 
 export type Image = {

@@ -237,7 +237,7 @@ export default function AdminContractNewForm({
         }
         resetForm();
         setSubmitting(false);
-        enqueueSnackbar(!isEdit ? 'Tạo sản phẩm thành công' : 'Cập nhật sản phẩm thành công', {
+        enqueueSnackbar(!isEdit ? 'Tạo hợp đồng thành công' : 'Cập nhật hợp đồng thành công', {
           variant: 'success'
         });
         navigate(PATH_DASHBOARD.staffContract.list);
@@ -259,6 +259,9 @@ export default function AdminContractNewForm({
     getFieldProps,
     setFieldTouched
   } = formik;
+
+  console.log(values);
+  console.log(errors);
 
   const handleSetValue = (name: string, value: string) => {
     setFieldValue(name, value);

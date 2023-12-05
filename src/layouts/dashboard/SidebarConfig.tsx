@@ -170,6 +170,11 @@ const ownerSidebarConfig = [
         title: 'Quản lý gói',
         path: PATH_DASHBOARD.package.root,
         icon: ICONS.ecommerce
+      },
+      {
+        title: 'Quản lý bảo hành',
+        path: PATH_DASHBOARD.adminWarranty.list,
+        icon: ICONS.ecommerce
       }
     ]
   },
@@ -195,7 +200,7 @@ const ownerSidebarConfig = [
   }
 ];
 
-const staffSidebarConfig = [
+const staffLeadSidebarConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
   {
@@ -214,6 +219,26 @@ const staffSidebarConfig = [
       {
         title: 'Hợp đồng',
         path: PATH_DASHBOARD.contract.listStaff,
+        icon: ICONS.ecommerce
+      },
+      {
+        title: 'Bảo hành',
+        path: PATH_DASHBOARD.warranty.list,
+        icon: ICONS.ecommerce
+      }
+    ]
+  }
+];
+
+const staffSidebarConfig = [
+  // GENERAL
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'Công việc',
+    items: [
+      {
+        title: 'Bảo hành',
+        path: PATH_DASHBOARD.warranty.list,
         icon: ICONS.ecommerce
       }
     ]
@@ -235,4 +260,10 @@ const supportSidebarConfig = [
   }
 ];
 
-export { adminSidebarConfig, ownerSidebarConfig, staffSidebarConfig, supportSidebarConfig };
+export {
+  adminSidebarConfig,
+  ownerSidebarConfig,
+  staffLeadSidebarConfig,
+  staffSidebarConfig,
+  supportSidebarConfig
+};

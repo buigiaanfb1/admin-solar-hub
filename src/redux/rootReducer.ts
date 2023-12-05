@@ -18,6 +18,7 @@ import staffSurveyListReducer from './slices/staff/survey';
 import contractListReducer from './slices/admin/contract';
 import feedbackListReducer from './slices/admin/feedback';
 import paymentListReducer from './slices/admin/payment';
+import warrantyListReducer from './slices/admin/warranty';
 import productReducer from './slices/product';
 import calendarReducer from './slices/calendar';
 import kanbanReducer from './slices/kanban';
@@ -55,6 +56,7 @@ const rootReducer = combineReducers({
   feedbackList: feedbackListReducer,
   paymentList: paymentListReducer,
   contractList: contractListReducer,
+  warrantyList: warrantyListReducer,
   calendar: calendarReducer,
   kanban: kanbanReducer,
   product: persistReducer(productPersistConfig, productReducer)

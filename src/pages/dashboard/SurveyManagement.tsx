@@ -44,7 +44,7 @@ import {
   UserListToolbar,
   AdminUserMoreMenu
 } from '../../components/_dashboard/user/list';
-import DialogBracketManagement from './DialogBracketManagement';
+import DialogBracketManagement from './DialogWarantyManagement';
 import { SurveyManager } from '../../@types/survey';
 import { ConstructionContractManager } from '../../@types/contract';
 

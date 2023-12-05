@@ -42,6 +42,16 @@ export const PATH_DASHBOARD = {
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics')
   },
+  adminWarranty: {
+    root: path(ROOTS_DASHBOARD, '/admin-warranty'),
+    list: path(ROOTS_DASHBOARD, '/admin-warranty/list')
+  },
+  warranty: {
+    root: path(ROOTS_DASHBOARD, '/warranty'),
+    list: path(ROOTS_DASHBOARD, '/warranty/list'),
+    newWarranty: path(ROOTS_DASHBOARD, '/warranty/new'),
+    editById: path(ROOTS_DASHBOARD, '/warranty/ada-lindgren/edit')
+  },
   request: {
     root: path(ROOTS_DASHBOARD, '/request'),
     list: path(ROOTS_DASHBOARD, '/request/list')
