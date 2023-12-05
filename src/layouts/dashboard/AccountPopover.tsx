@@ -24,17 +24,7 @@ const MENU_OPTIONS = [
   {
     label: 'Home',
     icon: homeFill,
-    linkTo: '/'
-  },
-  {
-    label: 'Profile',
-    icon: personFill,
-    linkTo: PATH_DASHBOARD.user.account
-  },
-  {
-    label: 'Settings',
-    icon: settings2Fill,
-    linkTo: PATH_DASHBOARD.user.account
+    linkTo: '/dashboard/intro'
   }
 ];
 
@@ -63,7 +53,7 @@ export default function AccountPopover() {
         navigate('/');
         handleClose();
       }
-      window.location.replace('/dashboard');
+      window.location.replace('/dashboard/intro');
     } catch (error) {
       console.error(error);
       enqueueSnackbar('Unable to logout', { variant: 'error' });

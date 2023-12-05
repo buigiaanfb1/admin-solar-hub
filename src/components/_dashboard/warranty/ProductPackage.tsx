@@ -26,6 +26,7 @@ import EmptyContent from '../../EmptyContent';
 import CheckoutProductList from './CheckoutProductList';
 import { ProductManager, Image } from '../../../@types/product';
 import { PackageManager } from '../../../@types/package';
+import { ProductWarrantyReport } from '../../../@types/warranty';
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +37,7 @@ export type AvailableProductsProps = {
   image: Image[] | undefined;
   productWarrantyReport: {
     damages: {
-      amountofDamageProduct: number;
+      amountofDamageProduct: boolean;
       doWanrranty: string;
     };
   };
@@ -44,29 +45,56 @@ export type AvailableProductsProps = {
 
 export default function ProductPackage({
   onSetProductList,
-  currentPackage
+  currentPackage,
+  productWarrantyReport = []
 }: {
   onSetProductList: (productList: AvailableProductsProps[]) => void;
   currentPackage: Partial<PackageManager>;
+  productWarrantyReport: ProductWarrantyReport[] | [];
 }) {
   const [products, setProducts] = useState<AvailableProductsProps[]>([]);
 
   useEffect(() => {
     if (currentPackage.packageProduct && currentPackage.packageProduct.length > 0) {
-      const activeProducts = currentPackage.packageProduct.map((product) => ({
+      let packageProduct = [...currentPackage.packageProduct];
+      if (productWarrantyReport.length > 0) {
+        const warrantyReportMap = new Map();
+        productWarrantyReport.forEach((item) => {
+          warrantyReportMap.set(item.productId, item);
+        });
+
+        packageProduct = packageProduct.map((item) => {
+          const { productId } = item;
+          if (warrantyReportMap.has(productId)) {
+            const warrantyInfo = warrantyReportMap.get(productId);
+
+            // Create a new object with existing properties and additional properties
+            return {
+              ...item,
+              doWarranty: warrantyInfo.doWarranty,
+              amountofDamageProduct: warrantyInfo.amountofDamageProduct
+            };
+          }
+          return item; // Return original item if productId not found in productWarrantyReport
+        });
+      }
+      const activeProducts = packageProduct.map((product) => ({
         productId: product.product.productId,
         name: product.product.name,
         manufacturer: product.product.manufacturer,
         image: product.product.image,
         productWarrantyReport: {
-          damages: { amountofDamageProduct: 0, doWanrranty: '' }
+          damages: {
+            amountofDamageProduct: product.amountofDamageProduct || false,
+            doWanrranty: product.doWarranty || ''
+          }
         }
       }));
       setProducts(activeProducts);
     }
   }, [currentPackage]);
 
-  const handleDamagePercentage = (productId: string, amountofDamageProduct: number) => {
+  const handleDamagePercentage = (productId: string, amountofDamageProduct: boolean) => {
     const updateProducts = map(products, (product) => {
       if (product.productId === productId) {
         return {
@@ -87,12 +115,14 @@ export default function ProductPackage({
       updateProducts.filter(
         (product) =>
           product.productWarrantyReport.damages.doWanrranty ||
-          product.productWarrantyReport.damages.amountofDamageProduct > 0
+          product.productWarrantyReport.damages.amountofDamageProduct
       )
     );
   };
 
   const handleDoWanrranty = (productId: string, doWanrranty: string) => {
+    console.log(productId, doWanrranty);
+    console.log(products);
     const updateProducts = map(products, (product) => {
       if (product.productId === productId) {
         return {
@@ -113,7 +143,7 @@ export default function ProductPackage({
       updateProducts.filter(
         (product) =>
           product.productWarrantyReport.damages.doWanrranty ||
-          product.productWarrantyReport.damages.amountofDamageProduct > 0
+          product.productWarrantyReport.damages.amountofDamageProduct
       )
     );
   };

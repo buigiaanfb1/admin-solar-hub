@@ -22,6 +22,8 @@ import {
   TablePagination
 } from '@material-ui/core';
 import { fDateTime } from 'utils/formatTime';
+import { useSnackbar } from 'notistack5';
+
 import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
 import { getWarrantyList, deleteWarrantyApi } from 'redux/slices/admin/warranty';
 
@@ -100,6 +102,7 @@ export default function WarrantyManagement() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { warrantyList } = useSelector((state: RootState) => state.warrantyList);
   const [page, setPage] = useState(0);
@@ -139,7 +142,12 @@ export default function WarrantyManagement() {
   };
 
   const handleBlockProduct = (warrantyId: string) => {
-    dispatch(deleteWarrantyApi(warrantyId));
+    try {
+      dispatch(deleteWarrantyApi(warrantyId));
+      enqueueSnackbar('Thành công', { variant: 'success' });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleUnBlockProduct = (bracketId: string) => {

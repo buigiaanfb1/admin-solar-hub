@@ -116,6 +116,7 @@ type ProductNewFormProps = {
   isDisabled?: boolean;
   staffId?: string;
   customerId?: string | null;
+  surveyId?: string | null;
 };
 
 interface CustomProps {
@@ -151,7 +152,8 @@ export default function AdminContractNewForm({
   currentContructionContract,
   isDisabled = false,
   staffId,
-  customerId
+  customerId,
+  surveyId
 }: ProductNewFormProps) {
   const navigate = useNavigate();
   const { uploadImages, user } = useAuth();
@@ -229,7 +231,7 @@ export default function AdminContractNewForm({
               'https://climate.onep.go.th/wp-content/uploads/2020/01/default-image.jpg',
             customerId: values.customerId,
             staffid: staffId,
-
+            surveyId,
             packageId: values.packageId,
             bracketId: values.bracketId,
             status: '2'

@@ -22,6 +22,8 @@ export type PackageManager = {
 export type PackageProduct = {
   productId: string;
   packageId: string;
+  amountofDamageProduct?: boolean;
+  doWarranty?: string;
   status: boolean;
   quantity: number;
   product: ProductManager;

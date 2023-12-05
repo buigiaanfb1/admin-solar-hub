@@ -18,6 +18,7 @@ import {
   TableCell,
   Container,
   Typography,
+  Radio,
   TableContainer,
   TablePagination
 } from '@material-ui/core';
@@ -170,7 +171,16 @@ export default function OwnerRequestList({ staffId }: { staffId: string }) {
   };
 
   const handleAssignRequest = () => {
-    dispatch(disableRequest(selected, staffId));
+    try {
+      dispatch(disableRequest(selected, user?.userInfo.accountId));
+      enqueueSnackbar('Xoá khảo sát thành công', {
+        variant: 'success'
+      });
+    } catch (error: any) {
+      enqueueSnackbar('Có lỗi xảy ra. Vui lòng thử lại', {
+        variant: 'error'
+      });
+    }
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -260,7 +270,7 @@ export default function OwnerRequestList({ staffId }: { staffId: string }) {
                           aria-checked={isItemSelected}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox
+                            <Radio
                               checked={isItemSelected}
                               onClick={() => handleClick(requestId)}
                             />

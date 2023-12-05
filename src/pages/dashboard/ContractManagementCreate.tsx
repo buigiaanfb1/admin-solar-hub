@@ -28,6 +28,7 @@ export default function ContractManagementCreate() {
   const { constructionContractList } = useSelector((state: RootState) => state.contractList);
   const queryParams = new URLSearchParams(search);
   const customerId = queryParams.get('accountId');
+  const surveyId = queryParams.get('surveyId');
   const isEdit = pathname.includes('edit');
   const currentConstructionContract = constructionContractList.find(
     (contract) => contract.constructioncontractId === name
@@ -57,6 +58,7 @@ export default function ContractManagementCreate() {
           currentContructionContract={currentConstructionContract}
           staffId={user?.userInfo.accountId}
           customerId={customerId}
+          surveyId={surveyId}
         />
       </Container>
     </Page>

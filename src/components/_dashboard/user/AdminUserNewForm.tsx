@@ -144,13 +144,12 @@ export default function UserNewForm({
         enqueueSnackbar(!isEdit ? 'Tạo tài khoản thành công' : 'Cập nhật thành công', {
           variant: 'success'
         });
-        if (isEdit) {
-          handleFetchUsers(true);
-        } else {
-          navigate(PATH_DASHBOARD.user.root);
-        }
+        handleFetchUsers(true);
+        navigate(PATH_DASHBOARD.user.root);
       } catch (error: any) {
-        console.error(error);
+        enqueueSnackbar(error.message, {
+          variant: 'error'
+        });
         setSubmitting(false);
         setErrors(error);
       }

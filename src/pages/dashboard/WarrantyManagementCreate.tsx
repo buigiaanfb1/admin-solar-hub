@@ -29,8 +29,6 @@ export default function WarrantyManagementCreate() {
   const { warrantyList } = useSelector((state: RootState) => state.warrantyList);
   const isEdit = pathname.includes('edit');
   const currentWarranty = warrantyList.find((warranty) => warranty.warrantyId === name);
-
-  console.log(currentWarranty);
   useEffect(() => {
     dispatch(getWarrantyList());
   }, [dispatch]);

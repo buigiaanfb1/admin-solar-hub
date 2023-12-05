@@ -59,8 +59,6 @@ export default function AdminContractNewForm({
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
 
-  console.log(currentWarranty);
-
   const NewWarrantySchema = Yup.object().shape({});
 
   const formik = useFormik({
@@ -123,6 +121,7 @@ export default function AdminContractNewForm({
                     <ProductPackage
                       currentPackage={currentWarranty?.contract.package || { packageProduct: [] }}
                       onSetProductList={handleSetProductList}
+                      productWarrantyReport={currentWarranty?.productWarrantyReport || []}
                     />
                   </Stack>
                 </Stack>

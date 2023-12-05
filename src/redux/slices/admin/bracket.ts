@@ -51,7 +51,7 @@ export function getBracketList() {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/api/Bracket/get-all-bracket');
+      const response = await axios.get('/api/Bracket/get-all-bracket-admin');
       dispatch(slice.actions.getBracketListSuccess(response.data.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -71,7 +71,7 @@ export function deleteBracketApi(bracketId: string) {
       // TODO: need to refactor
       dispatch(slice.actions.startLoading());
       try {
-        const response = await axios.get('/api/Bracket/get-all-bracket');
+        const response = await axios.get('/api/Bracket/get-all-bracket-admin');
         dispatch(slice.actions.getBracketListSuccess(response.data.data));
       } catch (error) {
         dispatch(slice.actions.hasError(error));
@@ -95,7 +95,7 @@ export function updateBracket(data: Partial<BracketManager> = {}, status: boolea
       // TODO: need to refactor
       dispatch(slice.actions.startLoading());
       try {
-        const response = await axios.get('/api/Bracket/get-all-bracket');
+        const response = await axios.get('/api/Bracket/get-all-bracket-admin');
         dispatch(slice.actions.getBracketListSuccess(response.data.data));
       } catch (error) {
         dispatch(slice.actions.hasError(error));

@@ -140,7 +140,7 @@ export default function SurveyManagement() {
 
   const handleRenderContractButton = (
     contract: ConstructionContractManager,
-    suveryId: string,
+    surveyId: string,
     accountId: string | null
   ) => {
     if (!contract) {
@@ -148,7 +148,7 @@ export default function SurveyManagement() {
         <Button
           onClick={() =>
             navigate(
-              `${PATH_DASHBOARD.contract.newContractStaff}?suveryId=${suveryId}&accountId=${
+              `${PATH_DASHBOARD.contract.newContractStaff}?surveyId=${surveyId}&accountId=${
                 accountId || ''
               }`
             )
@@ -162,7 +162,9 @@ export default function SurveyManagement() {
 
     return (
       <Button
-        onClick={() => navigate(`/dashboard/contract/${contract.constructioncontractId}/edit`)}
+        onClick={() =>
+          navigate(`/dashboard/staff/contract/${contract.constructioncontractId}/edit`)
+        }
         variant="contained"
       >
         Xem hợp đồng

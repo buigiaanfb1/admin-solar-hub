@@ -18,10 +18,10 @@ export type WarrantyManager = {
   productWarrantyReport: ProductWarrantyReport[];
 };
 
-type ProductWarrantyReport = {
+export type ProductWarrantyReport = {
   productId: string;
   warrantyId: string;
-  amountofDamageProduct: number;
+  amountofDamageProduct: boolean;
   status: boolean;
   doWarranty: string;
   product: Product;

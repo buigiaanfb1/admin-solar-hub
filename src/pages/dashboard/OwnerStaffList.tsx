@@ -105,7 +105,7 @@ export default function UserList({
   const dispatch = useDispatch();
 
   const { userList } = useSelector((state: RootState) => state.userList);
-  const staffList = userList.filter((user) => user.roleId === '3');
+  const staffList = userList.filter((user) => user.roleId === '3' && user.isLeader);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('desc');
   const [selected, setSelected] = useState<string>('');

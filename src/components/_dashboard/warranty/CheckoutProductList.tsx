@@ -15,7 +15,8 @@ import {
   Typography,
   TableContainer,
   InputAdornment,
-  TextField
+  TextField,
+  Switch
 } from '@material-ui/core';
 // utils
 import getColorName from '../../../utils/getColorName';
@@ -58,7 +59,7 @@ type IncrementerProps = {
 
 type CheckoutProductListProps = {
   products: AvailableProductsProps[];
-  onDamagePercentage: (id: string, amountofDamageProduct: number) => void;
+  onDamagePercentage: (id: string, amountofDamageProduct: boolean) => void;
   onDoWarranty: (id: string, doWanrranty: string) => void;
 };
 
@@ -73,7 +74,7 @@ export default function CheckoutProductList({
         <TableHead>
           <TableRow>
             <TableCell>Tên sản phẩm</TableCell>
-            <TableCell align="left">Thiệt hại(%)</TableCell>
+            <TableCell align="left">Thiệt hại</TableCell>
             <TableCell align="left">Giải pháp bảo hành</TableCell>
           </TableRow>
         </TableHead>
@@ -120,7 +121,7 @@ export default function CheckoutProductList({
                 </TableCell>
 
                 <TableCell>
-                  <TextField
+                  {/* <TextField
                     style={{ maxWidth: '80px' }}
                     fullWidth
                     InputProps={{
@@ -129,14 +130,23 @@ export default function CheckoutProductList({
                     onChange={(e: any) => {
                       onDamagePercentage(productId, e.target.value);
                     }}
+                  /> */}
+                  <Switch
+                    defaultChecked={product.productWarrantyReport.damages.amountofDamageProduct}
+                    color="error"
+                    onChange={(e: any) => {
+                      onDamagePercentage(productId, e.target.checked);
+                    }}
                   />
                 </TableCell>
                 <TableCell>
                   <TextField
+                    defaultValue={product.productWarrantyReport.damages.doWanrranty}
                     fullWidth
                     multiline
                     minRows={1}
                     maxRows={2}
+                    placeholder="Cách thức bảo hành (thay mới, sửa chữa,...)"
                     onChange={(e: any) => {
                       onDoWarranty(productId, e.target.value);
                     }}
