@@ -19,7 +19,8 @@ import {
   TableCell,
   Typography,
   TableContainer,
-  TablePagination
+  TablePagination,
+  Radio
 } from '@material-ui/core';
 import { getUserList, deleteUserApi, updateUser } from '../../redux/slices/admin/user';
 // redux
@@ -205,7 +206,7 @@ export default function UserList({
                         >
                           {isFree || isFree === null ? (
                             <TableCell padding="checkbox">
-                              <Checkbox
+                              <Radio
                                 checked={isItemSelected}
                                 onClick={() => handleClick(accountId)}
                               />

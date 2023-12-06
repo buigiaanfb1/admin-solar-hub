@@ -202,6 +202,18 @@ export default function AdminContractNewForm({
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
+        if (!values.bracketId) {
+          enqueueSnackbar('Vui lòng chọn khung đỡ cho hợp đồng', {
+            variant: 'warning'
+          });
+          return;
+        }
+        if (!values.packageId) {
+          enqueueSnackbar('Vui lòng chọn gói cho hợp đồng', {
+            variant: 'warning'
+          });
+          return;
+        }
         let imageUrls: { image: string }[] = [];
         if (files.length > 0) {
           imageUrls = await (await uploadImages(files)).map((url) => ({ image: url }));

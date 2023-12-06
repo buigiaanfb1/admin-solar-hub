@@ -22,6 +22,7 @@ type UserMoreMenuProps = {
   textFirstItemAfter?: string;
   textSecondItem?: string;
   path?: string;
+  noSecondOption?: boolean;
 };
 
 export default function UserMoreMenu({
@@ -32,7 +33,8 @@ export default function UserMoreMenu({
   textFirstItem = 'Khoá tài khoản',
   textSecondItem = 'Chỉnh sửa thông tin',
   textFirstItemAfter = 'Mở khoá tài khoản',
-  path = 'dashboard/user'
+  path = 'dashboard/user',
+  noSecondOption = false
 }: UserMoreMenuProps) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -71,13 +73,18 @@ export default function UserMoreMenu({
             />
           </MenuItem>
         )}
-
-        <MenuItem component={RouterLink} to={`${path}/${id}/edit`} sx={{ color: 'text.secondary' }}>
-          <ListItemIcon>
-            <Icon icon={editFill} width={24} height={24} />
-          </ListItemIcon>
-          <ListItemText primary={textSecondItem} primaryTypographyProps={{ variant: 'body2' }} />
-        </MenuItem>
+        {!noSecondOption && (
+          <MenuItem
+            component={RouterLink}
+            to={`${path}/${id}/edit`}
+            sx={{ color: 'text.secondary' }}
+          >
+            <ListItemIcon>
+              <Icon icon={editFill} width={24} height={24} />
+            </ListItemIcon>
+            <ListItemText primary={textSecondItem} primaryTypographyProps={{ variant: 'body2' }} />
+          </MenuItem>
+        )}
       </Menu>
     </>
   );

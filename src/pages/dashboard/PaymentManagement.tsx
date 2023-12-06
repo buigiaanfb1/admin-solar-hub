@@ -44,7 +44,7 @@ import {
   UserListToolbar,
   AdminUserMoreMenu
 } from '../../components/_dashboard/user/list';
-import DialogPackageManagement from './DialogPackageManagement';
+import DialogPaymentManagement from './DialogPaymentManagement';
 
 // ----------------------------------------------------------------------
 
@@ -155,13 +155,13 @@ export default function PaymentManagement() {
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="Feedbacks từ khách hàng | Minh Phát">
+    <Page title="Quản lí thanh toán | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Feedbacks từ khách hàng"
+          heading="Quản lí thanh toán"
           links={[
             { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
-            { name: 'Feedbacks từ khách hàng' }
+            { name: 'Quản lí thanh toán' }
           ]}
           action={<></>}
         />
@@ -269,7 +269,9 @@ export default function PaymentManagement() {
             onRowsPerPageChange={(e) => handleChangeRowsPerPage}
           />
         </Card>
-        {selected && <DialogPackageManagement open={open} onClose={handleClose} />}
+        {selected && (
+          <DialogPaymentManagement open={open} onClose={handleClose} payment={selected} />
+        )}
       </Container>
     </Page>
   );

@@ -161,12 +161,6 @@ export default function OwnerRequestList({
 
   return (
     <Card>
-      <ListToolbar
-        filterName={filterName}
-        placeholder="Tìm theo tài khoản..."
-        onFilterName={handleFilterByName}
-      />
-
       <Scrollbar>
         <TableContainer sx={{ minWidth: 800 }}>
           <Table>
@@ -176,13 +170,14 @@ export default function OwnerRequestList({
               headLabel={TABLE_HEAD}
               rowCount={customerList.length}
               numSelected={selected.length}
-              onRequestSort={handleRequestSort}
+              onRequestSort={() => {}}
               onSelectAllClick={() => {}}
               isShowCheckbox={false}
             />
             <TableBody>
               {filteredUsers
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter((user) => user.accountId === selected)
                 .map((row) => {
                   const { accountId, username, firstname, lastname, phone } = row;
                   const isItemSelected = selected.indexOf(accountId) !== -1;
@@ -228,16 +223,6 @@ export default function OwnerRequestList({
           </Table>
         </TableContainer>
       </Scrollbar>
-
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={customerList.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={(e, page) => setPage(page)}
-        onRowsPerPageChange={(e) => handleChangeRowsPerPage}
-      />
     </Card>
   );
 }

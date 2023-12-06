@@ -202,7 +202,7 @@ export default function PackageManagement() {
                       console.log(promotionPrice, price, promotionPrice === price);
                       return (
                         <TableRow
-                          style={{ cursor: 'pointer' }}
+                          // style={{ cursor: 'pointer' }}
                           key={packageId}
                           hover
                           tabIndex={-1}
@@ -308,7 +308,7 @@ export default function PackageManagement() {
             onRowsPerPageChange={(e) => handleChangeRowsPerPage}
           />
         </Card>
-        {selected && <DialogPackageManagement open={open} onClose={handleClose} />}
+        {/* {selected && <DialogPackageManagement open={open} onClose={handleClose} />} */}
       </Container>
     </Page>
   );

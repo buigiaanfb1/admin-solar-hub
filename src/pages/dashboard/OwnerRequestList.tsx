@@ -53,7 +53,7 @@ import DialogRequestManagement from './DialogRequestManagement';
 const TABLE_HEAD = [
   { id: 'packageId', label: 'Mã gói', alignRight: false },
   { id: 'username', label: 'Tài khoản khách hàng', alignRight: false },
-  { id: 'description', label: 'Mô tả', alignRight: false },
+  { id: 'fullname', label: 'Tên khách hàng', alignRight: false },
   { id: 'createAt', label: 'Ngày tạo', alignRight: false },
   { id: 'tools', label: '', alignRight: false }
 ];
@@ -90,10 +90,10 @@ function applySortFilter(
     return a[1] - b[1];
   });
   if (query) {
-    return filter(
-      array,
-      (_request) => _request.account.username.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    );
+    return filter(array, (_request) => {
+      const username = `${_request.account.lastname} ${_request.account.firstname}`;
+      return username.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+    });
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -108,11 +108,10 @@ export default function OwnerRequestList() {
   const requestAvailableList = requestList.filter(
     (request) => request.staffId === null && request.status
   );
-  console.log(requestAvailableList);
   const [page, setPage] = useState(0);
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
   const [selected, setSelected] = useState<string>('');
-  const [orderBy, setOrderBy] = useState('username');
+  const [orderBy, setOrderBy] = useState('createAt');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -147,7 +146,8 @@ export default function OwnerRequestList() {
     setFilterName(filterName);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - requestList.length) : 0;
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - requestAvailableList.length) : 0;
 
   const filteredUsers = applySortFilter(
     requestAvailableList,
@@ -193,27 +193,15 @@ export default function OwnerRequestList() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const {
-                        requestId,
-                        packageId,
-                        createAt,
-                        account: { username },
-                        description
-                      } = row;
-                      const isItemSelected = selected.indexOf(requestId) !== -1;
+                      const { requestId, packageId, createAt, account } = row;
 
                       return (
-                        <TableRow
-                          hover
-                          key={packageId}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
+                        <TableRow hover key={requestId} tabIndex={-1} role="checkbox">
                           <TableCell align="left">{packageId}</TableCell>
-                          <TableCell align="left">{username}</TableCell>
-                          <TableCell align="left">{description}</TableCell>
+                          <TableCell align="left">{account.username}</TableCell>
+                          <TableCell align="left">
+                            {account.lastname} {account.firstname}
+                          </TableCell>
                           <TableCell align="left">{fDateTime(createAt)}</TableCell>
                           <TableCell align="left">
                             <DialogRequestManagement requestId={requestId} />

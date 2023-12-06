@@ -248,6 +248,7 @@ export default function FeedbackManagement() {
                               onBlock={() => handleDeleteFeedback(feedbackId)}
                               textFirstItem="Xoá feedback"
                               textFirstItemAfter="Kích hoạt"
+                              noSecondOption
                               status={status}
                               id={feedbackId}
                               path={PATH_DASHBOARD.feedback.root}
@@ -285,7 +286,7 @@ export default function FeedbackManagement() {
             onRowsPerPageChange={(e) => handleChangeRowsPerPage}
           />
         </Card>
-        {selected && <DialogPackageManagement open={open} onClose={handleClose} />}
+        {/* {selected && <DialogPackageManagement open={open} onClose={handleClose} />} */}
       </Container>
     </Page>
   );
