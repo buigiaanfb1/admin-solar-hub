@@ -21,13 +21,16 @@ import {
   FormControlLabel,
   InputAdornment,
   IconButton,
-  Autocomplete
+  Autocomplete,
+  Typography
 } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import axios from 'utils/axiosIntegrated';
 import { PATH_DASHBOARD } from 'routes/paths';
 import { AuthUser } from '../../../@types/authentication';
 import { TeamManager } from '../../../@types/team';
+import { UserManager } from '../../../@types/admin-user';
+
 import { Image } from '../../../@types/product';
 import Upload from './Upload';
 import { RootState } from 'redux/store';
@@ -83,7 +86,6 @@ export default function AdminTeamNewForm({
   currentTeam,
   isDisabled = false
 }: TeamNewFormProps) {
-  console.log(currentTeam);
   const navigate = useNavigate();
   const { uploadImages } = useAuth();
   const { staffNotHaveTeamList } = useSelector((state: RootState) => state.teamList);
@@ -92,7 +94,7 @@ export default function AdminTeamNewForm({
     staffNotHaveTeamList.filter((staff) => staff.isLeader)
   );
 
-  const [staffs, setStaffs] = useState(staffNotHaveTeamList);
+  const [staffs, setStaffs] = useState<UserManager[]>([]);
 
   useEffect(() => {
     let team = staffNotHaveTeamList.filter((staff) => staff.isLeader);
@@ -107,7 +109,7 @@ export default function AdminTeamNewForm({
 
     setStaffLeaders(team);
     setStaffs(staffs);
-  }, [staffNotHaveTeamList]);
+  }, [staffNotHaveTeamList, currentTeam]);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -185,7 +187,7 @@ export default function AdminTeamNewForm({
             <Grid item xs={12} md={12}>
               <Stack spacing={3}>
                 <Stack>
-                  {staffLeaders.length > 0 && (
+                  {staffLeaders.length > 0 ? (
                     <Autocomplete
                       {...getFieldProps('leader')}
                       fullWidth
@@ -205,10 +207,14 @@ export default function AdminTeamNewForm({
                         />
                       )}
                     />
+                  ) : (
+                    <Typography variant="overline" sx={{ color: 'text.primary' }}>
+                      Hiện toàn bộ nhóm trưởng đã có nhóm.
+                    </Typography>
                   )}
                 </Stack>
                 <Stack>
-                  {staffs.length > 0 && (
+                  {staffs.length > 0 ? (
                     <Autocomplete
                       {...getFieldProps('member')}
                       multiple
@@ -229,6 +235,10 @@ export default function AdminTeamNewForm({
                         />
                       )}
                     />
+                  ) : (
+                    <Typography variant="overline" sx={{ color: 'text.primary' }}>
+                      Toàn bộ nhân viên đã có nhóm.
+                    </Typography>
                   )}
                 </Stack>
 
