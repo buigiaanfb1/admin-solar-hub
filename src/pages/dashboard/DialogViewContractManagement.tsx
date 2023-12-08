@@ -13,7 +13,8 @@ import {
   DialogActions,
   DialogContent,
   Stack,
-  TextField
+  TextField,
+  Typography
 } from '@material-ui/core';
 import axios from 'utils/axiosIntegrated';
 import { useSnackbar } from 'notistack5';
@@ -84,8 +85,15 @@ export default function DialogViewContractManagement({
             <br />
             <ContractInfo contract={contract} />
             <Stack spacing={3} sx={{ marginBottom: '1.5em', mt: 3 }}>
-              {handleRenderProcess(contract)}
-              {handleRenderAcceptance(contract)}
+              {handleRenderProcess(contract, true)}
+              {handleRenderAcceptance(contract, true)}
+            </Stack>
+            <Stack spacing={3}>
+              <Stack>
+                <Typography variant="overline" sx={{ color: 'text.primary' }}>
+                  Hợp đồng
+                </Typography>
+              </Stack>
             </Stack>
             <Stack spacing={3} sx={{ marginBottom: '1.5em', mt: 3 }}>
               {contract.imageFile && (

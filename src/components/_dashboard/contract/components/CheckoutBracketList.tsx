@@ -86,7 +86,7 @@ export default function CheckoutProductList({ bracket }: CheckoutProductListProp
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Tên giá đỡ</TableCell>
+            <TableCell>Tên khung đỡ</TableCell>
             <TableCell align="left">Giá</TableCell>
           </TableRow>
         </TableHead>

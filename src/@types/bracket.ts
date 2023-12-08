@@ -11,4 +11,5 @@ export type BracketManager = {
   status: boolean;
   constructionContract: Array<any>;
   image: Image[];
+  creatAt: Date;
 };

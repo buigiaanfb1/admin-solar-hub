@@ -167,7 +167,7 @@ export default function SurveyManagement() {
         }
         variant="contained"
       >
-        Xem hợp đồng
+        Chi tiết hợp đồng
       </Button>
     );
   };

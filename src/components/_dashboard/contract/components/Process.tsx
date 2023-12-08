@@ -37,9 +37,13 @@ const NewProcessSchema = Yup.object().shape({
 
 type ProcessNewFormProps = {
   currentContructionContract: ConstructionContractManager;
+  isDisabled?: boolean;
 };
 
-export default function Process({ currentContructionContract }: ProcessNewFormProps) {
+export default function Process({
+  currentContructionContract,
+  isDisabled = false
+}: ProcessNewFormProps) {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const { user } = useAuth();
@@ -98,7 +102,7 @@ export default function Process({ currentContructionContract }: ProcessNewFormPr
   } = formik;
 
   const initialSteps =
-    currentContructionContract.status === '2'
+    currentContructionContract.status === '2' && !isDisabled
       ? [
           ...currentContructionContract.process.filter((process) => process.status),
           { processId: 'new', title: 'Tiến độ hôm nay', isNew: true } as ProcessManager
@@ -108,9 +112,11 @@ export default function Process({ currentContructionContract }: ProcessNewFormPr
   const [steps, setSteps] = useState<ProcessManager[]>(initialSteps);
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(steps);
+
   useEffect(() => {
     setSteps(
-      currentContructionContract.status === '2'
+      currentContructionContract.status === '2' && !isDisabled
         ? [
             ...currentContructionContract.process.filter((process) => process.status),
             { processId: 'new', title: 'Tiến độ hôm nay', isNew: true } as ProcessManager
@@ -260,87 +266,96 @@ export default function Process({ currentContructionContract }: ProcessNewFormPr
           </Paper>
         ) : (
           <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
-            <Grid container spacing={5}>
-              <Grid item xs={12} md={6}>
-                <Typography
-                  variant="body2"
-                  gutterBottom
-                  sx={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
-                    Tiêu đề: &nbsp;
-                  </Typography>
-                  {steps[activeStep].title}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  gutterBottom
-                  sx={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
-                    Ngày cập nhật tiến độ: &nbsp;
-                  </Typography>
-                  {fDate(steps[activeStep].createAt)}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  gutterBottom
-                  sx={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
-                    Nội dung: &nbsp;
-                  </Typography>
-                </Typography>
-                <Typography
-                  variant="body2"
-                  gutterBottom
-                  sx={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  {steps[activeStep].description}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Typography
-                  variant="body2"
-                  gutterBottom
-                  sx={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
-                    Ngày thực hiện: &nbsp;
-                  </Typography>
-                  {fDate(steps[activeStep].startDate)}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  gutterBottom
-                  sx={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
-                    Ngày hoàn thành: &nbsp;
-                  </Typography>
-                  {fDate(steps[activeStep].endDate)}
-                </Typography>
-              </Grid>
-            </Grid>
-            <Stack spacing={3} sx={{ mt: 1 }}>
-              {steps[activeStep].image.length > 0 && (
-                <Stack>
-                  <CarouselProduct images={steps[activeStep].image} />
+            {steps.length === 0 ? (
+              <Typography variant="overline" sx={{ color: 'text.secondary' }}>
+                Chưa có tiến trình nào.
+              </Typography>
+            ) : (
+              <>
+                {' '}
+                <Grid container spacing={5}>
+                  <Grid item xs={12} md={6}>
+                    <Typography
+                      variant="body2"
+                      gutterBottom
+                      sx={{ display: 'flex', justifyContent: 'space-between' }}
+                    >
+                      <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
+                        Tiêu đề: &nbsp;
+                      </Typography>
+                      {steps[activeStep].title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      gutterBottom
+                      sx={{ display: 'flex', justifyContent: 'space-between' }}
+                    >
+                      <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
+                        Ngày cập nhật tiến độ: &nbsp;
+                      </Typography>
+                      {fDate(steps[activeStep].createAt)}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      gutterBottom
+                      sx={{ display: 'flex', justifyContent: 'space-between' }}
+                    >
+                      <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
+                        Nội dung: &nbsp;
+                      </Typography>
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      gutterBottom
+                      sx={{ display: 'flex', justifyContent: 'space-between' }}
+                    >
+                      {steps[activeStep].description}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Typography
+                      variant="body2"
+                      gutterBottom
+                      sx={{ display: 'flex', justifyContent: 'space-between' }}
+                    >
+                      <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
+                        Ngày thực hiện: &nbsp;
+                      </Typography>
+                      {fDate(steps[activeStep].startDate)}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      gutterBottom
+                      sx={{ display: 'flex', justifyContent: 'space-between' }}
+                    >
+                      <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
+                        Ngày hoàn thành: &nbsp;
+                      </Typography>
+                      {fDate(steps[activeStep].endDate)}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Stack spacing={3} sx={{ mt: 1 }}>
+                  {steps[activeStep].image.length > 0 && (
+                    <Stack>
+                      <CarouselProduct images={steps[activeStep].image} />
+                    </Stack>
+                  )}
+                  <Stack>
+                    {currentContructionContract.status === '2' && !isDisabled && (
+                      <LoadingButton
+                        onClick={() => handleDeleteProcess(steps[activeStep].processId)}
+                        variant="outlined"
+                        color="error"
+                        loading={isLoading}
+                      >
+                        Xoá tiến trình
+                      </LoadingButton>
+                    )}
+                  </Stack>
                 </Stack>
-              )}
-              <Stack>
-                {currentContructionContract.status === '2' && (
-                  <LoadingButton
-                    onClick={() => handleDeleteProcess(steps[activeStep].processId)}
-                    variant="outlined"
-                    color="error"
-                    loading={isLoading}
-                  >
-                    Xoá tiến trình
-                  </LoadingButton>
-                )}
-              </Stack>
-            </Stack>
+              </>
+            )}
           </Paper>
         )}
       </Form>

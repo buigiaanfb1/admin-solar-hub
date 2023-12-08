@@ -8,7 +8,7 @@ import { NumericFormat, NumericFormatProps } from 'react-number-format';
 
 // material
 import { LoadingButton } from '@material-ui/lab';
-import { Box, Card, Grid, Stack, TextField } from '@material-ui/core';
+import { Box, Card, Grid, InputAdornment, Stack, TextField } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import axios from 'utils/axiosIntegrated';
 import { PATH_DASHBOARD } from 'routes/paths';
@@ -66,7 +66,9 @@ export default function SurveyNewForm({
   const NewSurveySchema = Yup.object().shape({
     surveyId: Yup.string(),
     note: Yup.string().required('Ghi chú về khảo sát'),
-    description: Yup.string().required('Mô tả chi tiết là bắt buộc')
+    description: Yup.string().required('Mô tả chi tiết là bắt buộc'),
+    roofArea: Yup.string().required('Diện tích mái là bắt buộc'),
+    kWperMonth: Yup.string().required('Số Kw điện mỗi tháng là bắt buộc')
   });
 
   const formik = useFormik({
@@ -75,7 +77,11 @@ export default function SurveyNewForm({
       surveyId: currentSurvey?.surveyId || 'default',
       requestId,
       note: currentSurvey?.note || '',
-      description: currentSurvey?.description || '',
+      description:
+        currentSurvey?.description ||
+        'Địa hình: ............\nHướng: ............\nĐộ dốc: ............',
+      kWperMonth: currentSurvey?.kWperMonth || null,
+      roofArea: currentSurvey?.roofArea || null,
       status: currentSurvey?.status || '',
       staffId: currentSurvey?.staffId || ''
     },
@@ -88,6 +94,8 @@ export default function SurveyNewForm({
             requestId: values?.requestId,
             note: values?.note,
             description: values?.description,
+            kWperMonth: values?.kWperMonth,
+            roofArea: values?.roofArea,
             status: currentSurvey?.status,
             staffId: currentSurvey?.staffId
           });
@@ -96,6 +104,8 @@ export default function SurveyNewForm({
             note: values?.note,
             description: values?.description,
             requestId: values?.requestId,
+            kWperMonth: values?.kWperMonth,
+            roofArea: values?.roofArea,
             staffId: user?.userInfo.accountId
           });
         }
@@ -142,21 +152,51 @@ export default function SurveyNewForm({
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
                     fullWidth
+                    label="Diện tích mái"
                     disabled={isDisabled}
-                    label="Ghi chú"
-                    {...getFieldProps('note')}
-                    error={Boolean(touched.note && errors.note)}
-                    helperText={touched.note && errors.note}
+                    {...getFieldProps('roofArea')}
+                    InputProps={{
+                      inputProps: { min: 1 },
+                      endAdornment: <InputAdornment position="start">Mét vuông</InputAdornment>,
+                      inputComponent: NumericFormatCustom as any
+                    }}
+                    error={Boolean(touched.roofArea && errors.roofArea)}
+                    helperText={touched.roofArea && errors.roofArea}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Số Kw điện mỗi tháng"
+                    disabled={isDisabled}
+                    {...getFieldProps('kWperMonth')}
+                    InputProps={{
+                      inputProps: { min: 1, max: 10000 },
+                      endAdornment: <InputAdornment position="start">Kw</InputAdornment>,
+                      inputComponent: NumericFormatCustom as any
+                    }}
+                    error={Boolean(touched.kWperMonth && errors.kWperMonth)}
+                    helperText={touched.kWperMonth && errors.kWperMonth}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                   <TextField
+                    multiline
+                    rows={4}
                     fullWidth
                     disabled={isDisabled}
                     label="Mô tả"
                     {...getFieldProps('description')}
                     error={Boolean(touched.description && errors.description)}
                     helperText={touched.description && errors.description}
+                  />
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                  <TextField
+                    fullWidth
+                    disabled={isDisabled}
+                    label="Ghi chú"
+                    {...getFieldProps('note')}
+                    error={Boolean(touched.note && errors.note)}
+                    helperText={touched.note && errors.note}
                   />
                 </Stack>
                 {!isDisabled && (

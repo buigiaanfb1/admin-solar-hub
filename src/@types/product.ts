@@ -1,6 +1,7 @@
 // ----------------------------------------------------------------------
 export type ProductManager = {
   productId: string;
+  createAt: Date;
   name: string;
   price: number;
   manufacturer: string;

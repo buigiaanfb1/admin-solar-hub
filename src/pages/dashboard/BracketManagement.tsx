@@ -105,9 +105,9 @@ export default function ProductManagement() {
 
   const { bracketList } = useSelector((state: RootState) => state.bracketList);
   const [page, setPage] = useState(0);
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
   const [selected, setSelected] = useState<BracketManager | null>(null);
-  const [orderBy, setOrderBy] = useState('username');
+  const [orderBy, setOrderBy] = useState('createAt');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 

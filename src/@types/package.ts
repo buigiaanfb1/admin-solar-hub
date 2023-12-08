@@ -17,6 +17,7 @@ export type PackageManager = {
   feedback: Array<any>;
   packageProduct: PackageProduct[];
   presentImage: string;
+  createAt: string;
 };
 
 export type PackageProduct = {

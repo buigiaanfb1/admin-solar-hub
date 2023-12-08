@@ -245,10 +245,11 @@ export default function AdminBracketNewForm({
                     helperText={touched.material && errors.material}
                   />
                 </Stack>
-
-                <Stack>
-                  <Upload onGetFile={handleGetFile} defaultFiles={files} />
-                </Stack>
+                {!isDisabled && (
+                  <Stack>
+                    <Upload onGetFile={handleGetFile} defaultFiles={files} />
+                  </Stack>
+                )}
 
                 {!isDisabled && (
                   <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>

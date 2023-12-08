@@ -35,7 +35,7 @@ export default function DialogBracketManagement({
   bracket
 }: DialogBracketManagementProps) {
   return (
-    <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
+    <Dialog fullWidth maxWidth="lg" open={open} onClose={onClose}>
       <DialogTitle>Chi tiết sản phẩm</DialogTitle>
       <AdminBracketNewForm isEdit={true} currentBracket={bracket} isDisabled />
     </Dialog>

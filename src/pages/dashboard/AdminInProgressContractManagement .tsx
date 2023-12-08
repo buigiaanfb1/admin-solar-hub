@@ -54,8 +54,8 @@ import { handleRenderLabel } from './StaffContractManagement';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: 'constructioncontractId', label: 'Mã hợp đồng', alignRight: false },
   { id: 'packageName', label: 'Tên gói', alignRight: false },
-  { id: 'bracket', label: 'Tên khung đỡ', alignRight: false },
   { id: 'username', label: 'Tên khách hàng', alignRight: false },
   { id: 'totalcost', label: 'Tổng giá', alignRight: false },
   { id: 'startdate', label: 'Người tạo', alignRight: false },
@@ -231,10 +231,10 @@ export default function StaffContractManagement() {
                         onClick={(e: any) => handleClickOpen(e, row)}
                       >
                         <TableCell align="left" style={{ maxWidth: '150px' }}>
-                          {packageName}
+                          {constructioncontractId}
                         </TableCell>
                         <TableCell align="left" style={{ maxWidth: '150px' }}>
-                          {bracketName}
+                          {packageName}
                         </TableCell>
                         <TableCell align="left" style={{ maxWidth: '150px' }}>
                           {`${lastnameCus} ${firstnameCus}`}

@@ -34,9 +34,13 @@ const NewProcessSchema = Yup.object().shape({
 
 type ProcessNewFormProps = {
   currentContructionContract: ConstructionContractManager;
+  isDisabled?: boolean;
 };
 
-export default function Acceptance({ currentContructionContract }: ProcessNewFormProps) {
+export default function Acceptance({
+  currentContructionContract,
+  isDisabled = false
+}: ProcessNewFormProps) {
   const acceptances = currentContructionContract.acceptance.filter(
     (acceptance) => acceptance.status
   );
@@ -172,11 +176,12 @@ export default function Acceptance({ currentContructionContract }: ProcessNewFor
                 Xoá
               </LoadingButton>
             )}
-            {currentContructionContract.status === '2' && (
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                {!acceptances[0]?.imageFile ? 'Thêm nghiệm thu' : 'Cập nhật'}
-              </LoadingButton>
-            )}
+            {currentContructionContract.status === '2' ||
+              (!isDisabled && (
+                <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                  {!acceptances[0]?.imageFile ? 'Thêm nghiệm thu' : 'Cập nhật'}
+                </LoadingButton>
+              ))}
           </Box>
         </Paper>
       </Form>

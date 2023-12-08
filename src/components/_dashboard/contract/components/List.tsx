@@ -74,7 +74,7 @@ export default function ProductPackage({
           <CardHeader
             title={
               <Typography variant="h6">
-                Giá đỡ
+                Khung đỡ
                 <Typography component="span" sx={{ color: 'text.secondary' }}>
                   &nbsp;
                 </Typography>

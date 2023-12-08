@@ -396,7 +396,7 @@ const BlogPost = Loadable(lazy(() => import('../pages/dashboard/BlogPost')));
 const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
-const AdminUserList = Loadable(lazy(() => import('../pages/dashboard/AdminUserList')));
+const AdminUserList = Loadable(lazy(() => import('../pages/dashboard/AdminUserManagement')));
 const OwnerRequestList = Loadable(lazy(() => import('../pages/dashboard/OwnerRequestList')));
 const PromotionManagementList = Loadable(
   lazy(() => import('../pages/dashboard/PromotionManagement'))

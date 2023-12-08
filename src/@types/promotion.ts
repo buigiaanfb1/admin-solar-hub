@@ -6,7 +6,7 @@ export type PromotionManager = {
   description: string;
   startDate: string;
   endDate: string;
-  createAt: string;
+  createAt: Date;
   status: boolean;
   package: string;
 };

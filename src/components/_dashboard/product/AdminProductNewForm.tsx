@@ -239,10 +239,11 @@ export default function AdminProductNewForm({
                     helperText={touched.feature && errors.feature}
                   />
                 </Stack>
-
-                <Stack>
-                  <Upload onGetFile={handleGetFile} defaultFiles={files} />
-                </Stack>
+                {!isDisabled && (
+                  <Stack>
+                    <Upload onGetFile={handleGetFile} defaultFiles={files} />
+                  </Stack>
+                )}
 
                 {!isDisabled && (
                   <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>

@@ -98,9 +98,9 @@ export default function PackageManagement() {
 
   const { packageList } = useSelector((state: RootState) => state.packageList);
   const [page, setPage] = useState(0);
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
   const [selected, setSelected] = useState<PackageManager | null>(null);
-  const [orderBy, setOrderBy] = useState('username');
+  const [orderBy, setOrderBy] = useState('createAt');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -125,8 +125,10 @@ export default function PackageManagement() {
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleRequestSort = (property: string) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -191,14 +193,22 @@ export default function PackageManagement() {
                   headLabel={TABLE_HEAD}
                   rowCount={packageList.length}
                   numSelected={0}
-                  onRequestSort={() => {}}
+                  onRequestSort={handleRequestSort}
                   onSelectAllClick={() => {}}
                 />
                 <TableBody>
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { packageId, name, price, description, status, promotionPrice } = row;
+                      const {
+                        packageId,
+                        name,
+                        price,
+                        description,
+                        status,
+                        promotionPrice,
+                        createAt
+                      } = row;
                       console.log(promotionPrice, price, promotionPrice === price);
                       return (
                         <TableRow
@@ -264,7 +274,6 @@ export default function PackageManagement() {
                               {sentenceCase(status ? 'Available' : 'Unavailable')}
                             </Label>
                           </TableCell>
-
                           <TableCell align="right">
                             <AdminUserMoreMenu
                               onBlock={() => handleBlockPackage(packageId)}

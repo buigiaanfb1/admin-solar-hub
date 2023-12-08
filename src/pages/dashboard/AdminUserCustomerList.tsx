@@ -93,7 +93,7 @@ function applySortFilter(
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserList() {
+export default function AdminUserCustomerList() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -106,7 +106,7 @@ export default function UserList() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const userListAvailable = userList.filter((user) => user.roleId !== '1' && user.roleId !== '4');
+  const userListAvailable = userList.filter((user) => user.roleId === '4');
 
   useEffect(() => {
     dispatch(getUserList());

@@ -30,7 +30,10 @@ export const isInProgressAndFurther = (startdate: string) => {
   return isAfter(currentDate, startDate);
 };
 
-export const handleRenderProcess = (currentContructionContract?: ConstructionContractManager) => {
+export const handleRenderProcess = (
+  currentContructionContract?: ConstructionContractManager,
+  isDisabled: boolean = false
+) => {
   if (!currentContructionContract)
     return (
       <Stack>
@@ -69,13 +72,14 @@ export const handleRenderProcess = (currentContructionContract?: ConstructionCon
       <Typography variant="overline" sx={{ color: 'text.primary' }}>
         Tiến trình
       </Typography>
-      <Process currentContructionContract={currentContructionContract} />
+      <Process currentContructionContract={currentContructionContract} isDisabled={isDisabled} />
     </Stack>
   );
 };
 
 export const handleRenderAcceptance = (
-  currentContructionContract?: ConstructionContractManager
+  currentContructionContract?: ConstructionContractManager,
+  isDisabled: boolean = false
 ) => {
   if (!currentContructionContract)
     return (
@@ -106,7 +110,7 @@ export const handleRenderAcceptance = (
       <Typography variant="overline" sx={{ color: 'text.secondary' }}>
         Lưu ý, sau khi cập nhật biên bản nghiệm thu, tiến trình thi công sẽ bị khoá.
       </Typography>
-      <Acceptance currentContructionContract={currentContructionContract} />
+      <Acceptance currentContructionContract={currentContructionContract} isDisabled={isDisabled} />
     </Stack>
   );
 };
@@ -337,14 +341,16 @@ export default function AdminContractNewForm({
                     />
                   </Stack>
                   <Stack>
-                    <Typography gutterBottom variant="overline">
-                      Khách hàng yêu cầu:
-                    </Typography>
-                    <CustomerList
-                      staffId={user?.userInfo.accountId}
-                      onSetValue={handleSetValue}
-                      selectedValue={customerId || values.customerId || ''}
-                    />
+                    <div style={{ opacity: 0 }}>
+                      <Typography gutterBottom variant="overline">
+                        Khách hàng yêu cầu:
+                      </Typography>
+                      <CustomerList
+                        staffId={user?.userInfo.accountId}
+                        onSetValue={handleSetValue}
+                        selectedValue={customerId || values.customerId || ''}
+                      />
+                    </div>
                   </Stack>
 
                   <Stack>
@@ -372,7 +378,7 @@ export default function AdminContractNewForm({
                 {!isDisabled && (
                   <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                     <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                      {!isEdit ? 'Tạo họp đồng' : 'Cập nhật'}
+                      {!isEdit ? 'Tạo hợp đồng' : 'Cập nhật'}
                     </LoadingButton>
                   </Box>
                 )}

@@ -1,6 +1,5 @@
 import { UserManager } from './admin-user';
 import { ConstructionContractManager } from './contract';
-import { PackageManager } from './package';
 import { RequestManager } from './request';
 
 export type SurveyManager = {
@@ -8,6 +7,8 @@ export type SurveyManager = {
   description: string;
   note: string;
   staffId: Date;
+  kWperMonth: number;
+  roofArea: number;
   status: boolean;
   staff: UserManager;
   constructionContract: ConstructionContractManager;
