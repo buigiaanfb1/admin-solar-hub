@@ -88,7 +88,7 @@ export default function PackageNewForm({
       amount: currentPackage?.promotion?.amount || 0,
       roofArea: currentPackage?.roofArea || null,
       presentImage: currentPackage?.presentImage || '',
-      electricBill: currentPackage?.electricBill || null,
+      electricBill: currentPackage?.electricBill || '',
       promotionId: currentPackage?.promotionId || null,
       listProduct: currentPackage?.packageProduct || []
     },

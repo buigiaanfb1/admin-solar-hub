@@ -77,11 +77,9 @@ export default function SurveyNewForm({
       surveyId: currentSurvey?.surveyId || 'default',
       requestId,
       note: currentSurvey?.note || '',
-      description:
-        currentSurvey?.description ||
-        'Địa hình: ............\nHướng: ............\nĐộ dốc: ............',
-      kWperMonth: currentSurvey?.kWperMonth || null,
-      roofArea: currentSurvey?.roofArea || null,
+      description: currentSurvey?.description || 'Địa hình: \nHướng: \nĐộ dốc: ',
+      kWperMonth: currentSurvey?.kWperMonth || '',
+      roofArea: currentSurvey?.roofArea || '',
       status: currentSurvey?.status || '',
       staffId: currentSurvey?.staffId || ''
     },

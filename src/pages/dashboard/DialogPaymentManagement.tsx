@@ -4,7 +4,6 @@ import { Grid, Dialog, DialogContent, Paper, Stack, Typography } from '@material
 import { fDateTime } from 'utils/formatTime';
 // @types
 //
-import Label from '../../components/Label';
 
 import { PaymentManager } from '../../@types/admin-payment';
 import { handleRenderLabel } from './PaymentManagement';

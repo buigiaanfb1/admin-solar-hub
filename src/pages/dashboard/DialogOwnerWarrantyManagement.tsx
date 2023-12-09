@@ -5,7 +5,6 @@ import { fDateTime } from 'utils/formatTime';
 // @types
 //
 import { WarrantyManager } from '../../@types/warranty';
-import WarrantyManagementCreate from './WarrantyManagementCreate';
 // ----------------------------------------------------------------------
 
 type DialogOwnerWarrantyManagementProps = {

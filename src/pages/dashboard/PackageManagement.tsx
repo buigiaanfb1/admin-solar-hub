@@ -1,6 +1,5 @@
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
-import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
@@ -266,7 +265,7 @@ export default function PackageManagement() {
                               variant="ghost"
                               color={(status === false && 'error') || 'success'}
                             >
-                              {sentenceCase(status ? 'Available' : 'Unavailable')}
+                              {status ? 'CÒN HÀNG' : 'HẾT HÀNG'}
                             </Label>
                           </TableCell>
                           <TableCell align="right">

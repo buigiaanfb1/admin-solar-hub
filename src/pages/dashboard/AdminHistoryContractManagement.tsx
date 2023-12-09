@@ -167,7 +167,7 @@ export default function StaffContractManagement() {
         <UserListToolbar
           numSelected={0}
           filterName={filterName}
-          placeholder="Tìm hợp đồng..."
+          placeholder="Tìm hợp đồng theo mã..."
           onFilterName={handleFilterByName}
         />
 

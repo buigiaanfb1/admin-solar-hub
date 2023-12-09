@@ -37,9 +37,10 @@ import {
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: 'feedbackId', label: 'Mã gói', alignRight: false },
+  { id: 'productFeedback', label: 'Gói sử dụng', alignRight: false },
   { id: 'name', label: 'Tên khách hàng', alignRight: false },
   { id: 'description', label: 'Đánh giá', alignRight: false },
-  { id: 'productFeedback', label: 'Gói sử dụng', alignRight: false },
   { id: 'image', label: 'Ảnh', alignRight: false },
   { id: '' }
 ];
@@ -78,7 +79,7 @@ function applySortFilter(
   if (query) {
     return filter(
       array,
-      (_feedback) => _feedback.description.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_feedback) => _feedback.packageId.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -169,7 +170,7 @@ export default function FeedbackManagement() {
           <UserListToolbar
             numSelected={0}
             filterName={filterName}
-            placeholder="Tìm theo gói..."
+            placeholder="Tìm theo mã gói..."
             onFilterName={handleFilterByName}
           />
 
@@ -193,7 +194,7 @@ export default function FeedbackManagement() {
                       const {
                         feedbackId,
                         account: { lastname, firstname },
-                        package: { name },
+                        package: { name, packageId },
                         status,
                         image,
                         description
@@ -208,6 +209,19 @@ export default function FeedbackManagement() {
                           role="checkbox"
                           onClick={(e: any) => handleClickOpen(e, row)}
                         >
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            padding="none"
+                            style={{ maxWidth: 200 }}
+                          >
+                            <div style={{ overflowWrap: 'break-word' }}>
+                              <Typography variant="subtitle2" noWrap>
+                                {packageId}
+                              </Typography>
+                            </div>
+                          </TableCell>
+                          <TableCell align="left">{name}</TableCell>
                           <TableCell
                             component="th"
                             scope="row"
@@ -234,7 +248,6 @@ export default function FeedbackManagement() {
                               <Typography variant="subtitle2">{description}</Typography>
                             </div>
                           </TableCell>
-                          <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">
                             {image && thumbnailItemsExternal([{ imageData: image }])}
                           </TableCell>

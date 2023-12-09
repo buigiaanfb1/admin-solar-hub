@@ -252,7 +252,7 @@ export default function ProductManagement() {
                               variant="ghost"
                               color={(status === false && 'error') || 'success'}
                             >
-                              {sentenceCase(status ? 'Available' : 'Unavailable')}
+                              {status ? 'CÒN HÀNG' : 'HẾT HÀNG'}
                             </Label>
                           </TableCell>
 
