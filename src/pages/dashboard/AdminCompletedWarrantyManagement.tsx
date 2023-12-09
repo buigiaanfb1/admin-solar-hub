@@ -27,7 +27,7 @@ import Scrollbar from '../../components/Scrollbar';
 
 import SearchNotFound from '../../components/SearchNotFound';
 import { UserListHead, UserListToolbar } from '../../components/_dashboard/user/list';
-import DialogWarantyManagement from './DialogWarantyManagement';
+import DialogOwnerWarrantyManagement from './DialogOwnerWarrantyManagement';
 
 // ----------------------------------------------------------------------
 
@@ -97,10 +97,20 @@ export default function WarrantyManagement() {
     dispatch(getWarrantyList());
   }, [dispatch]);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (e: any, warranty: WarrantyManager) => {
+    const arrayOfTag = [
+      '<g fill="currentColor"><circle cx="12" cy="15" r="1"></circle><path d="M17 8h-1V6.11a4 4 0 1 0-8 0V8H7a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-7-1.89A2.06 2.06 0 0 1 12 4a2.06 2.06 0 0 1 2 2.11V8h-4zM12 18a3 3 0 1 1 3-3a3 3 0 0 1-3 3z"></path></g>',
+      '<g fill="currentColor"><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="19" r="2"></circle></g>',
+      'Chỉnh sửa thông tin',
+      'Xoá nhóm',
+      'Kích hoạt',
+      'svg',
+      ''
+    ];
+    if (arrayOfTag.includes(e.target.innerHTML)) return;
+    setSelected(warranty);
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -174,6 +184,7 @@ export default function WarrantyManagement() {
                         hover
                         tabIndex={-1}
                         role="checkbox"
+                        onClick={(e: any) => handleClickOpen(e, row)}
                       >
                         <TableCell
                           component="th"
@@ -226,7 +237,9 @@ export default function WarrantyManagement() {
           onRowsPerPageChange={(e) => handleChangeRowsPerPage}
         />
       </Card>
-      {open && <DialogWarantyManagement open={open} onClose={handleClose} />}
+      {selected && (
+        <DialogOwnerWarrantyManagement warranty={selected} open={open} onClose={handleClose} />
+      )}{' '}
     </>
   );
 }

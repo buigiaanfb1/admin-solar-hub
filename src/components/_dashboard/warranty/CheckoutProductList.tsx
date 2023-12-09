@@ -50,12 +50,14 @@ type CheckoutProductListProps = {
   products: AvailableProductsProps[];
   onDamagePercentage: (id: string, amountofDamageProduct: boolean) => void;
   onDoWarranty: (id: string, doWanrranty: string) => void;
+  isDisabled?: boolean;
 };
 
 export default function CheckoutProductList({
   products,
   onDamagePercentage,
-  onDoWarranty
+  onDoWarranty,
+  isDisabled = false
 }: CheckoutProductListProps) {
   return (
     <TableContainer sx={{ minWidth: 720 }}>
@@ -121,6 +123,7 @@ export default function CheckoutProductList({
                     }}
                   /> */}
                   <Switch
+                    disabled={isDisabled}
                     defaultChecked={product.productWarrantyReport.damages.amountofDamageProduct}
                     color="error"
                     onChange={(e: any) => {
@@ -130,6 +133,7 @@ export default function CheckoutProductList({
                 </TableCell>
                 <TableCell>
                   <TextField
+                    disabled={isDisabled}
                     defaultValue={product.productWarrantyReport.damages.doWanrranty}
                     fullWidth
                     multiline
@@ -141,15 +145,6 @@ export default function CheckoutProductList({
                     }}
                   />
                 </TableCell>
-
-                {/* <TableCell align="left">
-                  <Incrementer
-                    quantity={quantity}
-                    available={available}
-                    onDecrease={() => onDecreaseQuantity(productId)}
-                    onIncrease={() => onIncreaseQuantity(productId)}
-                  />
-                </TableCell> */}
               </TableRow>
             );
           })}

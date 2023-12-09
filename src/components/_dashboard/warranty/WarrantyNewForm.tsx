@@ -21,6 +21,7 @@ import ProductPackage from './ProductPackage';
 type WarrantyNewFormProps = {
   isEdit: boolean;
   currentWarranty?: WarrantyManager;
+  isDisabled?: boolean;
 };
 
 interface CustomProps {
@@ -53,7 +54,8 @@ export const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
 
 export default function AdminContractNewForm({
   isEdit = false,
-  currentWarranty
+  currentWarranty,
+  isDisabled = false
 }: WarrantyNewFormProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -122,15 +124,18 @@ export default function AdminContractNewForm({
                       currentPackage={currentWarranty?.contract.package || { packageProduct: [] }}
                       onSetProductList={handleSetProductList}
                       productWarrantyReport={currentWarranty?.productWarrantyReport || []}
+                      isDisabled={isDisabled}
                     />
                   </Stack>
                 </Stack>
 
-                <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                  <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    Cập nhật
-                  </LoadingButton>
-                </Box>
+                {!isDisabled && (
+                  <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+                    <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                      Cập nhật
+                    </LoadingButton>
+                  </Box>
+                )}
               </Form>
             </FormikProvider>
           </Stack>

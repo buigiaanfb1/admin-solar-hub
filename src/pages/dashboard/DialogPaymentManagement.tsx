@@ -1,4 +1,5 @@
 // material
+import { parse, format } from 'date-fns';
 import { Grid, Dialog, DialogContent, Paper, Stack, Typography } from '@material-ui/core';
 import { fDateTime } from 'utils/formatTime';
 // @types
@@ -6,6 +7,7 @@ import { fDateTime } from 'utils/formatTime';
 import Label from '../../components/Label';
 
 import { PaymentManager } from '../../@types/admin-payment';
+import { handleRenderLabel } from './PaymentManagement';
 
 // ----------------------------------------------------------------------
 
@@ -20,6 +22,20 @@ export default function DialogPaymentManagement({
   onClose,
   payment
 }: DialogPaymentManagementProps) {
+  const formatT = (payDateVnpay: string) => {
+    let formattedDate;
+    try {
+      formattedDate = format(
+        parse(payDateVnpay, 'yyyyMMddHHmmss', new Date()),
+        "MMM dd, yyyy 'at' HH:mm:ss"
+      );
+    } catch (error) {
+      formattedDate = fDateTime(payDateVnpay);
+    }
+
+    return formattedDate;
+  };
+
   return (
     <Dialog fullWidth maxWidth="lg" open={open} onClose={onClose}>
       <DialogContent>
@@ -57,7 +73,7 @@ export default function DialogPaymentManagement({
                   <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
                     Thời gian tạo thanh toán: &nbsp;
                   </Typography>
-                  {fDateTime(payment.payDate)}
+                  {formatT(payment.payDate)}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -109,7 +125,7 @@ export default function DialogPaymentManagement({
                   <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
                     Thời gian thanh toán: &nbsp;
                   </Typography>
-                  {fDateTime(payment.payDateVnpay)}
+                  {formatT(payment.payDateVnpay)}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -119,9 +135,7 @@ export default function DialogPaymentManagement({
                   <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
                     Trạng thái: &nbsp;
                   </Typography>
-                  <Label variant="ghost" color="primary">
-                    {payment.status}
-                  </Label>
+                  {handleRenderLabel(payment)}
                 </Typography>
               </Grid>
             </Grid>

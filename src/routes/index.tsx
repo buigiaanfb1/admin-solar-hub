@@ -1,14 +1,14 @@
-import { Suspense, lazy } from 'react';
-import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 import useAuth from 'hooks/useAuth';
+import { lazy, Suspense } from 'react';
+import { Navigate, useLocation, useRoutes } from 'react-router-dom';
 
 // layouts
-import MainLayout from '../layouts/main';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
+import MainLayout from '../layouts/main';
 // guards
-import GuestGuard from '../guards/GuestGuard';
 import AuthGuard from '../guards/AuthGuard';
+import GuestGuard from '../guards/GuestGuard';
 // import RoleBasedGuard from '../guards/RoleBasedGuard';
 // components
 import LoadingScreen from '../components/LoadingScreen';

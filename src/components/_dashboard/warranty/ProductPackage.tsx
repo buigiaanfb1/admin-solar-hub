@@ -32,11 +32,13 @@ export type AvailableProductsProps = {
 export default function ProductPackage({
   onSetProductList,
   currentPackage,
-  productWarrantyReport = []
+  productWarrantyReport = [],
+  isDisabled = false
 }: {
   onSetProductList: (productList: AvailableProductsProps[]) => void;
   currentPackage: Partial<PackageManager>;
   productWarrantyReport: ProductWarrantyReport[] | [];
+  isDisabled?: boolean;
 }) {
   const [products, setProducts] = useState<AvailableProductsProps[]>([]);
 
@@ -107,8 +109,6 @@ export default function ProductPackage({
   };
 
   const handleDoWanrranty = (productId: string, doWanrranty: string) => {
-    console.log(productId, doWanrranty);
-    console.log(products);
     const updateProducts = map(products, (product) => {
       if (product.productId === productId) {
         return {
@@ -154,6 +154,7 @@ export default function ProductPackage({
               products={products}
               onDamagePercentage={handleDamagePercentage}
               onDoWarranty={handleDoWanrranty}
+              isDisabled={isDisabled}
             />
           </Scrollbar>
         </Card>

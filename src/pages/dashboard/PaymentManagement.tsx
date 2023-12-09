@@ -85,6 +85,28 @@ function applySortFilter(
   return stabilizedThis.map((el) => el[0]);
 }
 
+export const handleRenderLabel = (payment: PaymentManager) => {
+  if (payment.isDeposit && payment.status === 'paid') {
+    return (
+      <Label variant="ghost" color="info">
+        CHƯA CỌC
+      </Label>
+    );
+  }
+  if (payment.isDeposit && payment.status === 'success') {
+    return (
+      <Label variant="ghost" color="warning">
+        ĐÃ THANH TOÁN CỌC
+      </Label>
+    );
+  }
+  return (
+    <Label variant="ghost" color="success">
+      ĐÃ TẤT TOÁN
+    </Label>
+  );
+};
+
 export default function PaymentManagement() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
@@ -223,14 +245,7 @@ export default function PaymentManagement() {
                             </Typography>
                           </TableCell>
                           <TableCell align="left">{paymentId}</TableCell>
-                          <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={status === 'sucess' || 'Paid' ? 'success' : 'warning'}
-                            >
-                              {sentenceCase(status)}
-                            </Label>
-                          </TableCell>
+                          <TableCell align="left">{handleRenderLabel(row)}</TableCell>
                         </TableRow>
                       );
                     })}

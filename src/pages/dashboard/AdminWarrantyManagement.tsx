@@ -26,9 +26,6 @@ export default function ContractManagement() {
           ]}
         />
         <Grid container spacing={0}>
-          {/* <Grid item xs={12} md={12}>
-            <AccountBillingAddressBook />
-          </Grid> */}
           <Grid item xs={12} md={12}>
             <WarrantyManagementTabs />
           </Grid>
