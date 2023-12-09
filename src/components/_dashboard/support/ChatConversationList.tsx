@@ -1,7 +1,6 @@
 // material
 import { List, ListProps } from '@material-ui/core';
 // @types
-import { Conversation } from '../../../@types/chat';
 //
 import ChatConversationItem from './ChatConversationItem';
 

@@ -1,6 +1,5 @@
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
-import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
@@ -10,9 +9,7 @@ import {
   Card,
   Table,
   Stack,
-  Avatar,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -25,7 +22,6 @@ import { getTeamList, deleteTeamApi } from 'redux/slices/admin/team';
 import { useSnackbar } from 'notistack5';
 
 import { TeamManager } from '../../@types/team';
-import { getBracketList, updateBracket } from '../../redux/slices/admin/bracket';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 // routes
@@ -34,7 +30,6 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
-import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 
 import SearchNotFound from '../../components/SearchNotFound';
@@ -157,6 +152,12 @@ export default function ProductManagement() {
     }
   };
 
+  const handleRequestSort = (property: string) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - teamListAvailable.length) : 0;
 
   const filteredUsers = applySortFilter(
@@ -206,7 +207,7 @@ export default function ProductManagement() {
                   headLabel={TABLE_HEAD}
                   rowCount={teamListAvailable.length}
                   numSelected={0}
-                  onRequestSort={() => {}}
+                  onRequestSort={handleRequestSort}
                   onSelectAllClick={() => {}}
                 />
                 <TableBody>

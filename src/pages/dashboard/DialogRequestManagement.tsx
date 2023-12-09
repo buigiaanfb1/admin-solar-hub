@@ -1,21 +1,6 @@
 import { useState } from 'react';
 // material
-import {
-  Box,
-  Button,
-  Dialog,
-  Select,
-  Switch,
-  MenuItem,
-  InputLabel,
-  DialogTitle,
-  FormControl,
-  DialogActions,
-  DialogContent,
-  FormControlLabel,
-  DialogContentText,
-  DialogProps
-} from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogProps } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 
 import { updateRequest } from 'redux/slices/admin/request';

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
 // material
 /* eslint-disable import/no-duplicates */
 import firebase from 'firebase/app';
@@ -10,25 +9,14 @@ import { firebaseConfig } from 'config';
 import { setCollection } from 'firebase/setCollection';
 import { Box, Divider } from '@material-ui/core';
 // redux
-import { RootState, useDispatch, useSelector } from '../../../redux/store';
-import {
-  addRecipients,
-  onSendMessage,
-  getConversation,
-  getParticipants,
-  markConversationAsRead,
-  resetActiveConversation
-} from '../../../redux/slices/chat';
+
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
 // @types
-import { Conversation, Participant, SendMessage } from '../../../@types/chat';
+import { SendMessage } from '../../../@types/chat';
 //
-import ChatRoom from './ChatRoom';
 import ChatMessageList from './ChatMessageList';
 import ChatHeaderDetail from './ChatHeaderDetail';
 import ChatMessageInput from './ChatMessageInput';
-import ChatHeaderCompose from './ChatHeaderCompose';
 
 // ----------------------------------------------------------------------
 

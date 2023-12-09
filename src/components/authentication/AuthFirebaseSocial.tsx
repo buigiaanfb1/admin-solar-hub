@@ -1,7 +1,5 @@
 import { Icon } from '@iconify/react';
 import googleFill from '@iconify/icons-eva/google-fill';
-import twitterFill from '@iconify/icons-eva/twitter-fill';
-import facebookFill from '@iconify/icons-eva/facebook-fill';
 // material
 import { Grid, Button, Divider, Typography } from '@material-ui/core';
 // hooks

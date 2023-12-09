@@ -1,18 +1,14 @@
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
-import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink } from 'react-router-dom';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
   Card,
   Table,
   Stack,
-  Avatar,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -24,7 +20,6 @@ import {
 import { fDateTime } from 'utils/formatTime';
 import { useSnackbar } from 'notistack5';
 
-import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
 import { getWarrantyList, deleteWarrantyApi } from 'redux/slices/admin/warranty';
 
 import { WarrantyManager } from '../../@types/warranty';
@@ -36,7 +31,6 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
-import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 
 import SearchNotFound from '../../components/SearchNotFound';

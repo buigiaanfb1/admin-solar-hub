@@ -1,7 +1,5 @@
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
-import bellFill from '@iconify/icons-eva/bell-fill';
-import archiveFill from '@iconify/icons-eva/archive-fill';
 import roundReceipt from '@iconify/icons-ic/round-receipt';
 // material
 import { Tab, Box, Tabs } from '@material-ui/core';
@@ -10,8 +8,6 @@ import { RootState, useDispatch, useSelector } from '../../redux/store';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // components
-import Page from '../../components/Page';
-import { AccountGeneral } from '../../components/_dashboard/user/account';
 import AdminUserList from './AdminUserList';
 import AdminUserCustomerList from './AdminUserCustomerList';
 

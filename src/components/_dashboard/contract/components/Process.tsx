@@ -5,7 +5,6 @@ import {
   Box,
   Step,
   Paper,
-  Button,
   Stepper,
   StepLabel,
   Typography,

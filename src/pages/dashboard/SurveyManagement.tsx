@@ -1,18 +1,13 @@
 import { filter } from 'lodash';
-import { Icon } from '@iconify/react';
-import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
-import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
   Card,
   Table,
   Stack,
-  Avatar,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -21,10 +16,7 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-import { fDateTime } from 'utils/formatTime';
-import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
 import useAuth from 'hooks/useAuth';
-import { BracketManager } from '../../@types/bracket';
 import { getSurveyList, updateSurvey, deleteSurveyApi } from '../../redux/slices/staff/survey';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
@@ -34,7 +26,6 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
-import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 
 import SearchNotFound from '../../components/SearchNotFound';
@@ -44,7 +35,6 @@ import {
   UserListToolbar,
   AdminUserMoreMenu
 } from '../../components/_dashboard/user/list';
-import DialogBracketManagement from './DialogWarantyManagement';
 import { SurveyManager } from '../../@types/survey';
 import { ConstructionContractManager } from '../../@types/contract';
 
@@ -189,6 +179,12 @@ export default function SurveyManagement() {
     dispatch(updateSurvey({ surveyId, status: true }, user?.userInfo.accountId));
   };
 
+  const handleRequestSort = (property: string) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - surveyList.length) : 0;
 
   const filteredUsers = applySortFilter(surveyList, getComparator(order, orderBy), filterName);
@@ -235,7 +231,7 @@ export default function SurveyManagement() {
                   headLabel={TABLE_HEAD}
                   rowCount={surveyList.length}
                   numSelected={0}
-                  onRequestSort={() => {}}
+                  onRequestSort={handleRequestSort}
                   onSelectAllClick={() => {}}
                 />
                 <TableBody>

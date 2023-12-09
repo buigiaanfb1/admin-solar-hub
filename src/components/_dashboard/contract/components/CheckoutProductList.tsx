@@ -1,13 +1,8 @@
-import { Icon } from '@iconify/react';
-import plusFill from '@iconify/icons-eva/plus-fill';
-import minusFill from '@iconify/icons-eva/minus-fill';
-import trash2Fill from '@iconify/icons-eva/trash-2-fill';
 // material
 import { styled } from '@material-ui/core/styles';
 import {
   Box,
   Table,
-  Divider,
   TableRow,
   TableBody,
   TableCell,
@@ -16,13 +11,9 @@ import {
   TableContainer
 } from '@material-ui/core';
 // utils
-import getColorName from '../../../../utils/getColorName';
 import { vCurrency } from '../../../../utils/formatNumber';
 // @types
-import { CartItem } from '../../../../@types/products';
 //
-import { MIconButton } from '../../../@material-extend';
-import { ProductManager } from '../../../../@types/product';
 import { AvailableProductsProps } from './List';
 
 // ----------------------------------------------------------------------

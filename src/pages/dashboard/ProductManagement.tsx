@@ -10,9 +10,7 @@ import {
   Card,
   Table,
   Stack,
-  Avatar,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -24,7 +22,7 @@ import {
 import { fDateTime } from 'utils/formatTime';
 
 import { ProductManager } from '../../@types/product';
-import { getProductList, deleteProductApi, updateProduct } from '../../redux/slices/admin/product';
+import { getProductList, updateProduct } from '../../redux/slices/admin/product';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 // routes
@@ -131,6 +129,12 @@ export default function ProductManagement() {
     setOpen(false);
   };
 
+  const handleRequestSort = (property: string) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -193,7 +197,7 @@ export default function ProductManagement() {
                   headLabel={TABLE_HEAD}
                   rowCount={productList.length}
                   numSelected={0}
-                  onRequestSort={() => {}}
+                  onRequestSort={handleRequestSort}
                   onSelectAllClick={() => {}}
                 />
                 <TableBody>

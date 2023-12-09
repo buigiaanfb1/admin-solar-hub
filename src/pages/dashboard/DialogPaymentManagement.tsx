@@ -1,33 +1,11 @@
-import * as Yup from 'yup';
-import { useFormik, Form, FormikProvider } from 'formik';
 // material
-import {
-  Grid,
-  Radio,
-  Dialog,
-  Button,
-  Divider,
-  Checkbox,
-  TextField,
-  RadioGroup,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  FormControlLabel,
-  Paper,
-  Stack,
-  Typography
-} from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
-import contract from 'redux/slices/admin/contract';
+import { Grid, Dialog, DialogContent, Paper, Stack, Typography } from '@material-ui/core';
 import { fDateTime } from 'utils/formatTime';
 // @types
-import AdminProductNewForm from 'components/_dashboard/product/AdminProductNewForm';
 //
 import Label from '../../components/Label';
 
 import { PaymentManager } from '../../@types/admin-payment';
-import { handleRenderLabel } from './StaffContractManagement';
 
 // ----------------------------------------------------------------------
 

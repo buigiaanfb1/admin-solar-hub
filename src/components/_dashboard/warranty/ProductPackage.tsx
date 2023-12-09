@@ -1,30 +1,16 @@
-import { sum, map } from 'lodash';
-import { Icon } from '@iconify/react';
+import { map } from 'lodash';
 import { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { useFormik, Form, FormikProvider } from 'formik';
-import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 // material
-import { Grid, Card, Button, CardHeader, Typography } from '@material-ui/core';
+import { Grid, Card, CardHeader, Typography } from '@material-ui/core';
 // @types
-import { ProductState } from '../../../@types/products';
 // redux
-import { RootState, useDispatch, useSelector } from '../../../redux/store';
-import {
-  deleteCart,
-  onNextStep,
-  applyDiscount,
-  increaseQuantity,
-  decreaseQuantity
-} from '../../../redux/slices/product';
+
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
 //
 import Scrollbar from '../../Scrollbar';
-import EmptyContent from '../../EmptyContent';
 // import CheckoutSummary from './CheckoutSummary';
 import CheckoutProductList from './CheckoutProductList';
-import { ProductManager, Image } from '../../../@types/product';
+import { Image } from '../../../@types/product';
 import { PackageManager } from '../../../@types/package';
 import { ProductWarrantyReport } from '../../../@types/warranty';
 

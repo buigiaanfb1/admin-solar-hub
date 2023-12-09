@@ -1,12 +1,9 @@
-import { last } from 'lodash';
-import { formatDistanceToNowStrict } from 'date-fns';
 // material
 import { styled } from '@material-ui/core/styles';
 import { Box, Avatar, ListItemButton, ListItemText, ListItemAvatar } from '@material-ui/core';
 // @types
 import { formatTime } from 'utils/formatTime';
 
-import { Conversation } from '../../../@types/chat';
 //
 import BadgeStatus from '../../BadgeStatus';
 

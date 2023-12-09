@@ -1,30 +1,6 @@
-import * as Yup from 'yup';
-import { useFormik, Form, FormikProvider } from 'formik';
-import { Label } from '@material-ui/icons';
-import payment from 'redux/slices/admin/payment';
-import { fDateTime } from 'utils/formatTime';
-
 // material
-import {
-  Grid,
-  Radio,
-  Dialog,
-  Button,
-  Divider,
-  Checkbox,
-  TextField,
-  RadioGroup,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  FormControlLabel,
-  Paper,
-  Stack,
-  Typography
-} from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
+import { Grid, Dialog, DialogContent, Paper, Stack, Typography } from '@material-ui/core';
 // @types
-import AdminBracketNewForm from 'components/_dashboard/bracket/AdminBracketNewForm';
 //
 import { TeamManager } from '../../@types/team';
 // ----------------------------------------------------------------------

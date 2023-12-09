@@ -2,7 +2,7 @@ import { capitalCase } from 'change-case';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { styled } from '@material-ui/core/styles';
-import { Box, Card, Stack, Link, Alert, Tooltip, Container, Typography } from '@material-ui/core';
+import { Box, Card, Stack, Link, Tooltip, Container, Typography } from '@material-ui/core';
 import AuthWithSocial from 'components/authentication/AuthFirebaseSocial';
 
 // routes
@@ -10,7 +10,6 @@ import { PATH_AUTH } from '../../routes/paths';
 // hooks
 import useAuth from '../../hooks/useAuth';
 // layouts
-import AuthLayout from '../../layouts/AuthLayout';
 // components
 import Page from '../../components/Page';
 import { MHidden } from '../../components/@material-extend';

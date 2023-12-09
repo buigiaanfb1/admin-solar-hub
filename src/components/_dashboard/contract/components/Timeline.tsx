@@ -1,4 +1,3 @@
-import { last, slice } from 'lodash';
 // material
 import HotelIcon from '@material-ui/icons/Hotel';
 import RepeatIcon from '@material-ui/icons/Repeat';

@@ -7,7 +7,6 @@ import { Box } from '@material-ui/core';
 import { CarouselControlsArrowsIndex } from 'components/carousel';
 
 // utils
-import { mockImgFeed } from '../../../utils/mockImages';
 import { Image } from '../../../@types/product';
 //
 // ----------------------------------------------------------------------

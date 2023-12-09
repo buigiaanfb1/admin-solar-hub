@@ -2,24 +2,20 @@ import * as Yup from 'yup';
 import ProductPackage from 'components/_dashboard/contract/components/List';
 import ContractInfo from 'components/_dashboard/contract/components/ContractInfo';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { LoadingButton } from '@material-ui/lab';
 
 // material
 import {
   Button,
-  Card,
   Dialog,
   DialogTitle,
   DialogActions,
   DialogContent,
   Stack,
-  TextField,
   Typography
 } from '@material-ui/core';
 import axios from 'utils/axiosIntegrated';
 import { useSnackbar } from 'notistack5';
 import { LargeItem } from 'components/_dashboard/contract/CarouselContract';
-import Timeline from 'components/_dashboard/contract/components/Timeline';
 import useAuth from 'hooks/useAuth';
 import {
   handleRenderProcess,

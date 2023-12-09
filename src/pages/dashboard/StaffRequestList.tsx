@@ -1,23 +1,16 @@
 import { filter } from 'lodash';
-import { Icon } from '@iconify/react';
-import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
-import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
   Card,
   Table,
-  Stack,
-  Avatar,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
   Container,
-  Typography,
   Radio,
   TableContainer,
   TablePagination
@@ -27,7 +20,6 @@ import { disableRequest, getRequestList } from 'redux/slices/staff/request';
 import { useSnackbar } from 'notistack5';
 import useAuth from 'hooks/useAuth';
 
-import { getUserList, deleteUserApi, updateUser } from '../../redux/slices/admin/user';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 // routes
@@ -35,20 +27,14 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // @types
-import { UserManager } from '../../@types/admin-user';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import {
-  UserListHead,
-  UserListToolbar,
-  AdminUserMoreMenu
-} from '../../components/_dashboard/user/list';
-import { RequestManager, RequestStaff } from '../../@types/request';
-import DialogCreateContractManagement from './DialogCreateContractManagement';
+import { UserListHead, UserListToolbar } from '../../components/_dashboard/user/list';
+import { RequestStaff } from '../../@types/request';
 import { SurveyManager } from '../../@types/survey';
 
 // ----------------------------------------------------------------------

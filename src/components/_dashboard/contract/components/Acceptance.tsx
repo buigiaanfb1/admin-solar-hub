@@ -1,31 +1,17 @@
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
-import {
-  Box,
-  Step,
-  Paper,
-  Button,
-  Stepper,
-  StepLabel,
-  Typography,
-  Stack,
-  Grid,
-  TextField
-} from '@material-ui/core';
+import { Box, Paper, Stack } from '@material-ui/core';
 import { Form, FormikProvider, useFormik } from 'formik';
-import { DesktopDatePicker, LoadingButton } from '@material-ui/lab';
+import { LoadingButton } from '@material-ui/lab';
 import useAuth from 'hooks/useAuth';
 import { useSnackbar } from 'notistack5';
 import axios from 'utils/axiosIntegrated';
 import { getContractListByStaff } from 'redux/slices/admin/contract';
 import { useDispatch } from 'react-redux';
-import { fDate, fDateDM } from 'utils/formatTime';
-import CarouselProduct from 'components/_dashboard/product/CarouselProduct';
 
 import { ConstructionContractManager } from '../../../../@types/contract';
 import Upload from '../Upload';
-import { ProcessManager } from '../../../../@types/process';
 
 const NewProcessSchema = Yup.object().shape({
   constructionContractId: Yup.string(),

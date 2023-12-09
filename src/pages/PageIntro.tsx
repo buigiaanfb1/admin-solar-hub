@@ -1,8 +1,7 @@
 import { motion } from 'framer-motion';
-import { Link as RouterLink } from 'react-router-dom';
 // material
 import { styled } from '@material-ui/core/styles';
-import { Box, Button, Typography, Container } from '@material-ui/core';
+import { Box, Typography, Container } from '@material-ui/core';
 // components
 import useAuth from 'hooks/useAuth';
 

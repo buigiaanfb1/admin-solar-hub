@@ -1,49 +1,32 @@
 import { filter } from 'lodash';
-import { Icon } from '@iconify/react';
-import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
-import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink } from 'react-router-dom';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
   Card,
   Table,
   Stack,
-  Avatar,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
-  Container,
   Typography,
   TableContainer,
   TablePagination
 } from '@material-ui/core';
 import { fDateTime } from 'utils/formatTime';
-import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
 import { getWarrantyList, deleteWarrantyApi } from 'redux/slices/admin/warranty';
 
 import { WarrantyManager } from '../../@types/warranty';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 // routes
-import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // components
-import Page from '../../components/Page';
-import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 
 import SearchNotFound from '../../components/SearchNotFound';
-import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import {
-  UserListHead,
-  UserListToolbar,
-  AdminUserMoreMenu
-} from '../../components/_dashboard/user/list';
+import { UserListHead, UserListToolbar } from '../../components/_dashboard/user/list';
 import DialogWarantyManagement from './DialogWarantyManagement';
 
 // ----------------------------------------------------------------------

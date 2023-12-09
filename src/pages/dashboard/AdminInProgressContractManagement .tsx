@@ -1,28 +1,16 @@
 import { filter } from 'lodash';
-import { Icon } from '@iconify/react';
-import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
-import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink } from 'react-router-dom';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
   Card,
   Table,
-  Stack,
-  Avatar,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
-  Container,
-  Typography,
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-import { fDateTime } from 'utils/formatTime';
-import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
 import useAuth from 'hooks/useAuth';
 import { isAfter, parseISO } from 'date-fns';
 
@@ -35,20 +23,14 @@ import {
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 // routes
-import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // components
-import Page from '../../components/Page';
-import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 
 import SearchNotFound from '../../components/SearchNotFound';
-import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { UserListHead, UserListToolbar } from '../../components/_dashboard/user/list';
-import MoreMenu from '../../components/_dashboard/contract/MoreMenu';
 import DialogViewContractManagement from './DialogViewContractManagement';
-import { SurveyManager } from '../../@types/survey';
 import { handleRenderLabel } from './StaffContractManagement';
 
 // ----------------------------------------------------------------------
@@ -168,6 +150,12 @@ export default function StaffContractManagement() {
     dispatch(enableContractApi(constructioncontractId));
   };
 
+  const handleRequestSort = (property: string) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
   const emptyRows =
     page > 0
       ? Math.max(0, (1 + page) * rowsPerPage - inProgressConstructionContractList.length)
@@ -201,7 +189,7 @@ export default function StaffContractManagement() {
                 headLabel={TABLE_HEAD}
                 rowCount={inProgressConstructionContractList.length}
                 numSelected={0}
-                onRequestSort={() => {}}
+                onRequestSort={handleRequestSort}
                 onSelectAllClick={() => {}}
               />
               <TableBody>

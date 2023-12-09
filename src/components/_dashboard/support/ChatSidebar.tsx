@@ -11,8 +11,7 @@ import useAuth from 'hooks/useAuth';
 
 // @types
 import { useState, useEffect, useRef } from 'react';
-import editFill from '@iconify/icons-eva/edit-fill';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 // material
@@ -29,8 +28,6 @@ import { Contact } from '../../../@types/chat';
 import { MIconButton } from '../../@material-extend';
 import Scrollbar from '../../Scrollbar';
 import ChatAccount from './ChatAccount';
-import ChatSearchResults from './ChatSearchResults';
-import ChatContactSearch from './ChatContactSearch';
 import ChatConversationList from './ChatConversationList';
 
 // ----------------------------------------------------------------------

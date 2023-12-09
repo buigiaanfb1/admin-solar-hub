@@ -1,28 +1,12 @@
 import * as Yup from 'yup';
-import { useCallback, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import eyeFill from '@iconify/icons-eva/eye-fill';
-import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
-import { Icon } from '@iconify/react';
 import { DesktopDatePicker, LoadingButton } from '@material-ui/lab';
-import {
-  Box,
-  Card,
-  Checkbox,
-  Grid,
-  Stack,
-  TextField,
-  FormControlLabel,
-  InputAdornment,
-  IconButton
-} from '@material-ui/core';
-import useAuth from 'hooks/useAuth';
+import { Box, Card, Grid, Stack, TextField, InputAdornment } from '@material-ui/core';
 import axios from 'utils/axiosIntegrated';
 import { PATH_DASHBOARD } from 'routes/paths';
-import { AuthUser } from '../../../@types/authentication';
 import { PromotionManager } from '../../../@types/promotion';
 // import { roles, genders, loginTypes } from './roles';
 

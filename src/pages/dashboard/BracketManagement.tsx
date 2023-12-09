@@ -10,9 +10,7 @@ import {
   Card,
   Table,
   Stack,
-  Avatar,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -21,11 +19,9 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-import { fDateTime } from 'utils/formatTime';
-import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
 
 import { BracketManager } from '../../@types/bracket';
-import { getBracketList, deleteBracketApi, updateBracket } from '../../redux/slices/admin/bracket';
+import { getBracketList, updateBracket } from '../../redux/slices/admin/bracket';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 // routes
@@ -153,6 +149,12 @@ export default function ProductManagement() {
     dispatch(updateBracket({ bracketId }, true));
   };
 
+  const handleRequestSort = (property: string) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - bracketList.length) : 0;
 
   const filteredUsers = applySortFilter(bracketList, getComparator(order, orderBy), filterName);
@@ -198,7 +200,7 @@ export default function ProductManagement() {
                   headLabel={TABLE_HEAD}
                   rowCount={bracketList.length}
                   numSelected={0}
-                  onRequestSort={() => {}}
+                  onRequestSort={handleRequestSort}
                   onSelectAllClick={() => {}}
                 />
                 <TableBody>

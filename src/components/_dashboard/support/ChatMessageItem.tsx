@@ -1,11 +1,9 @@
-import { formatDistanceToNowStrict } from 'date-fns';
 // material
 import { styled } from '@material-ui/core/styles';
 import { Avatar, Box, Typography } from '@material-ui/core';
 import { formatTime } from 'utils/formatTime';
 
 // @types
-import { Conversation, Message } from '../../../@types/chat';
 
 // ----------------------------------------------------------------------
 

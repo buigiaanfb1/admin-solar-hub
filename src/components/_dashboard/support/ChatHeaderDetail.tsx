@@ -1,19 +1,10 @@
-import { Icon } from '@iconify/react';
-import { capitalCase } from 'change-case';
-import videoFill from '@iconify/icons-eva/video-fill';
-import phoneFill from '@iconify/icons-eva/phone-fill';
-import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
-import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 // material
 import { styled } from '@material-ui/core/styles';
-import { Box, Link, Avatar, Typography, AvatarGroup } from '@material-ui/core';
+import { Box, Avatar, Typography } from '@material-ui/core';
 // utils
-import { formatTime, fToNow } from '../../../utils/formatTime';
+import { formatTime } from '../../../utils/formatTime';
 // @types
-import { Participant } from '../../../@types/chat';
 //
-import { MIconButton } from '../../@material-extend';
-import BadgeStatus from '../../BadgeStatus';
 
 // ----------------------------------------------------------------------
 

@@ -9,10 +9,7 @@ import { useTheme } from '@material-ui/core/styles';
 import {
   Card,
   Table,
-  Stack,
-  Avatar,
   Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -21,10 +18,9 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-import { fDateTime } from 'utils/formatTime';
 
 import { PackageManager } from '../../@types/package';
-import { getPackageList, deletePackageApi, updatePackage } from '../../redux/slices/admin/package';
+import { getPackageList, updatePackage } from '../../redux/slices/admin/package';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 // routes
@@ -42,7 +38,6 @@ import {
   UserListToolbar,
   AdminUserMoreMenu
 } from '../../components/_dashboard/user/list';
-import DialogPackageManagement from './DialogPackageManagement';
 
 // ----------------------------------------------------------------------
 

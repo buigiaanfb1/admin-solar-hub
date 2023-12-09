@@ -1,18 +1,8 @@
 import { Icon } from '@iconify/react';
 import searchFill from '@iconify/icons-eva/search-fill';
-import navigation2Fill from '@iconify/icons-eva/navigation-2-fill';
-import roundFilterList from '@iconify/icons-ic/round-filter-list';
 // material
 import { useTheme, styled } from '@material-ui/core/styles';
-import {
-  Box,
-  Toolbar,
-  Tooltip,
-  IconButton,
-  Typography,
-  OutlinedInput,
-  InputAdornment
-} from '@material-ui/core';
+import { Box, Toolbar, OutlinedInput, InputAdornment } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
 

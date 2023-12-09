@@ -1,6 +1,5 @@
 // material
 import { Container, Grid } from '@material-ui/core';
-import AccountBillingAddressBook from 'components/_dashboard/contract-management/AccountBillingAddressBook';
 import { PATH_DASHBOARD } from 'routes/paths';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
 // hooks

@@ -1,8 +1,5 @@
 import { UserManager } from './admin-user';
 import { ConstructionContractManager } from './contract';
-import { PackageManager } from './package';
-import { ProductManager } from './product';
-import { PromotionManager } from './promotion';
 
 // ----------------------------------------------------------------------
 export type PaymentManager = {

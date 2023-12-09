@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react';
 import { Grid, Card, CardHeader, Typography } from '@material-ui/core';
 
 import Scrollbar from '../../../Scrollbar';
-import EmptyContent from '../../../EmptyContent';
 import CheckoutSummary from './CheckoutSummary';
 import CheckoutProductList from './CheckoutProductList';
 import CheckoutBracketList from './CheckoutBracketList';
-import { ProductManager, Image } from '../../../../@types/product';
+import { Image } from '../../../../@types/product';
 import { PackageManager } from '../../../../@types/package';
 import { BracketManager } from '../../../../@types/bracket';
 import { ConstructionContractManager } from '../../../../@types/contract';

@@ -1,21 +1,18 @@
-import { Icon } from '@iconify/react';
-import { useState, useEffect } from 'react';
-import bellFill from '@iconify/icons-eva/bell-fill';
 import archiveFill from '@iconify/icons-eva/archive-fill';
 import roundReceipt from '@iconify/icons-ic/round-receipt';
+import { Icon } from '@iconify/react';
+import { useEffect, useState } from 'react';
 // material
-import { Tab, Box, Tabs } from '@material-ui/core';
+import { Box, Tab, Tabs } from '@material-ui/core';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // components
-import Page from '../../components/Page';
 import { AccountGeneral } from '../../components/_dashboard/user/account';
-import AdminPendingContractManagement from './AdminPendingContractManagement';
 import AdminApprovedContractManagement from './AdminApprovedContractManagement ';
-import AdminInProgressContractManagement from './AdminInProgressContractManagement ';
 import AdminHistoryContractManagement from './AdminHistoryContractManagement';
+import AdminInProgressContractManagement from './AdminInProgressContractManagement ';
 
 // ----------------------------------------------------------------------
 

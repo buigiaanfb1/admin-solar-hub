@@ -14,7 +14,6 @@ import {
   InputAdornment
 } from '@material-ui/core';
 // utils
-import { vCurrency } from '../../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 

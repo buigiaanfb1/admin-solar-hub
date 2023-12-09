@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
 // material
 import { Container } from '@material-ui/core';

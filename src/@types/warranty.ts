@@ -1,6 +1,5 @@
 import { UserManager } from './admin-user';
 import { ConstructionContractManager } from './contract';
-import { Image } from './product';
 import { Product } from './products';
 
 // ----------------------------------------------------------------------

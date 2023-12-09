@@ -1,13 +1,10 @@
 import faker from 'faker';
 import { Icon } from '@iconify/react';
 import { useRef, useState } from 'react';
-import micFill from '@iconify/icons-eva/mic-fill';
 import roundSend from '@iconify/icons-ic/round-send';
-import attach2Fill from '@iconify/icons-eva/attach-2-fill';
-import roundAddPhotoAlternate from '@iconify/icons-ic/round-add-photo-alternate';
 // material
 import { styled } from '@material-ui/core/styles';
-import { Box, Input, Divider, IconButton, InputAdornment } from '@material-ui/core';
+import { Input, Divider, IconButton, InputAdornment } from '@material-ui/core';
 // @types
 import { SendMessage } from '../../../@types/chat';
 //

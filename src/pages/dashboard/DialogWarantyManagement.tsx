@@ -6,18 +6,11 @@ import { useDispatch } from 'react-redux';
 import { getWarrantyList } from 'redux/slices/admin/warranty';
 // material
 import {
-  Grid,
-  Radio,
   Dialog,
   Button,
-  Divider,
-  Checkbox,
   TextField,
-  RadioGroup,
   DialogTitle,
-  DialogContent,
   DialogActions,
-  FormControlLabel,
   Card,
   Stack
 } from '@material-ui/core';
@@ -27,7 +20,6 @@ import useAuth from 'hooks/useAuth';
 // @types
 // import AdminWarrantyNewForm from 'components/_dashboard/bracket/AdminWarrantyNewForm';
 //
-import { WarrantyManager } from '../../@types/warranty';
 import ContractList from './Warranty/ContractList';
 
 // ----------------------------------------------------------------------

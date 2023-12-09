@@ -1,4 +1,3 @@
-import { filter } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
 import { batch } from 'react-redux';
 

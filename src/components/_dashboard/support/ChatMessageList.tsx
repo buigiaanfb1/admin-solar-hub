@@ -1,10 +1,7 @@
-import { findIndex } from 'lodash';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 // @types
-import { Conversation } from '../../../@types/chat';
 //
 import Scrollbar from '../../Scrollbar';
-import LightboxModal from '../../LightboxModal';
 import ChatMessageItem from './ChatMessageItem';
 
 // ----------------------------------------------------------------------
