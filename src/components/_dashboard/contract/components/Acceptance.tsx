@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
-import { Box, Paper, Stack } from '@material-ui/core';
+import { Box, Paper, Stack, Typography } from '@material-ui/core';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { LoadingButton } from '@material-ui/lab';
 import useAuth from 'hooks/useAuth';
@@ -149,7 +149,13 @@ export default function Acceptance({
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
           <Stack>
-            <Upload onGetFile={handleGetFile} defaultFiles={files[0]} />
+            {files[0] ? (
+              <Upload onGetFile={handleGetFile} defaultFiles={files[0]} />
+            ) : (
+              <Typography variant="overline" sx={{ color: 'text.secondary' }}>
+                Chưa có hình ảnh nghiệm thu cho hợp đồng này.
+              </Typography>
+            )}
           </Stack>
           <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between' }}>
             {currentContructionContract.status === '2' && acceptances[0]?.acceptanceId && (
@@ -162,7 +168,7 @@ export default function Acceptance({
                 Xoá
               </LoadingButton>
             )}
-            {(currentContructionContract.status === '2' || !isDisabled) && (
+            {currentContructionContract.status === '2' && !isDisabled && (
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                 {!acceptances[0]?.imageFile ? 'Thêm nghiệm thu' : 'Cập nhật'}
               </LoadingButton>
