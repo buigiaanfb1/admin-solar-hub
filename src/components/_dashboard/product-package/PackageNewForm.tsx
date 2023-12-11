@@ -249,7 +249,7 @@ export default function PackageNewForm({
                   <TextField
                     select
                     fullWidth
-                    label="Select"
+                    label="Mã khuyến mãi"
                     {...getFieldProps('promotionId')}
                     error={Boolean(touched.description && errors.description)}
                     helperText={touched.description && errors.description}

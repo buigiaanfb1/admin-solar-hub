@@ -176,7 +176,7 @@ export default function Process({
               >
                 <StepLabel {...labelProps}>
                   <Typography variant="overline" sx={{ color: 'text.primary' }}>
-                    {steps[index].title}
+                    {steps[index]?.title}
                   </Typography>
                   {index !== steps.length - 1 && (
                     <Typography
@@ -282,7 +282,7 @@ export default function Process({
                       <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
                         Tiêu đề: &nbsp;
                       </Typography>
-                      {steps[activeStep].title}
+                      {steps[activeStep]?.title}
                     </Typography>
                     <Typography
                       variant="body2"

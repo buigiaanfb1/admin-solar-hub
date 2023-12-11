@@ -162,12 +162,11 @@ export default function Acceptance({
                 Xoá
               </LoadingButton>
             )}
-            {currentContructionContract.status === '2' ||
-              (!isDisabled && (
-                <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                  {!acceptances[0]?.imageFile ? 'Thêm nghiệm thu' : 'Cập nhật'}
-                </LoadingButton>
-              ))}
+            {(currentContructionContract.status === '2' || !isDisabled) && (
+              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                {!acceptances[0]?.imageFile ? 'Thêm nghiệm thu' : 'Cập nhật'}
+              </LoadingButton>
+            )}
           </Box>
         </Paper>
       </Form>

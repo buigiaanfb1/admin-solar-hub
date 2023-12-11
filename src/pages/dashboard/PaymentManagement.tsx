@@ -85,9 +85,9 @@ function applySortFilter(
 }
 
 export const handleRenderLabel = (payment: PaymentManager) => {
-  if (payment.isDeposit && payment.status === 'paid') {
+  if (payment.isDeposit && payment.status === 'Paid') {
     return (
-      <Label variant="ghost" color="info">
+      <Label variant="ghost" color="secondary">
         CHƯA CỌC
       </Label>
     );
@@ -99,9 +99,26 @@ export const handleRenderLabel = (payment: PaymentManager) => {
       </Label>
     );
   }
+
+  if (!payment.isDeposit && payment.status === 'Paid') {
+    return (
+      <Label variant="ghost" color="info">
+        CHƯA TẤT TOÁN
+      </Label>
+    );
+  }
+
+  if (!payment.isDeposit && payment.status === 'success') {
+    return (
+      <Label variant="ghost" color="success">
+        ĐÃ TẤT TOÁN
+      </Label>
+    );
+  }
+
   return (
-    <Label variant="ghost" color="success">
-      ĐÃ TẤT TOÁN
+    <Label variant="ghost" color="error">
+      CHƯA XÁC ĐỊNH
     </Label>
   );
 };
