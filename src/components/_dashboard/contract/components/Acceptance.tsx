@@ -7,11 +7,12 @@ import { LoadingButton } from '@material-ui/lab';
 import useAuth from 'hooks/useAuth';
 import { useSnackbar } from 'notistack5';
 import axios from 'utils/axiosIntegrated';
-import { getContractListByStaff } from 'redux/slices/admin/contract';
+import contract, { getContractListByStaff } from 'redux/slices/admin/contract';
 import { useDispatch } from 'react-redux';
 
 import { ConstructionContractManager } from '../../../../@types/contract';
 import Upload from '../Upload';
+import { LargeItem } from '../CarouselContract';
 
 const NewProcessSchema = Yup.object().shape({
   constructionContractId: Yup.string(),
@@ -144,13 +145,26 @@ export default function Acceptance({
     }
   };
 
+  const handleRenderImage = () =>
+    isDisabled ? (
+      <LargeItem
+        item={{
+          image: files[0] as string,
+          title: 'image contract',
+          description: 'image contract'
+        }}
+      />
+    ) : (
+      <Upload onGetFile={handleGetFile} defaultFiles={files[0]} />
+    );
+
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
           <Stack>
             {files[0] ? (
-              <Upload onGetFile={handleGetFile} defaultFiles={files[0]} />
+              handleRenderImage()
             ) : (
               <Typography variant="overline" sx={{ color: 'text.secondary' }}>
                 Chưa có hình ảnh nghiệm thu cho hợp đồng này.
