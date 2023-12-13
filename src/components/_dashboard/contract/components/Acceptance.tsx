@@ -7,7 +7,7 @@ import { LoadingButton } from '@material-ui/lab';
 import useAuth from 'hooks/useAuth';
 import { useSnackbar } from 'notistack5';
 import axios from 'utils/axiosIntegrated';
-import contract, { getContractListByStaff } from 'redux/slices/admin/contract';
+import { getContractListByStaff } from 'redux/slices/admin/contract';
 import { useDispatch } from 'react-redux';
 
 import { ConstructionContractManager } from '../../../../@types/contract';
