@@ -292,7 +292,7 @@ export default function Process({
                       <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
                         Ngày cập nhật tiến độ: &nbsp;
                       </Typography>
-                      {fDate(steps[activeStep].createAt)}
+                      {fDate(steps[activeStep]?.createAt)}
                     </Typography>
                     <Typography
                       variant="body2"

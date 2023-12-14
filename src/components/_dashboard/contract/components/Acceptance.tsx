@@ -162,15 +162,7 @@ export default function Acceptance({
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
-          <Stack>
-            {files[0] ? (
-              handleRenderImage()
-            ) : (
-              <Typography variant="overline" sx={{ color: 'text.secondary' }}>
-                Chưa có hình ảnh nghiệm thu cho hợp đồng này.
-              </Typography>
-            )}
-          </Stack>
+          <Stack>{handleRenderImage()}</Stack>
           <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between' }}>
             {currentContructionContract.status === '2' && acceptances[0]?.acceptanceId && (
               <LoadingButton
