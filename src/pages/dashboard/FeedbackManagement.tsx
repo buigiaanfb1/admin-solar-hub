@@ -13,7 +13,6 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-import { thumbnailItemsExternal } from 'components/_dashboard/product/CarouselProduct';
 
 import { FeedbackManager } from '../../@types/feedback';
 import { getFeedbackList, deleteFeedbackApi } from '../../redux/slices/admin/feedback';
