@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
-import { Box, Paper, Stack, Typography } from '@material-ui/core';
+import { Box, Paper, Stack } from '@material-ui/core';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { LoadingButton } from '@material-ui/lab';
 import useAuth from 'hooks/useAuth';

@@ -39,7 +39,6 @@ const TABLE_HEAD = [
   { id: 'constructionContractId', label: 'Mã hợp đồng', alignRight: false },
   { id: 'fullname', label: 'Tên khách hàng', alignRight: false },
   { id: 'amount', label: 'Số tiền', alignRight: false },
-  { id: 'payDate', label: 'Ngày thanh toán', alignRight: false },
   { id: 'status', label: 'Trạng thái', alignRight: false },
   { id: '' }
 ];
@@ -260,7 +259,6 @@ export default function PaymentManagement() {
                               {amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ
                             </Typography>
                           </TableCell>
-                          <TableCell align="left">{paymentId}</TableCell>
                           <TableCell align="left">{handleRenderLabel(row)}</TableCell>
                         </TableRow>
                       );

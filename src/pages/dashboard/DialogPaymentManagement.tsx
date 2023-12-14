@@ -70,16 +70,6 @@ export default function DialogPaymentManagement({
                   sx={{ display: 'flex', justifyContent: 'space-between' }}
                 >
                   <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
-                    Thời gian tạo thanh toán: &nbsp;
-                  </Typography>
-                  {formatT(payment.payDate)}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  gutterBottom
-                  sx={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
                     Mã hợp đồng: &nbsp;
                   </Typography>
                   {payment.constructionContractId}
@@ -116,16 +106,21 @@ export default function DialogPaymentManagement({
                   </Typography>
                   {payment.account.address}
                 </Typography>
-                <Typography
-                  variant="body2"
-                  gutterBottom
-                  sx={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
-                    Thời gian thanh toán: &nbsp;
+                {!(
+                  (payment.isDeposit && payment.status === 'Paid') ||
+                  (!payment.isDeposit && payment.status === 'Paid')
+                ) && (
+                  <Typography
+                    variant="body2"
+                    gutterBottom
+                    sx={{ display: 'flex', justifyContent: 'space-between' }}
+                  >
+                    <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
+                      Thời gian thanh toán: &nbsp;
+                    </Typography>
+                    {formatT(payment.payDateVnpay)}
                   </Typography>
-                  {formatT(payment.payDateVnpay)}
-                </Typography>
+                )}
                 <Typography
                   variant="body2"
                   gutterBottom
