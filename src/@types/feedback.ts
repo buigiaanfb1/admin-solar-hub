@@ -11,6 +11,7 @@ export type FeedbackManager = {
   contructionContractId: string;
   accountId: string;
   image: string;
+  rating: number;
   // TODO: TBU
   packageId: string;
   account: UserManager;

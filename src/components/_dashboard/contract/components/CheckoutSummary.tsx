@@ -67,7 +67,7 @@ export default function CheckoutSummary({
       />
 
       <CardContent>
-        <RowStyle>
+        {/* <RowStyle>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Đơn giá gói hàng
           </Typography>
@@ -92,10 +92,10 @@ export default function CheckoutSummary({
           <Typography variant="subtitle2">
             {discount ? `${discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ` : '-'}
           </Typography>
-        </RowStyle>
+        </RowStyle> */}
 
         <Divider sx={{ mb: 2 }} />
-        {promotionId && promotionId !== 'NOPROMOTION' && (
+        {/* {promotionId && promotionId !== 'NOPROMOTION' && (
           <Box sx={{ mt: 3, mb: 3 }}>
             <TextField
               fullWidth
@@ -113,7 +113,7 @@ export default function CheckoutSummary({
               }}
             />
           </Box>
-        )}
+        )} */}
         <RowStyle>
           <Typography variant="subtitle1">Tổng</Typography>
           <Box sx={{ textAlign: 'right' }}>

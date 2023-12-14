@@ -26,4 +26,5 @@ export type ConstructionContractManager = {
   paymentProcess: any[];
   warrantyReport: any[];
   process: ProcessManager[];
+  createAt: string;
 };

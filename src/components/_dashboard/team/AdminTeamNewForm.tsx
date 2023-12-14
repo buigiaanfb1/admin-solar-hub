@@ -117,14 +117,14 @@ export default function AdminTeamNewForm({
     leader: Yup.object().typeError('Vui lòng chọn nhóm trưởng'),
     member: Yup.array()
       .min(1, 'Vui lòng thêm ít nhất một thành viên')
-      .max(5, 'Số lượng thành viên tối đa là 4')
+      .max(4, 'Số lượng thành viên tối đa là 4')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      leader: currentTeam?.staffLead,
-      member: currentTeam?.staff
+      leader: currentTeam?.staffLead || null,
+      member: currentTeam?.staff || []
     },
     validationSchema: NewTeamSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {

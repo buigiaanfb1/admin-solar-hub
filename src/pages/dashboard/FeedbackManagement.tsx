@@ -41,7 +41,7 @@ const TABLE_HEAD = [
   { id: 'productFeedback', label: 'Gói sử dụng', alignRight: false },
   { id: 'name', label: 'Tên khách hàng', alignRight: false },
   { id: 'description', label: 'Đánh giá', alignRight: false },
-  { id: 'image', label: 'Ảnh', alignRight: false },
+  { id: 'rating', label: 'Đánh giá', alignRight: false },
   { id: '' }
 ];
 
@@ -155,13 +155,13 @@ export default function FeedbackManagement() {
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="Feedbacks từ khách hàng | Minh Phát">
+    <Page title="Feedback từ khách hàng | Minh Phát">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Feedbacks từ khách hàng"
+          heading="Feedback từ khách hàng"
           links={[
             { name: 'Bảng điều khiển', href: PATH_DASHBOARD.root },
-            { name: 'Feedbacks từ khách hàng' }
+            { name: 'Feedback từ khách hàng' }
           ]}
           action={<></>}
         />
@@ -196,7 +196,7 @@ export default function FeedbackManagement() {
                         account: { lastname, firstname },
                         package: { name, packageId },
                         status,
-                        image,
+                        rating,
                         description
                       } = row;
 
@@ -248,9 +248,7 @@ export default function FeedbackManagement() {
                               <Typography variant="subtitle2">{description}</Typography>
                             </div>
                           </TableCell>
-                          <TableCell align="left">
-                            {image && thumbnailItemsExternal([{ imageData: image }])}
-                          </TableCell>
+                          <TableCell align="left">{rating}/5</TableCell>
 
                           <TableCell align="right">
                             <AdminUserMoreMenu

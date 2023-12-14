@@ -203,7 +203,7 @@ export default function WarrantyManagement() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { warrantyId, contractId, dateTime, account, status, description } =
+                      const { warrantyId, contractId, dateTime, contract, status, description } =
                         row;
 
                       return (
@@ -225,7 +225,7 @@ export default function WarrantyManagement() {
                             </Stack>
                           </TableCell>
                           <TableCell align="left" style={{ maxWidth: '150px' }}>
-                            {account.lastname} {account.firstname}
+                            {contract.customer.lastname} {contract.customer.firstname}
                           </TableCell>
                           <TableCell align="left" style={{ maxWidth: '150px' }}>
                             {fDateTime(dateTime)}

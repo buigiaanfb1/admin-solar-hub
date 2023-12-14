@@ -192,8 +192,8 @@ export default function AdminContractNewForm({
     enableReinitialize: true,
     initialValues: {
       constructioncontractId: currentContructionContract?.constructioncontractId || 'default',
-      startdate: currentContructionContract?.startdate || null,
-      enddate: currentContructionContract?.enddate || null,
+      startdate: currentContructionContract?.startdate || '',
+      enddate: currentContructionContract?.enddate || '',
       totalcost: currentContructionContract?.totalcost || 0,
       isConfirmed: currentContructionContract?.isConfirmed || false,
       imageFile: currentContructionContract?.imageFile,
@@ -313,6 +313,7 @@ export default function AdminContractNewForm({
                       onChange={(newValue) => {
                         setFieldValue('startdate', newValue);
                       }}
+                      minDate={new Date()}
                       maxDate={values.enddate && new Date(values.enddate)}
                       renderInput={(params) => (
                         <TextField
@@ -341,7 +342,7 @@ export default function AdminContractNewForm({
                     />
                   </Stack>
                   <Stack>
-                    <div style={{ opacity: 0 }}>
+                    <div style={{ opacity: 0, maxHeight: '5px' }}>
                       <Typography gutterBottom variant="overline">
                         Khách hàng yêu cầu:
                       </Typography>

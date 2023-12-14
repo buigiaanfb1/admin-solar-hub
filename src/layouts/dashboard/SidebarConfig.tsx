@@ -191,7 +191,7 @@ const ownerSidebarConfig = [
     subheader: 'Đánh giá',
     items: [
       {
-        title: 'Feedbacks',
+        title: 'Feedback',
         path: PATH_DASHBOARD.feedback.list,
         icon: ICONS.kanban
       }

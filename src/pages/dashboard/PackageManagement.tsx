@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
+import { isWithinInterval, parseISO } from 'date-fns';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -201,9 +202,8 @@ export default function PackageManagement() {
                         description,
                         status,
                         promotionPrice,
-                        createAt
+                        promotion
                       } = row;
-                      console.log(promotionPrice, price, promotionPrice === price);
                       return (
                         <TableRow
                           // style={{ cursor: 'pointer' }}
@@ -240,7 +240,12 @@ export default function PackageManagement() {
                             </div>
                           </TableCell>
                           <TableCell align="left">
-                            {promotionPrice !== null && promotionPrice !== price ? (
+                            {promotionPrice !== null &&
+                            promotionPrice !== price &&
+                            isWithinInterval(new Date(), {
+                              start: parseISO(promotion.startDate),
+                              end: parseISO(promotion.endDate)
+                            }) ? (
                               <>
                                 <span style={{ textDecoration: 'line-through', color: 'red' }}>
                                   {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ

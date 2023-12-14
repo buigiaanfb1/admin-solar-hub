@@ -1,4 +1,4 @@
-import { fDate } from 'utils/formatTime';
+import { fDate, fDateTime } from 'utils/formatTime';
 
 import { Typography, Stack, Paper, Grid } from '@material-ui/core';
 import { handleRenderLabel } from 'pages/dashboard/StaffContractManagement';
@@ -115,16 +115,18 @@ export default function ContractInfo({ contract }: { contract: ConstructionContr
               </Typography>
               {contract.customer.address}
             </Typography>
-            <Typography
-              variant="body2"
-              gutterBottom
-              sx={{ display: 'flex', justifyContent: 'space-between' }}
-            >
-              <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
-                Người tạo hợp đồng: &nbsp;
+            {contract?.createAt && (
+              <Typography
+                variant="body2"
+                gutterBottom
+                sx={{ display: 'flex', justifyContent: 'space-between' }}
+              >
+                <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
+                  Ngày tạo hợp đồng: &nbsp;
+                </Typography>
+                {fDateTime(contract.createAt)}
               </Typography>
-              {contract.staff.lastname + contract.staff.firstname}
-            </Typography>
+            )}
           </Grid>
         </Grid>
       </Paper>

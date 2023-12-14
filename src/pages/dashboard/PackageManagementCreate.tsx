@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { batch } from 'react-redux';
+import { parseISO, isWithinInterval } from 'date-fns';
 // material
 import { Container } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
@@ -30,6 +31,15 @@ export default function PackageManagementCreate() {
   const { packageList } = useSelector((state: RootState) => state.packageList);
   const { promotionList } = useSelector((state: RootState) => state.promotionList);
 
+  const currentDate = new Date();
+
+  // Filter the promotions based on current date within the range of startDate and endDate
+  const filteredPromotions = promotionList.filter((promotion) => {
+    const startDate = parseISO(promotion.startDate);
+    const endDate = parseISO(promotion.endDate);
+    return isWithinInterval(currentDate, { start: startDate, end: endDate }) && promotion.status;
+  });
+
   const isEdit = pathname.includes('edit');
   const currentPackage = packageList.find((pacKage) => pacKage.packageId === name);
   useEffect(() => {
@@ -54,7 +64,7 @@ export default function PackageManagementCreate() {
         <PackageNewForm
           isEdit={isEdit}
           currentPackage={currentPackage}
-          promotionList={promotionList.filter((promotion) => promotion.status)}
+          promotionList={filteredPromotions}
         />
       </Container>
     </Page>
