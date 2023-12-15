@@ -178,15 +178,15 @@ export default function Process({
                   <Typography variant="overline" sx={{ color: 'text.primary' }}>
                     {steps[index]?.title}
                   </Typography>
-                  {index !== steps.length - 1 && (
-                    <Typography
-                      variant="overline"
-                      sx={{ color: 'text.secondary' }}
-                      style={{ display: 'block' }}
-                    >
-                      {fDateDM(steps[index].startDate)} - {fDateDM(steps[index].endDate)}
-                    </Typography>
-                  )}
+                  <Typography
+                    variant="overline"
+                    sx={{ color: 'text.secondary' }}
+                    style={{ display: 'block' }}
+                  >
+                    {index === steps.length - 1 && steps[index]?.isNew
+                      ? ''
+                      : `${fDateDM(steps[index]?.startDate)} - ${fDateDM(steps[index]?.endDate)}`}
+                  </Typography>
                 </StepLabel>
               </Step>
             );
@@ -203,7 +203,11 @@ export default function Process({
                     setFieldValue('startDate', newValue);
                   }}
                   minDate={new Date(currentContructionContract.startdate)}
-                  maxDate={values.endDate && new Date(values.endDate)}
+                  maxDate={
+                    values.endDate
+                      ? new Date(values.endDate)
+                      : new Date(currentContructionContract.enddate)
+                  }
                   renderInput={(params) => (
                     <TextField
                       fullWidth

@@ -223,10 +223,25 @@ export default function AdminContractNewForm({
           imageUrls = await (await uploadImages(files)).map((url) => ({ image: url }));
         }
         if (isEdit) {
+          console.log(values.startdate, currentContructionContract?.startdate);
+
+          let startdate = values.startdate;
+          let enddate = values.enddate;
+
+          if (startdate !== currentContructionContract?.startdate) {
+            // Adding one day
+            startdate = new Date(values.startdate).toDateString();
+          }
+
+          if (enddate !== currentContructionContract?.enddate) {
+            // Adding one day
+            enddate = new Date(values.enddate).toDateString();
+          }
+
           await axios.put('/api/ConstructionContract/Update-construction-contract-with-id', {
             constructioncontractId: values.constructioncontractId,
-            startdate: values.startdate,
-            enddate: values.enddate,
+            startdate,
+            enddate,
             isConfirmed: true,
             imageFile:
               imageUrls[0]?.image ||
