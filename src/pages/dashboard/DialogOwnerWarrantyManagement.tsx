@@ -18,7 +18,6 @@ export default function DialogOwnerWarrantyManagement({
   onClose,
   warranty
 }: DialogOwnerWarrantyManagementProps) {
-  console.log(warranty);
   return (
     <Dialog fullWidth maxWidth="md" open={open} onClose={onClose}>
       <DialogContent>

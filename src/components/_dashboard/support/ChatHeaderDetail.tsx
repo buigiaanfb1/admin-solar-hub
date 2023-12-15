@@ -35,7 +35,6 @@ function OneAvatar({ participant }: any) {
 }
 
 export default function ChatHeaderDetail({ participant }: { participant: any }) {
-  console.log(participant);
   return (
     <RootStyle>
       <OneAvatar participant={participant} />

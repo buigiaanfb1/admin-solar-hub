@@ -111,8 +111,6 @@ export default function Process({
   const [steps, setSteps] = useState<ProcessManager[]>(initialSteps);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(steps);
-
   useEffect(() => {
     setSteps(
       currentContructionContract.status === '2' && !isDisabled

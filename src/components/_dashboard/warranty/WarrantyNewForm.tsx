@@ -70,7 +70,6 @@ export default function AdminContractNewForm({
     },
     validationSchema: NewWarrantySchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
-      console.log(values);
       try {
         if (values.listProduct && values.listProduct.length > 0) {
           await axios.post('/api/WarrantyReport/Insert-product-warranty', {

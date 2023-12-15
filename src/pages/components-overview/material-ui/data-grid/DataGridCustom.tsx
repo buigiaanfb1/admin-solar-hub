@@ -171,9 +171,7 @@ const columns: GridColDef[] = [
     disableColumnMenu: true,
     renderCell: (params) => {
       const selectedID = params.row.id;
-      const handleClick = () => {
-        console.log('selectedID', selectedID);
-      };
+      const handleClick = () => {};
 
       return (
         <MIconButton onClick={handleClick}>

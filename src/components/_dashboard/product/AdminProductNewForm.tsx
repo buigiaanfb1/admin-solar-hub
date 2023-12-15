@@ -161,9 +161,6 @@ export default function AdminProductNewForm({
     setFieldTouched
   } = formik;
 
-  console.log(errors);
-  console.log(values);
-
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>

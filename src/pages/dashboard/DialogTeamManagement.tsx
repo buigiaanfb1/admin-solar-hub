@@ -12,7 +12,6 @@ type DialogTeamManagementProps = {
 };
 
 export default function DialogTeamManagement({ open, onClose, team }: DialogTeamManagementProps) {
-  console.log(team);
   return (
     <Dialog fullWidth maxWidth="md" open={open} onClose={onClose}>
       <DialogContent>

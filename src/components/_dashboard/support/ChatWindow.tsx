@@ -28,7 +28,6 @@ if (!firebase.apps.length) {
 export default function ChatWindow({ selectedChat }: { selectedChat: any }) {
   const { addMessageCollection } = setCollection('messages');
   const [messagesRealtime, setMessagesRealtime] = useState([]);
-  console.log(selectedChat);
   useEffect(() => {
     const subscriber = firebase
       .firestore()
@@ -43,7 +42,6 @@ export default function ChatWindow({ selectedChat }: { selectedChat: any }) {
         querySnapshot.forEach((doc) => {
           messages.push(doc.data());
         });
-        console.log(messages);
         setMessagesRealtime(messages);
       });
     // Stop listening for updates when no longer required
@@ -59,10 +57,6 @@ export default function ChatWindow({ selectedChat }: { selectedChat: any }) {
       content: value.message,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     };
-    console.log(info, '1', selectedChat.userIdSent, {
-      ...selectedChat,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
     await addMessageCollection(info, '1', selectedChat.userIdSent, {
       ...selectedChat,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()

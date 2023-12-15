@@ -182,8 +182,6 @@ export default function PackageNewForm({
   const handleSetProductList = (productList: AvailableProductsProps[]) => {
     setFieldValue('listProduct', productList);
   };
-  console.log(errors);
-  console.log(values);
 
   return (
     <FormikProvider value={formik}>

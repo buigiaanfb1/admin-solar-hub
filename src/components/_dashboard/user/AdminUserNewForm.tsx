@@ -44,7 +44,6 @@ export default function UserNewForm({
   currentAdmin,
   handleFetchUsers
 }: UserNewFormProps) {
-  console.log(currentUser);
   const { register } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
@@ -158,8 +157,6 @@ export default function UserNewForm({
 
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
-
-  console.log(errors);
 
   useEffect(() => {
     if (values.isGoogleProvider === 'google') {

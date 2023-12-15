@@ -25,7 +25,6 @@ export default function TeamManagementCreate() {
   // TODO: research why it is name not accountId?
   const { name } = useParams();
   const { teamList } = useSelector((state: RootState) => state.teamList);
-  console.log(teamList);
   const isEdit = pathname.includes('edit');
   const currentTeam = teamList.find((team) => team.staffLead.accountId === name);
   useEffect(() => {

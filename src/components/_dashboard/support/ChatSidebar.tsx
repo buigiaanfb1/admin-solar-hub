@@ -93,9 +93,7 @@ export default function ChatSidebar({
             }
           });
           if (messagesRealtime.length > 0) {
-            console.log(messagesRealtime.length, firstRef.current);
             if (!firstRef.current) {
-              console.log(messagesRealtime.length, firstRef.current, messagesRealtime[0]);
               handleClickMessage(messagesRealtime[0]);
               firstRef.current = true;
             }

@@ -94,7 +94,6 @@ export default function StaffContractManagement() {
     (contract) => contract.status === '3' || contract.status === '0'
   );
 
-  console.log(pendingConstructionContractList);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<ConstructionContractManager | null>(null);

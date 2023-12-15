@@ -88,10 +88,6 @@ export default function UserNewForm({ isEdit = false, currentPromotion }: Promot
     getFieldProps,
     setFieldTouched
   } = formik;
-
-  console.log(errors);
-  console.log(values);
-
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>

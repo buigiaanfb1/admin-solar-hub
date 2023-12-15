@@ -101,8 +101,6 @@ export default function Acceptance({
     setFieldTouched
   } = formik;
 
-  console.log(errors);
-
   const { uploadImages } = useAuth();
   const [files, setFiles] = useState<(File | string)[]>([]);
 

@@ -223,8 +223,6 @@ export default function AdminContractNewForm({
           imageUrls = await (await uploadImages(files)).map((url) => ({ image: url }));
         }
         if (isEdit) {
-          console.log(values.startdate, currentContructionContract?.startdate);
-
           let startdate = values.startdate;
           let enddate = values.enddate;
 
@@ -292,9 +290,6 @@ export default function AdminContractNewForm({
     getFieldProps,
     setFieldTouched
   } = formik;
-
-  console.log(values);
-  console.log(errors);
 
   const handleSetValue = (name: string, value: string) => {
     setFieldValue(name, value);

@@ -20,7 +20,6 @@ export default function ChatConversationList({
   onSelectMessage,
   ...other
 }: ChatConversationListProps) {
-  console.log(conversations);
   const handleSelectConversation = (account: any) => {
     onSelectMessage(account);
   };

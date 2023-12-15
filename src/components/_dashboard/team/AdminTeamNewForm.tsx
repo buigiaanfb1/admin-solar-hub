@@ -128,7 +128,6 @@ export default function AdminTeamNewForm({
     },
     validationSchema: NewTeamSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
-      console.log(values);
       try {
         if (isEdit) {
           let payload;
