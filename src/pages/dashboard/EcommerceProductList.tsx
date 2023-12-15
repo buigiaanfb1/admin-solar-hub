@@ -278,13 +278,17 @@ export default function EcommerceProductList() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[]}
             component="div"
             count={products.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(event, value) => setPage(value)}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            labelDisplayedRows={({ from, to, count }) =>
+              `${from}–${to} trong ${count !== -1 ? count : `hơn ${to}`}`
+            }
+            labelRowsPerPage={<></>}
           />
         </Card>
       </Container>

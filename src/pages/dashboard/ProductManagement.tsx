@@ -290,13 +290,17 @@ export default function ProductManagement() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[]}
             component="div"
             count={productList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
             onRowsPerPageChange={(e) => handleChangeRowsPerPage}
+            labelDisplayedRows={({ from, to, count }) =>
+              `${from}–${to} trong ${count !== -1 ? count : `hơn ${to}`}`
+            }
+            labelRowsPerPage={<></>}
           />
         </Card>
         {selected && (

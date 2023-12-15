@@ -230,13 +230,17 @@ export default function SortingSelecting() {
 
       <Box sx={{ position: 'relative' }}>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[]}
           component="div"
           count={SORTING_SELECTING_TABLE.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={(e, page) => handleChangePage(page)}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelDisplayedRows={({ from, to, count }) =>
+            `${from}–${to} trong ${count !== -1 ? count : `hơn ${to}`}`
+          }
+          labelRowsPerPage={<></>}
         />
         <Box
           sx={{

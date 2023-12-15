@@ -291,13 +291,17 @@ export default function OwnerRequestList({ staffId }: { staffId: string }) {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[]}
             component="div"
             count={requestAvailableList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={(e, page) => setPage(page)}
             onRowsPerPageChange={(e) => handleChangeRowsPerPage}
+            labelDisplayedRows={({ from, to, count }) =>
+              `${from}–${to} trong ${count !== -1 ? count : `hơn ${to}`}`
+            }
+            labelRowsPerPage={<></>}
           />
         </Card>
       </Container>
