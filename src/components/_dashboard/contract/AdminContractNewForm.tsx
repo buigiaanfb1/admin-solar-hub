@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as Yup from 'yup';
-import { forwardRef, useCallback, useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -9,7 +9,7 @@ import { parseISO, isAfter } from 'date-fns';
 
 // material
 import { DesktopDatePicker, LoadingButton } from '@material-ui/lab';
-import { Box, Card, Grid, List, Stack, TextField, Typography } from '@material-ui/core';
+import { Box, Card, Grid, Stack, TextField, Typography } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import axios from 'utils/axiosIntegrated';
 import { PATH_DASHBOARD } from 'routes/paths';
@@ -345,8 +345,8 @@ export default function AdminContractNewForm({
                         <TextField
                           fullWidth
                           {...params}
-                          error={Boolean(touched.startdate && errors.startdate)}
-                          helperText={touched.startdate && errors.startdate}
+                          error={Boolean(touched.enddate && errors.enddate)}
+                          helperText={touched.enddate && errors.enddate}
                         />
                       )}
                     />
