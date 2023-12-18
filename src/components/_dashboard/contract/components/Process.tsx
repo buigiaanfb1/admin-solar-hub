@@ -69,8 +69,8 @@ export default function Process({
           contractId: values?.contractId,
           title: values?.title,
           description: values?.description,
-          startDate: values?.startDate,
-          endDate: values?.endDate,
+          startDate: new Date(values?.startDate).toDateString(),
+          endDate: new Date(values?.endDate).toDateString(),
           image: imageUrls
         });
 
