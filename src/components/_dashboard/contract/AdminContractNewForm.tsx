@@ -42,7 +42,10 @@ export const handleRenderProcess = (
         </Typography>
       </Stack>
     );
-  if (currentContructionContract.status === '1')
+  if (
+    currentContructionContract.status === '2' &&
+    !isInProgressAndFurther(currentContructionContract.startdate)
+  )
     return (
       <Stack>
         <Typography variant="overline" sx={{ color: 'text.primary' }}>
