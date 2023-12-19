@@ -45,7 +45,7 @@ export default function DialogOwnerWarrantyManagement({
                   <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
                     Tên khách hàng: &nbsp;
                   </Typography>
-                  {warranty.account.firstname} {warranty.account.lastname}
+                  {warranty.contract.customer?.lastname} {warranty.contract.customer?.firstname}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -55,7 +55,7 @@ export default function DialogOwnerWarrantyManagement({
                   <Typography variant="body2" component="span" sx={{ color: 'text.secondary' }}>
                     Tên tài khoản khách hàng: &nbsp;
                   </Typography>
-                  {warranty.account.username}
+                  {warranty.contract.customer?.username}
                 </Typography>
                 <Typography
                   variant="body2"
