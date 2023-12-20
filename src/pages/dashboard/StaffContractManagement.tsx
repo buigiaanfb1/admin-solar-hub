@@ -303,15 +303,17 @@ export default function StaffContractManagement() {
                             {handleRenderLabel(status, startdate, enddate)}
                           </TableCell>
                           <TableCell align="right">
-                            <MoreMenu
-                              onBlock={() => handleBlockSurvey(constructioncontractId)}
-                              onUnblock={() => handleUnBlocSurvey(constructioncontractId)}
-                              status={status === '1'}
-                              textFirstItem="Huỷ hợp đồng"
-                              textFirstItemAfter="Mở lại hợp đồng"
-                              id={constructioncontractId}
-                              path={PATH_DASHBOARD.staffContract.root}
-                            />
+                            {status !== '0' && status !== '3' && (
+                              <MoreMenu
+                                onBlock={() => handleBlockSurvey(constructioncontractId)}
+                                onUnblock={() => handleUnBlocSurvey(constructioncontractId)}
+                                status={status === '1'}
+                                textFirstItem="Huỷ hợp đồng"
+                                textFirstItemAfter="Mở lại hợp đồng"
+                                id={constructioncontractId}
+                                path={PATH_DASHBOARD.staffContract.root}
+                              />
+                            )}
                           </TableCell>
                         </TableRow>
                       );
