@@ -37,8 +37,8 @@ export default function UserNewForm({ isEdit = false, currentPromotion }: Promot
       title: currentPromotion?.title || '',
       description: currentPromotion?.description || '',
       amount: currentPromotion?.amount || '',
-      startDate: currentPromotion?.startDate || null,
-      endDate: currentPromotion?.endDate || null
+      startDate: currentPromotion?.startDate || '',
+      endDate: currentPromotion?.endDate || ''
     },
     validationSchema: NewPromotionSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -49,8 +49,8 @@ export default function UserNewForm({ isEdit = false, currentPromotion }: Promot
             title: values?.title,
             description: values?.description,
             amount: values?.amount,
-            startDate: values?.startDate,
-            endDate: values?.endDate,
+            startDate: new Date(values?.startDate).toDateString(),
+            endDate: new Date(values?.endDate).toDateString(),
             status: currentPromotion?.status
           });
         } else {
@@ -59,8 +59,8 @@ export default function UserNewForm({ isEdit = false, currentPromotion }: Promot
             title: values?.title,
             description: values?.description,
             amount: values?.amount,
-            startDate: values?.startDate,
-            endDate: values?.endDate,
+            startDate: new Date(values?.startDate).toDateString(),
+            endDate: new Date(values?.endDate).toDateString(),
             status: true
           });
         }

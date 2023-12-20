@@ -21,6 +21,7 @@ export type AvailableProductsProps = {
   name: string;
   manufacturer: string;
   image: Image[] | undefined;
+  warrantyDate?: Date;
   productWarrantyReport: {
     damages: {
       amountofDamageProduct: boolean;
@@ -71,6 +72,7 @@ export default function ProductPackage({
         name: product.product.name,
         manufacturer: product.product.manufacturer,
         image: product.product.image,
+        warrantyDate: product.product.warrantyDate,
         productWarrantyReport: {
           damages: {
             amountofDamageProduct: product.amountofDamageProduct || false,

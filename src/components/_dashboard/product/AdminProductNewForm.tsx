@@ -104,7 +104,7 @@ export default function AdminProductNewForm({
       price: currentProduct?.price || '',
       manufacturer: currentProduct?.manufacturer || '',
       feature: currentProduct?.feature || '',
-      warrantyDate: currentProduct?.warrantyDate || null
+      warrantyDate: currentProduct?.warrantyDate || ''
     },
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -120,7 +120,7 @@ export default function AdminProductNewForm({
             price: values?.price,
             manufacturer: values?.manufacturer,
             feature: values?.feature,
-            warrantyDate: values?.warrantyDate,
+            warrantyDate: new Date(values?.warrantyDate).toDateString(),
             status: currentProduct?.status,
             image: imageUrls
           });
@@ -131,7 +131,7 @@ export default function AdminProductNewForm({
             price: values?.price,
             manufacturer: values?.manufacturer,
             feature: values?.feature,
-            warrantyDate: values?.warrantyDate,
+            warrantyDate: new Date(values?.warrantyDate).toDateString(),
             status: true,
             image: imageUrls
           });

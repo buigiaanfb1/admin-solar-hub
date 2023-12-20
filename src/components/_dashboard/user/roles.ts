@@ -60,10 +60,6 @@ const staffTypes = [
   {
     code: 'staff',
     label: 'Nhân viên'
-  },
-  {
-    code: 'consultant',
-    label: 'Nhân viên tư vấn'
   }
 ];
 

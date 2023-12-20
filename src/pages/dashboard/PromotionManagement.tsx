@@ -18,7 +18,7 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
-import { fDateTime } from 'utils/formatTime';
+import { fDate } from 'utils/formatTime';
 
 import { PromotionManager } from '../../@types/promotion';
 import {
@@ -242,8 +242,8 @@ export default function PromotionManagement() {
                           </TableCell>
                           <TableCell align="left">{description}</TableCell>
                           <TableCell align="left">{amount}%</TableCell>
-                          <TableCell align="left">{fDateTime(startDate)}</TableCell>
-                          <TableCell align="left">{fDateTime(endDate)}</TableCell>
+                          <TableCell align="left">{fDate(startDate)}</TableCell>
+                          <TableCell align="left">{fDate(endDate)}</TableCell>
                           {/* <TableCell align="left">.</TableCell> */}
                           <TableCell align="left">
                             <Label

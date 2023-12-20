@@ -12,10 +12,13 @@ import {
   TextField,
   Switch
 } from '@material-ui/core';
+import { fDate } from 'utils/formatTime';
+
 // utils
 // @types
 //
 import { AvailableProductsProps } from './ProductPackage';
+import { isInProgressAndFurther } from '../contract/AdminContractNewForm';
 
 // ----------------------------------------------------------------------
 
@@ -59,6 +62,7 @@ export default function CheckoutProductList({
   onDoWarranty,
   isDisabled = false
 }: CheckoutProductListProps) {
+  console.log(products);
   return (
     <TableContainer sx={{ minWidth: 720 }}>
       <Table>
@@ -106,6 +110,39 @@ export default function CheckoutProductList({
                           </Typography>
                           {product.manufacturer}
                         </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <Typography variant="body2">
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            sx={{ color: 'text.secondary' }}
+                          >
+                            Hạn bảo hành:&nbsp;
+                          </Typography>
+                          {product?.warrantyDate ? fDate(product.warrantyDate) : ''}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center'
+                        }}
+                      >
+                        {product?.warrantyDate
+                          ? isInProgressAndFurther(
+                              new Date(product.warrantyDate).toDateString()
+                            ) && (
+                              <Typography component="span" variant="body2" sx={{ color: 'red' }}>
+                                (Đã hết hạn bảo hành)
+                              </Typography>
+                            )
+                          : ''}
                       </Box>
                     </Box>
                   </Box>
